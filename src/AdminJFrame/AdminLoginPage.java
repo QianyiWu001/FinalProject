@@ -7,7 +7,8 @@ import BasicLogin.BasicLoginEvents;
 import java.awt.*;
 
 public class AdminLoginPage extends JFrame {
-    private JButton addStudentBtn, updateStudentBtn, deleteStudentBtn, listStudentBtn, addCourseBtn, deleteCoursesBtn, addAttendanceBtn, addFinalGradeBtn;
+    private JLabel titleLabel;
+    private JButton courseBtn, studentBtn, attendanceBtn, gradeBtn, backButton, logoutButton;;
 
     public AdminLoginPage() {
         setTitle("Admin Main Page");
@@ -24,75 +25,76 @@ public class AdminLoginPage extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
 
-        Font font = new Font("Arial", Font.PLAIN, 16);
+        Font titleFont = new Font("Arial", Font.PLAIN, 22);
+        Font font = new Font("Arial", Font.PLAIN, 18);
+        Font buttonFont = new Font("Arial", Font.PLAIN, 18);
 
-        addStudentBtn = new JButton("Add Student");
-        addStudentBtn.setFont(font);
-        addStudentBtn.setPreferredSize(new Dimension(160, 50));
-        addStudentBtn.addActionListener(adminLoginEvents);
+        titleLabel = new JLabel("Welcome to Admin Homepage");
+        titleLabel.setFont(titleFont);
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(10, 0, 10, 150);
-        add(addStudentBtn, gbc);
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 0, 30, 0);
+        add(titleLabel, gbc);
 
-        updateStudentBtn = new JButton("Update Student");
-        updateStudentBtn.setFont(font);
-        updateStudentBtn.setPreferredSize(new Dimension(160, 50));
-        updateStudentBtn.addActionListener(adminLoginEvents);
+        courseBtn = new JButton("Courses Management");
+        courseBtn.setFont(font);
+        courseBtn.setPreferredSize(new Dimension(250, 40));
+        courseBtn.addActionListener(adminLoginEvents);
         gbc.gridx = 0;
         gbc.gridy = 1;
-        add(updateStudentBtn, gbc);
-
-        deleteStudentBtn = new JButton("Delete Student");
-        deleteStudentBtn.setFont(font);
-        deleteStudentBtn.setPreferredSize(new Dimension(160, 50));
-        deleteStudentBtn.addActionListener(adminLoginEvents);
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(0, 0, 20, 0);
+        add(courseBtn, gbc);
+        
+        studentBtn = new JButton("Students Management");
+        studentBtn.setFont(font);
+        studentBtn.setPreferredSize(new Dimension(250, 40));
+        studentBtn.addActionListener(adminLoginEvents);
         gbc.gridx = 0;
         gbc.gridy = 2;
-        add(deleteStudentBtn, gbc);
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(0, 0, 20, 0);
+        add(studentBtn, gbc);
 
-        listStudentBtn = new JButton("List Student");
-        listStudentBtn.setFont(font);
-        listStudentBtn.setPreferredSize(new Dimension(160, 50));
-        listStudentBtn.addActionListener(adminLoginEvents);
+        attendanceBtn = new JButton("Attendance Management");
+        attendanceBtn.setFont(font);
+        attendanceBtn.setPreferredSize(new Dimension(250, 40));
+        attendanceBtn.addActionListener(adminLoginEvents);
         gbc.gridx = 0;
         gbc.gridy = 3;
-        add(listStudentBtn, gbc);
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(0, 0, 20, 0);
+        add(attendanceBtn, gbc);
 
-        addCourseBtn = new JButton("Add Course");
-        addCourseBtn.setFont(font);
-        addCourseBtn.setPreferredSize(new Dimension(160, 50));
-        addCourseBtn.addActionListener(adminLoginEvents);
-        gbc.gridx = 1;
-        gbc.gridy = 0;
+        gradeBtn = new JButton("Grades Management");
+        gradeBtn.setFont(font);
+        gradeBtn.setPreferredSize(new Dimension(250, 40));
+        gradeBtn.addActionListener(adminLoginEvents);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(0, 0, 20, 0);
+        add(gradeBtn, gbc);
+
+        backButton = new JButton("Back");
+        backButton.setFont(buttonFont);
+        backButton.setPreferredSize(new Dimension(110, 30));
+        backButton.addActionListener(adminLoginEvents);
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 1;
         gbc.insets = new Insets(10, 0, 10, 0);
-        add(addCourseBtn, gbc);
+        add(backButton, gbc);
 
-        deleteCoursesBtn = new JButton("Delete Course");
-        deleteCoursesBtn.setFont(font);
-        deleteCoursesBtn.setPreferredSize(new Dimension(160, 50));
-        deleteCoursesBtn.addActionListener(adminLoginEvents);
+        logoutButton = new JButton("Exit");
+        logoutButton.setFont(buttonFont);
+        logoutButton.setPreferredSize(new Dimension(110, 30));
+        logoutButton.addActionListener(adminLoginEvents);
         gbc.gridx = 1;
-        gbc.gridy = 1;
-        add(deleteCoursesBtn, gbc);
-
-        addAttendanceBtn = new JButton("Add Attendance");
-        addAttendanceBtn.setFont(font);
-        addAttendanceBtn.setPreferredSize(new Dimension(160, 50));
-        addAttendanceBtn.addActionListener(adminLoginEvents);
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        add(addAttendanceBtn, gbc);
-
-        addFinalGradeBtn = new JButton("Add Final Grade");
-        addFinalGradeBtn.setFont(font);
-        addFinalGradeBtn.setPreferredSize(new Dimension(160, 50));
-        addFinalGradeBtn.addActionListener(adminLoginEvents);
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        add(addFinalGradeBtn, gbc);
-
-
-
+        gbc.gridy = 5;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(10, 50, 10, 0); 
+        add(logoutButton, gbc);
     }
 }

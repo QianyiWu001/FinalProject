@@ -16,6 +16,7 @@ public class AdminLoginPage extends JFrame {
         setAdminPageJPanel();
         setSize(1000,600);
         setVisible(true);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 

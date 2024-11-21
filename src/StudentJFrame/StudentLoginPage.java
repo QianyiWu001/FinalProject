@@ -3,8 +3,6 @@ package StudentJFrame;
 import javax.swing.*;
 import java.awt.*;
 
-import javax.swing.JButton;
-
 public class StudentLoginPage extends JFrame {
     private JLabel titleLabel;
     private JButton viewProfileButton, viewCoursesButton, viewBillButton, viewAttendenceButton, viewGradeButton, backButton, logoutButton;
@@ -15,6 +13,7 @@ public class StudentLoginPage extends JFrame {
         setSize(1000, 600);
         setStudentPageJPanel();
         setVisible(true);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 

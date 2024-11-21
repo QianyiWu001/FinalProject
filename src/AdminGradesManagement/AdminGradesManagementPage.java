@@ -15,6 +15,7 @@ public class AdminGradesManagementPage extends JFrame {
         setAdminGradesManagementPagePanel();
         setSize(1000,600);
         setVisible(true);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 

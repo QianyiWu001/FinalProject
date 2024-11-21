@@ -11,64 +11,55 @@ public class StudentGradesPage extends JFrame {
 
     public StudentGradesPage() {
         setTitle("Student Grades Page");
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
         setStudentGradesPagePanel();
         setSize(1500,900);
         setVisible(true);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public void setStudentGradesPagePanel() {
         StudentGradesEvents studentGradesEvents = new StudentGradesEvents(this);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.CENTER;
-
         Font titleFont = new Font("Arial", Font.PLAIN, 22);
-        Font font = new Font("Arial", Font.PLAIN, 20);
+        Font tableFont = new Font("Arial", Font.PLAIN, 16);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
+
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 20));
+        titleLabel = new JLabel("Course Grades");
+        titleLabel.setFont(titleFont);
+        topPanel.add(titleLabel);
+        add(topPanel, BorderLayout.NORTH);
+        
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 10));
 
         backButton = new JButton("Back");
         backButton.setFont(buttonFont);
         backButton.setPreferredSize(new Dimension(110, 30));
         backButton.addActionListener(studentGradesEvents);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 30, 0);
-        add(backButton, gbc);
-
-        titleLabel = new JLabel("Course Grades");
-        titleLabel.setFont(titleFont);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        gbc.insets = new Insets(0, 0, 30, 0);
-        add(titleLabel, gbc);
 
         exitButton = new JButton("Exit");
         exitButton.setFont(buttonFont);
         exitButton.setPreferredSize(new Dimension(110, 30));
         exitButton.addActionListener(studentGradesEvents);
-        gbc.gridx = 3;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 30, 0);
-        add(exitButton, gbc);
+
+        buttonPanel.add(backButton);
+        buttonPanel.add(exitButton);
+        add(buttonPanel, BorderLayout.SOUTH);
 
         String[] columnNames = {"Course ID", "Course Name", "Grade"};
         //这里要改成数据库
         Object[][] data = getTextData();
 
         gradesTable = new JTable(data, columnNames);
+        gradesTable.getTableHeader().setFont(tableFont);
+        gradesTable.setFont(tableFont);
+        gradesTable.setRowHeight(30);
         gradesTableScrollPane = new JScrollPane(gradesTable);
         gradesTable.setFillsViewportHeight(true);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 4;
-        gbc.insets = new Insets(0, 0, 20, 50);
-        gbc.fill = GridBagConstraints.BOTH;
-        add(gradesTableScrollPane, gbc);
+
+        add(gradesTableScrollPane, BorderLayout.CENTER);
     }
 
     private Object[][] getTextData() {

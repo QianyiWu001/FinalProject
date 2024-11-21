@@ -14,6 +14,7 @@ public class StudentProfilePage extends JFrame {
         setStudentProfilePagePanel();
         setSize(1000,600);
         setVisible(true);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 

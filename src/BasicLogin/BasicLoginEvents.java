@@ -51,21 +51,25 @@ public class BasicLoginEvents implements ActionListener {
 
             // 连一下数据库**********
             if (!username.isEmpty() && !password.isEmpty() && !userType.equals("-----Select-----")) {
-                /*boolean isLoginValid = loginDatabase.checkLogin(username, password, userType);
-                if (!isLoginValid) {
-                    if (userType.equals("Admin")) {
-                        new AdminLoginPage();
-                        basicLoginPage.dispose();
-                    } else if (userType.equals("Student")) {
-                        new StudentLoginPage();
-                        basicLoginPage.dispose();
-                    } else {
-                        basicLoginPage.getUserLoginErrorField().setText("Invalid Login Information, Please Check and Try Again.");
-                        basicLoginPage.getUserLoginErrorField().setForeground(Color.RED);
-                    }
-                } 
-                */
+                int loginResult = loginDatabase.checkLogin(username, password, userType);
                 
+                // 根据返回值判断登录是否成功
+                if (loginResult != -1) {
+                    // 根据 userType 打开不同的页面
+                    if (userType.equals("ROLE_ADMIN")) {
+                        new AdminLoginPage(); // 打开管理员页面
+                        basicLoginPage.dispose(); // 关闭当前页面
+                    } else if (userType.equals("ROLE_STUDENT")) {
+                        new StudentLoginPage(); // 打开学生页面
+                        basicLoginPage.dispose(); // 关闭当前页面
+                    }
+                } else {
+                    // 登录失败的错误提示
+                    basicLoginPage.getUserLoginErrorField().setText("Invalid Login Information, Please Check and Try Again.");
+                    basicLoginPage.getUserLoginErrorField().setForeground(Color.RED);
+                }
+            }
+            
                 // 下面这些就是随便试试
                 if (username.equals("1") && password.equals("1") && userType.equals("Admin")) {
                     new AdminLoginPage();
@@ -81,5 +85,3 @@ public class BasicLoginEvents implements ActionListener {
             }
         }
     }
-    
-}

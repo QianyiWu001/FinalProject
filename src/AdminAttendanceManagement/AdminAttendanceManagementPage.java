@@ -15,6 +15,7 @@ public class AdminAttendanceManagementPage extends JFrame {
         setAdminAttendanceManagementPagePanel();
         setSize(1000,600);
         setVisible(true);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 

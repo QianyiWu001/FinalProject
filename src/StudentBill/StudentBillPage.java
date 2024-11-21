@@ -14,6 +14,7 @@ public class StudentBillPage extends JFrame {
         setStudentBillPagePanel();
         setSize(1000,600);
         setVisible(true);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 

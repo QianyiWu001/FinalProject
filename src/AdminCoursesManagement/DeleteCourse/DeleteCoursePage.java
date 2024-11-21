@@ -14,6 +14,7 @@ public class DeleteCoursePage extends JFrame {
         setDeleteCoursePagePanel();
         setSize(800,450);
         setVisible(true);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 

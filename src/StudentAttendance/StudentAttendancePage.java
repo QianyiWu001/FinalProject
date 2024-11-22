@@ -12,7 +12,7 @@ public class StudentAttendancePage extends JFrame {
         setTitle("Student Attendance Page");
         setLayout(new BorderLayout());
         setStudentAttendancePagePanel();
-        setSize(1500,900);
+        setSize(800,550);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -7,7 +7,6 @@ import java.awt.*;
 
 public class AdminStudentsManagementPage extends JFrame {
     private JButton backButton, exitButton, addStudentButton, deleteStudentButton, updateStudentButton, searchStudentButton;
-    private JLabel titleLabel;
     private JTable studentsTable;
     private JScrollPane stduentsTableScrollPane;
 
@@ -15,7 +14,7 @@ public class AdminStudentsManagementPage extends JFrame {
         setTitle("Admin Students Management Page");
         setLayout(new BorderLayout());
         setAdminStudentsManagementPagePanel();
-        setSize(1500,900);
+        setSize(800,550);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

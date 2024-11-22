@@ -14,7 +14,7 @@ public class StudentCoursesListPage extends JFrame {
         setTitle("Student Courses List Page");
         setLayout(new BorderLayout());
         setStudentCoursesListPanel();
-        setSize(1500,900);
+        setSize(800,550);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,6 +50,8 @@ public class StudentCoursesListPage extends JFrame {
         buttonPanel.add(exitButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
+        
+        
         String[] columnNames = {"Course ID", "CourseName", "Credits", "Description"};
         //这里要改成数据库
         Object[][] data = getTextData();

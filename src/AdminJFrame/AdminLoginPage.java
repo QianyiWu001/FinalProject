@@ -14,7 +14,7 @@ public class AdminLoginPage extends JFrame {
         setTitle("Admin Main Page");
         setLayout(new GridBagLayout());
         setAdminPageJPanel();
-        setSize(1000,600);
+        setSize(800,550);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

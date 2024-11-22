@@ -10,7 +10,7 @@ public class StudentLoginPage extends JFrame {
     public StudentLoginPage() {
         setTitle("Student Main Page");
         setLayout(new GridBagLayout());
-        setSize(1000, 600);
+        setSize(800,550);
         setStudentPageJPanel();
         setVisible(true);
         setLocationRelativeTo(null);

@@ -13,7 +13,7 @@ public class StudentGradesPage extends JFrame {
         setTitle("Student Grades Page");
         setLayout(new BorderLayout());
         setStudentGradesPagePanel();
-        setSize(1500,900);
+        setSize(800,550);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

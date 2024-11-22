@@ -11,9 +11,9 @@ public class AdminGradesManagementPage extends JFrame {
 
     public AdminGradesManagementPage() {
         setTitle("Admin Grades Management Page");
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
         setAdminGradesManagementPagePanel();
-        setSize(1000,600);
+        setSize(800,550);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,96 +22,104 @@ public class AdminGradesManagementPage extends JFrame {
     public void setAdminGradesManagementPagePanel() {
         AdminGradesManagementEvents adminGradesManagementEvents = new AdminGradesManagementEvents(this);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.CENTER;
-    
         Font titleFont = new Font("Arial", Font.PLAIN, 22);
         Font font = new Font("Arial", Font.PLAIN, 20);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
+
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 50));
+        
+        addButton = new JButton("Add");
+        addButton.setFont(buttonFont);
+        addButton.setPreferredSize(new Dimension(110, 30));
+        addButton.addActionListener(adminGradesManagementEvents);
+
+        clearButton = new JButton("Clear");
+        clearButton.setFont(buttonFont);
+        clearButton.setPreferredSize(new Dimension(110, 30));
+        clearButton.addActionListener(adminGradesManagementEvents);
+
+        topPanel.add(addButton);
+        topPanel.add(clearButton);
+        add(topPanel, BorderLayout.NORTH);
+
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 50));
 
         backButton = new JButton("Back");
         backButton.setFont(buttonFont);
         backButton.setPreferredSize(new Dimension(110, 30));
         backButton.addActionListener(adminGradesManagementEvents);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 30, 0);
-        add(backButton, gbc);
-
-        titleLabel = new JLabel("Add Grades");
-        titleLabel.setFont(titleFont);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        gbc.insets = new Insets(0, 0, 30, 0);
-        add(titleLabel, gbc);
 
         exitButton = new JButton("Exit");
         exitButton.setFont(buttonFont);
         exitButton.setPreferredSize(new Dimension(110, 30));
         exitButton.addActionListener(adminGradesManagementEvents);
-        gbc.gridx = 3;
+
+        buttonPanel.add(backButton);
+        buttonPanel.add(exitButton);
+        add(buttonPanel, BorderLayout.SOUTH);
+
+
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        titleLabel = new JLabel("Add Grades");
+        titleLabel.setFont(titleFont);
+        gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 30, 0);
-        add(exitButton, gbc);
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        centerPanel.add(titleLabel, gbc);
 
         courseIDLabel = new JLabel("Course ID:");
         courseIDLabel.setFont(font);
-        gbc.gridx = 1;
-        gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 20, 10);
-        add(courseIDLabel, gbc);
+        centerPanel.add(courseIDLabel, gbc);
 
         courseIDField = new JTextField(10);
         courseIDField.setFont(font);
-        gbc.gridx = 2;
-        gbc.gridy = 2;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 10, 20, 0);
-        add(courseIDField, gbc);
+        centerPanel.add(courseIDField, gbc);
 
         studentIDLabel = new JLabel("Student ID:");
         studentIDLabel.setFont(font);
-        gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 20, 10);
-        add(studentIDLabel, gbc);
+        centerPanel.add(studentIDLabel, gbc);
 
         studentIDField = new JTextField(10);
         studentIDField.setFont(font);
-        gbc.gridx = 2;
-        gbc.gridy = 3;
+        gbc.gridx = 1;
+        gbc.gridy = 2;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 10, 20, 0);
-        add(studentIDField, gbc);
+        centerPanel.add(studentIDField, gbc);
 
         gradeLabel = new JLabel("Grade:");
         gradeLabel.setFont(font);
-        gbc.gridx = 1;
-        gbc.gridy = 4;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 20, 10);
-        add(gradeLabel, gbc);
+        centerPanel.add(gradeLabel, gbc);
 
         gradeField = new JTextField(10);
         gradeField.setFont(font);
-        gbc.gridx = 2;
-        gbc.gridy = 4;
+        gbc.gridx = 1;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 10, 20, 0);
-        add(gradeField, gbc);
+        centerPanel.add(gradeField, gbc);
 
         levelLabel = new JLabel("Level:");
         levelLabel.setFont(font);
-        gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 20, 10);
-        add(levelLabel, gbc);
+        centerPanel.add(levelLabel, gbc);
 
         levelComboBox = new JComboBox<String>();
         levelComboBox.addItem("-");
@@ -122,31 +130,12 @@ public class AdminGradesManagementPage extends JFrame {
         levelComboBox.addItem("F");
         levelComboBox.setPreferredSize(new Dimension(173, 28));
         levelComboBox.setFont(font);
-        gbc.gridx = 2;
-        gbc.gridy = 5;
+        gbc.gridx = 1;
+        gbc.gridy = 4;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 10, 20, 0);
-        add(levelComboBox, gbc);
+        centerPanel.add(levelComboBox, gbc);
 
-        addButton = new JButton("Add");
-        addButton.setFont(buttonFont);
-        addButton.setPreferredSize(new Dimension(110, 30));
-        addButton.addActionListener(adminGradesManagementEvents);
-        gbc.gridx = 0;
-        gbc.gridy = 6;
-        gbc.gridwidth = 2;
-        gbc.insets = new Insets(20, 50, 30, 0);
-        add(addButton, gbc);
-
-        clearButton = new JButton("Clear");
-        clearButton.setFont(buttonFont);
-        clearButton.setPreferredSize(new Dimension(110, 30));
-        clearButton.addActionListener(adminGradesManagementEvents);
-        gbc.gridx = 2;
-        gbc.gridy = 6;
-        gbc.gridwidth = 2;
-        gbc.insets = new Insets(20, 50, 30, 0);
-        add(clearButton, gbc);
+        add(centerPanel, BorderLayout.CENTER);
     }
     
     public JTextField getCourseIDField() {

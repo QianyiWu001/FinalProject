@@ -12,7 +12,7 @@ public class AdminCoursesManagementPage extends JFrame {
         setTitle("Admin Courses Management Page");
         setLayout(new BorderLayout());
         setAdminCoursesManagementPagePanel();
-        setSize(1500,900);
+        setSize(800,550);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

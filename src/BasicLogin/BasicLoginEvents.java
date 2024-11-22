@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
 import AdminJFrame.AdminLoginPage;
 import StudentJFrame.StudentLoginPage;
 
@@ -28,29 +30,22 @@ public class BasicLoginEvents implements ActionListener {
             String password = new String(charPassword);
             String userType = (String) basicLoginPage.getUserTypeComboBox().getSelectedItem();
 
-            if (username.isEmpty()) {
-                basicLoginPage.getUsernameErrorField().setText("* Required");
-                basicLoginPage.getUsernameErrorField().setForeground(Color.RED);
-            }else {
-                basicLoginPage.getUsernameErrorField().setText(" ");
-            }
-
-            if (password.isEmpty()) {
-                basicLoginPage.getPasswordErrorField().setText("* Required");
-                basicLoginPage.getPasswordErrorField().setForeground(Color.RED);
-            }else {
-                basicLoginPage.getPasswordErrorField().setText(" ");
-            }
-
-            if (userType.equals("-")) {
-                basicLoginPage.getUserTypeErrorField().setText("* Required");
-                basicLoginPage.getUserTypeErrorField().setForeground(Color.RED);
-            }else {
-                basicLoginPage.getUserTypeErrorField().setText(" ");
+            if (username.isEmpty() && password.isEmpty() && userType.equals("-")) {
+                JOptionPane.showMessageDialog(basicLoginPage, "Please enter your login information.");
+                return;
+            } else if (username.isEmpty()) {
+                JOptionPane.showMessageDialog(basicLoginPage, "Please enter your username.");
+                return;
+            } else if (password.isEmpty()) {
+                JOptionPane.showMessageDialog(basicLoginPage, "Please enter your password.");
+                return;
+            } else if (userType.equals("-")) {
+                JOptionPane.showMessageDialog(basicLoginPage, "Please select your user type.");
+                return;
             }
 
             // 连一下数据库**********
-            if (!username.isEmpty() && !password.isEmpty() && !userType.equals("-----Select-----")) {
+            if (!username.isEmpty() && !password.isEmpty() && !userType.equals("-")) {
                 int loginResult = loginDatabase.checkLogin(username, password, userType);
                 
                 // 根据返回值判断登录是否成功
@@ -65,8 +60,8 @@ public class BasicLoginEvents implements ActionListener {
                     }
                 } else {
                     // 登录失败的错误提示
-                    basicLoginPage.getUserLoginErrorField().setText("Invalid Login Information, Please Check and Try Again.");
-                    basicLoginPage.getUserLoginErrorField().setForeground(Color.RED);
+                    // JOptionPane.showMessageDialog(basicLoginPage, "Invalid Login Information, Please Check and Try Again.");
+                    // return;
                 }
             }
             
@@ -74,13 +69,12 @@ public class BasicLoginEvents implements ActionListener {
                 if (username.equals("1") && password.equals("1") && userType.equals("Admin")) {
                     new AdminLoginPage();
                     basicLoginPage.dispose();
-                    
                 } else if (username.equals("2") && password.equals("2") && userType.equals("Student")) {
                     new StudentLoginPage();
                     basicLoginPage.dispose();
                 } else {
-                    basicLoginPage.getUserLoginErrorField().setText("Invalid Login Information, Please Check and Try Again.");
-                    basicLoginPage.getUserLoginErrorField().setForeground(Color.RED);
+                    JOptionPane.showMessageDialog(basicLoginPage, "Invalid Login Information, Please Check and Try Again.");
+                    return;
                 }
             }
         }

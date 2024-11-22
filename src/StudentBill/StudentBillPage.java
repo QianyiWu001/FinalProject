@@ -12,7 +12,7 @@ public class StudentBillPage extends JFrame {
         setTitle("Student Bill Page");
         setLayout(new GridBagLayout());
         setStudentBillPagePanel();
-        setSize(1000,600);
+        setSize(800,550);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

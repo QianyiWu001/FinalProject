@@ -12,7 +12,7 @@ public class StudentProfilePage extends JFrame {
         setTitle("Student Profile Page");
         setLayout(new GridBagLayout());
         setStudentProfilePagePanel();
-        setSize(1000,600);
+        setSize(800,550);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

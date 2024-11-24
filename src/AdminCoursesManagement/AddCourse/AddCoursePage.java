@@ -1,14 +1,19 @@
 package AdminCoursesManagement.AddCourse;
 
 import javax.swing.*;
+
+import AdminCoursesManagement.AdminCoursesManagementPage;
+
 import java.awt.*;
 
 public class AddCoursePage extends JFrame {
     private JButton addButton, cancelButton;
     private JLabel titleLabel, courseIDLabel, courseNameLabel, creditLabel, descriptionLabel;
     private JTextField courseIDField, courseNameField, creditField, descriptionField;
+    private AdminCoursesManagementPage adminCoursesManagementPage;
 
-    public AddCoursePage() {
+    public AddCoursePage(AdminCoursesManagementPage adminCoursesManagementPage) {
+        this.adminCoursesManagementPage = adminCoursesManagementPage;
         setTitle("Add Course");
         setLayout(new GridBagLayout());
         setAddCoursePagePanel();
@@ -19,7 +24,7 @@ public class AddCoursePage extends JFrame {
     }
 
     public void setAddCoursePagePanel() {
-        AddCourseEvents addCourseEvents = new AddCourseEvents(this);
+        AddCourseEvents addCourseEvents = new AddCourseEvents(this, adminCoursesManagementPage);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
@@ -30,7 +35,7 @@ public class AddCoursePage extends JFrame {
 
         titleLabel = new JLabel("Add Course");
         titleLabel.setFont(titleFont);
-        gbc.gridx = 1;
+        gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 0, 30, 0);
@@ -41,7 +46,7 @@ public class AddCoursePage extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.insets = new Insets(0, 0, 10, 10);
         add(courseIDLabel, gbc);
 
         courseIDField = new JTextField(10);
@@ -58,7 +63,7 @@ public class AddCoursePage extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.insets = new Insets(0, 0, 10, 10);
         add(courseNameLabel, gbc);
 
         courseNameField = new JTextField(10);
@@ -74,7 +79,7 @@ public class AddCoursePage extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.insets = new Insets(0, 0, 10, 10);
         add(creditLabel, gbc);
 
         creditField = new JTextField(10);
@@ -90,7 +95,7 @@ public class AddCoursePage extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.insets = new Insets(0, 0, 10, 10);
         add(descriptionLabel, gbc);
 
         descriptionField = new JTextField(10);
@@ -107,7 +112,7 @@ public class AddCoursePage extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.insets = new Insets(20, 0, 10, 0);
         add(addButton, gbc);
 
         cancelButton = new JButton("Cancel");
@@ -116,7 +121,23 @@ public class AddCoursePage extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = 5;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.insets = new Insets(20, 0, 10, 0);
         add(cancelButton, gbc);
+    }
+
+    public JTextField getCourseIDField() {
+        return courseIDField;
+    }
+
+    public JTextField getCourseNameField() {
+        return courseNameField;
+    }
+
+    public JTextField getCreditField() {
+        return creditField;
+    }
+
+    public JTextField getDescriptionField() {
+        return descriptionField;
     }
 }

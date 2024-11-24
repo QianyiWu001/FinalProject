@@ -2,8 +2,6 @@ package AdminJFrame;
 
 import javax.swing.*;
 
-import BasicLogin.BasicLoginEvents;
-
 import java.awt.*;
 
 public class AdminLoginPage extends JFrame {

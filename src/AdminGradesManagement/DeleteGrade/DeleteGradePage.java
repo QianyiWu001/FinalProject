@@ -1,29 +1,30 @@
-package AdminStudentsManagement.DeleteStudent;
+package AdminGradesManagement.DeleteGrade;
 
 import javax.swing.*;
 
-import AdminStudentsManagement.AdminStudentsManagementPage;
+import AdminGradesManagement.AdminGradesManagementPage;
 
 import java.awt.*;
 
-public class DeleteStudentPage extends JFrame {
+public class DeleteGradePage extends JFrame {
     private JButton deleteButton, cancelButton;
-    private JLabel titleLabel, studentIDLabel;
-    private JTextField studentIDField;
-    private AdminStudentsManagementPage adminStudentsManagementPage;
+    private JLabel titleLabel, studentIDLabel, courseIDLabel;
+    private JTextField studentIDField, courseIDField;
+    private AdminGradesManagementPage adminGradesManagementPage;
 
-    public DeleteStudentPage(AdminStudentsManagementPage adminStudentsManagementPage) {
-        this.adminStudentsManagementPage = adminStudentsManagementPage;
-        setTitle("Detele Student");
+    public DeleteGradePage(AdminGradesManagementPage adminGradesManagementPage) {
+        this.adminGradesManagementPage = adminGradesManagementPage;
+        setTitle("Delete Grade");
         setLayout(new GridBagLayout());
-        setDeleteStudentPagePanel();
+        setDeleteGradePagePanel();
         setSize(800,450);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    public void setDeleteStudentPagePanel() {
-        DeleteStudentEvents deleteStudentEvents = new DeleteStudentEvents(this, adminStudentsManagementPage);
+
+    public void setDeleteGradePagePanel() {
+        DeleteGradeEvents deleteGradeEvents = new DeleteGradeEvents(this, adminGradesManagementPage);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
@@ -32,7 +33,7 @@ public class DeleteStudentPage extends JFrame {
         Font font = new Font("Arial", Font.PLAIN, 20);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
 
-        titleLabel = new JLabel("Delete Student");
+        titleLabel = new JLabel("Delete Grade");
         titleLabel.setFont(titleFont);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -52,30 +53,48 @@ public class DeleteStudentPage extends JFrame {
         studentIDField.setFont(font);
         gbc.gridx = 1;
         gbc.gridy = 1;
-        gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 0, 10, 0);
         add(studentIDField, gbc);
 
-        deleteButton = new JButton("Delete");
-        deleteButton.setFont(buttonFont);
-        deleteButton.addActionListener(deleteStudentEvents);
+        courseIDLabel = new JLabel("Course ID:");
+        courseIDLabel.setFont(font);
         gbc.gridx = 0;
         gbc.gridy = 2;
+        gbc.insets = new Insets(0, 0, 10, 10);
+        add(courseIDLabel, gbc);
+
+        courseIDField = new JTextField(10);
+        courseIDField.setFont(font);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.insets = new Insets(0, 0, 10, 0);
+        add(courseIDField, gbc);
+
+        deleteButton = new JButton("Delete");
+        deleteButton.setFont(buttonFont);
+        deleteButton.addActionListener(deleteGradeEvents);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(10, 0, 10, 0);
         add(deleteButton, gbc);
 
         cancelButton = new JButton("Cancel");
         cancelButton.setFont(buttonFont);
-        cancelButton.addActionListener(deleteStudentEvents);
+        cancelButton.addActionListener(deleteGradeEvents);
         gbc.gridx = 1;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(10, 0, 10, 0);
         add(cancelButton, gbc);
     }
-    
+
     public JTextField getStudentIDField() {
         return studentIDField;
     }
+
+    public JTextField getCourseIDField() {
+        return courseIDField;
+    }
+
 }

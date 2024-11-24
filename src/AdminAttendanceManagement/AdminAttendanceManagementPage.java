@@ -1,13 +1,14 @@
 package AdminAttendanceManagement;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 
 public class AdminAttendanceManagementPage extends JFrame {
-    private JButton backButton, exitButton, addButton, clearButton;
-    private JLabel titleLabel, courseIDlabel, studentIDLabel, dateLabel, statusLabel;
-    private JTextField courseIDField, studentIDField, dateField;
-    private JComboBox<String> statusComboBox;
+    private JButton backButton, exitButton, addAttendanceButton, deleteAttendanceButton, updateAttendanceButton, searchAttendanceButton;
+    private JTable attendanceTable;
+    private JScrollPane attendanceTableScrollPane;
 
     public AdminAttendanceManagementPage() {
         setTitle("Admin Attendance Management Page");
@@ -22,24 +23,36 @@ public class AdminAttendanceManagementPage extends JFrame {
     public void setAdminAttendanceManagementPagePanel() {
         AdminAttendanceManagementEvents adminAttendanceManagementEvents = new AdminAttendanceManagementEvents(this);
 
-        Font titleFont = new Font("Arial", Font.PLAIN, 22);
-        Font font = new Font("Arial", Font.PLAIN, 20);
+        Font tableFont = new Font("Arial", Font.PLAIN, 16);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 50));
         
-        addButton = new JButton("Add");
-        addButton.setFont(buttonFont);
-        addButton.setPreferredSize(new Dimension(110, 30));
-        addButton.addActionListener(adminAttendanceManagementEvents);
+        addAttendanceButton = new JButton("Add Attendance");
+        addAttendanceButton.setFont(buttonFont);
+        addAttendanceButton.setPreferredSize(new Dimension(190, 30));
+        addAttendanceButton.addActionListener(adminAttendanceManagementEvents);
+        
+        deleteAttendanceButton = new JButton("Delete Attendance");
+        deleteAttendanceButton.setFont(buttonFont);
+        deleteAttendanceButton.setPreferredSize(new Dimension(190, 30));
+        deleteAttendanceButton.addActionListener(adminAttendanceManagementEvents);
+        
+        updateAttendanceButton = new JButton("Update Attendance");
+        updateAttendanceButton.setFont(buttonFont);
+        updateAttendanceButton.setPreferredSize(new Dimension(190, 30));
+        updateAttendanceButton.addActionListener(adminAttendanceManagementEvents);
+        
+        searchAttendanceButton = new JButton("Search Attendance");
+        searchAttendanceButton.setFont(buttonFont);
+        searchAttendanceButton.setPreferredSize(new Dimension(190, 30));
+        searchAttendanceButton.addActionListener(adminAttendanceManagementEvents); 
 
-        clearButton = new JButton("Clear");
-        clearButton.setFont(buttonFont);
-        clearButton.setPreferredSize(new Dimension(110, 30));
-        clearButton.addActionListener(adminAttendanceManagementEvents);
+        topPanel.add(addAttendanceButton);
+        topPanel.add(deleteAttendanceButton);
+        topPanel.add(updateAttendanceButton);
+        topPanel.add(searchAttendanceButton);
 
-        topPanel.add(addButton);
-        topPanel.add(clearButton);
         add(topPanel, BorderLayout.NORTH);
 
 
@@ -59,95 +72,25 @@ public class AdminAttendanceManagementPage extends JFrame {
         buttonPanel.add(exitButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
+        String[] columnNames = {"Student ID", "Course ID", "Date", "Status"};
+        // Retrieve data from "Attendance" database and display it.
+        AttendanceDatabase attendanceDatabase = new AttendanceDatabase();
+        Object[][] data = attendanceDatabase.getAttendanceData();
 
-        JPanel centerPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        attendanceTable = new JTable(model);
+        attendanceTable.getTableHeader().setFont(tableFont);
+        attendanceTable.setFont(tableFont);
+        attendanceTable.setRowHeight(30);
+        attendanceTableScrollPane = new JScrollPane(attendanceTable);
+        attendanceTable.setFillsViewportHeight(true);
 
-        titleLabel = new JLabel("Add Attendance");
-        titleLabel.setFont(titleFont);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        centerPanel.add(titleLabel, gbc);
-
-        courseIDlabel = new JLabel("Course ID:");
-        courseIDlabel.setFont(font);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        centerPanel.add(courseIDlabel, gbc);
-
-        courseIDField = new JTextField(10);
-        courseIDField.setFont(font);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        centerPanel.add(courseIDField, gbc);
-
-        studentIDLabel = new JLabel("Student ID:");
-        studentIDLabel.setFont(font);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        centerPanel.add(studentIDLabel, gbc);
-
-        studentIDField = new JTextField(10);
-        studentIDField.setFont(font);
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        centerPanel.add(studentIDField, gbc);
-
-        dateLabel = new JLabel("Date:");
-        dateLabel.setFont(font);
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
-        centerPanel.add(dateLabel, gbc);
-
-        dateField = new JTextField(10);
-        dateField.setFont(font);
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
-        centerPanel.add(dateField, gbc);
-
-        statusLabel = new JLabel("Status:");
-        statusLabel.setFont(font);
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.gridwidth = 1;
-        centerPanel.add(statusLabel, gbc);
-
-        statusComboBox = new JComboBox<String>();
-        statusComboBox.addItem("-");
-        statusComboBox.addItem("Present");
-        statusComboBox.addItem("Absent");
-        statusComboBox.setPreferredSize(new Dimension(173, 28));
-        statusComboBox.setFont(font);
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.gridwidth = 1;
-        centerPanel.add(statusComboBox, gbc);
-
-        add(centerPanel, BorderLayout.CENTER);        
+        add(attendanceTableScrollPane, BorderLayout.CENTER);        
     }
 
-    public JTextField getCourseIDField() {
-        return courseIDField;
-    }
-
-    public JTextField getStudentIDField() {
-        return studentIDField;
-    }
-
-    public JTextField getDateField() {
-        return dateField;
-    }
-
-    public JComboBox<String> getStatusComboBox() {
-        return statusComboBox;
+    public void updateTable() {
+        Object[][] newData = new AttendanceDatabase().getAttendanceData();
+        DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
+        model.setDataVector(newData, new String[] {"Student ID", "Course ID", "Date", "Status"});
     }
 }

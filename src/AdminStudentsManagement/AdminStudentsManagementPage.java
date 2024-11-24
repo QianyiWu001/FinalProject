@@ -8,7 +8,7 @@ import java.awt.*;
 public class AdminStudentsManagementPage extends JFrame {
     private JButton backButton, exitButton, addStudentButton, deleteStudentButton, updateStudentButton, searchStudentButton;
     private JTable studentsTable;
-    private JScrollPane stduentsTableScrollPane;
+    private JScrollPane studentsTableScrollPane;
 
     public AdminStudentsManagementPage() {
         setTitle("Admin Students Management Page");
@@ -76,25 +76,25 @@ public class AdminStudentsManagementPage extends JFrame {
 
         add(buttonPanel, BorderLayout.SOUTH);
         
-        String[] columnNames = {"Student ID", "Name", "Email", "Phone"};
-        //这里要改成数据库
-        Object[][] data = getTextData();
-        
+        String[] columnNames = {"Student ID", "Name", "Email", "Phone", "Address"};
+        // Retrieve data from the "students" database and display it.
+        StudentsDatabase studentsDatabase = new StudentsDatabase();
+        Object[][] data = studentsDatabase.getStudentsData();
 
-        studentsTable = new JTable(new DefaultTableModel(data, columnNames));
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        studentsTable = new JTable(model);
         studentsTable.getTableHeader().setFont(tableFont);
         studentsTable.setFont(tableFont);
         studentsTable.setRowHeight(30);
-        stduentsTableScrollPane = new JScrollPane(studentsTable);
+        studentsTableScrollPane = new JScrollPane(studentsTable);
         studentsTable.setFillsViewportHeight(true);
 
-        add(stduentsTableScrollPane, BorderLayout.CENTER);
+        add(studentsTableScrollPane, BorderLayout.CENTER);
     }
-    //这里要改成数据库
-    private Object[][] getTextData() {
-        return new Object[][] {
-            {"11111", "Alex", "@gmail.com", "1234567890"},
-            {"22222", "Brian", "@yahoo.com", "9876543210"}
-        };
+
+    public void updateTable() {
+        Object[][] newData = new StudentsDatabase().getStudentsData();
+        DefaultTableModel model = (DefaultTableModel) studentsTable.getModel();
+        model.setDataVector(newData, new String[] {"Student ID", "Name", "Email", "Phone", "Address"});
     }
 }

@@ -1,5 +1,4 @@
 package BasicLogin;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -7,14 +6,23 @@ import javax.swing.JOptionPane;
 
 import AdminJFrame.AdminLoginPage;
 import StudentJFrame.StudentLoginPage;
-
+/*
+ * Admin Login Information:
+ *     Username: admin1
+ *     Password: 123
+ *     User Type: Admin
+ * 
+ * Student Login Information:
+ *     Username: student1
+ *     Password: 123
+ *     User Type: Student
+ */
 public class BasicLoginEvents implements ActionListener {
     private BasicLoginPage basicLoginPage;
     
     public BasicLoginEvents(BasicLoginPage basicLoginPage) {
         this.basicLoginPage = basicLoginPage;
     }
-
    
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
@@ -30,6 +38,7 @@ public class BasicLoginEvents implements ActionListener {
             String password = new String(charPassword);
             String userType = (String) basicLoginPage.getUserTypeComboBox().getSelectedItem();
 
+            // Validate if the input fields are empty.
             if (username.isEmpty() && password.isEmpty() && userType.equals("-")) {
                 JOptionPane.showMessageDialog(basicLoginPage, "Please enter your login information.");
                 return;
@@ -44,37 +53,29 @@ public class BasicLoginEvents implements ActionListener {
                 return;
             }
 
-            // 连一下数据库**********
-            if (!username.isEmpty() && !password.isEmpty() && !userType.equals("-")) {
-                int loginResult = loginDatabase.checkLogin(username, password, userType);
-                
-                // 根据返回值判断登录是否成功
+            // Map userType to the corresponding field in the database.
+            if (userType.equals("Admin")) {
+                userType = "ROLE_ADMIN";
+            } else if (userType.equals("Student")) {
+                userType = "ROLE_STUDENT";
+            } else {
+                JOptionPane.showMessageDialog(basicLoginPage, "Invalid User Type, Please select a valid user type.");
+                return;
+            }
+            // Database validation.
+            int loginResult = loginDatabase.checkLogin(username, password, userType);
+                // Determine login success based on the return value.
                 if (loginResult != -1) {
-                    // 根据 userType 打开不同的页面
+                    // Open different pages based on userType.
                     if (userType.equals("ROLE_ADMIN")) {
-                        new AdminLoginPage(); // 打开管理员页面
-                        basicLoginPage.dispose(); // 关闭当前页面
+                        new AdminLoginPage();
+                        basicLoginPage.dispose();
                     } else if (userType.equals("ROLE_STUDENT")) {
-                        new StudentLoginPage(); // 打开学生页面
-                        basicLoginPage.dispose(); // 关闭当前页面
+                        new StudentLoginPage();
+                        basicLoginPage.dispose();
                     }
                 } else {
-                    // 登录失败的错误提示
-                    // JOptionPane.showMessageDialog(basicLoginPage, "Invalid Login Information, Please Check and Try Again.");
-                    // return;
-                }
-            }
-            
-                // 下面这些就是随便试试
-                if (username.equals("1") && password.equals("1") && userType.equals("Admin")) {
-                    new AdminLoginPage();
-                    basicLoginPage.dispose();
-                } else if (username.equals("2") && password.equals("2") && userType.equals("Student")) {
-                    new StudentLoginPage();
-                    basicLoginPage.dispose();
-                } else {
                     JOptionPane.showMessageDialog(basicLoginPage, "Invalid Login Information, Please Check and Try Again.");
-                    return;
                 }
             }
         }

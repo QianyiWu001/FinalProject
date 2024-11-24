@@ -1,13 +1,14 @@
 package AdminGradesManagement;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 
 public class AdminGradesManagementPage extends JFrame {
-    private JButton backButton, exitButton, addButton, clearButton;
-    private JLabel titleLabel, courseIDLabel, studentIDLabel, gradeLabel, levelLabel;
-    private JTextField courseIDField, studentIDField, gradeField;
-    private JComboBox<String> levelComboBox;
+    private JButton backButton, exitButton, addGradeButton, deleteGradeButton, updateGradeButton, searchGradeButton;
+    private JTable gradesTable;
+    private JScrollPane gradesTableScrollPane;
 
     public AdminGradesManagementPage() {
         setTitle("Admin Grades Management Page");
@@ -22,24 +23,36 @@ public class AdminGradesManagementPage extends JFrame {
     public void setAdminGradesManagementPagePanel() {
         AdminGradesManagementEvents adminGradesManagementEvents = new AdminGradesManagementEvents(this);
 
-        Font titleFont = new Font("Arial", Font.PLAIN, 22);
-        Font font = new Font("Arial", Font.PLAIN, 20);
+        Font tableFont = new Font("Arial", Font.PLAIN, 16);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 50));
         
-        addButton = new JButton("Add");
-        addButton.setFont(buttonFont);
-        addButton.setPreferredSize(new Dimension(110, 30));
-        addButton.addActionListener(adminGradesManagementEvents);
+        addGradeButton = new JButton("Add Grade");
+        addGradeButton.setFont(buttonFont);
+        addGradeButton.setPreferredSize(new Dimension(190, 30));
+        addGradeButton.addActionListener(adminGradesManagementEvents);
+        
+        deleteGradeButton = new JButton("Delete Grade");
+        deleteGradeButton.setFont(buttonFont);
+        deleteGradeButton.setPreferredSize(new Dimension(190, 30));
+        deleteGradeButton.addActionListener(adminGradesManagementEvents);
+        
+        updateGradeButton = new JButton("Update Grade");
+        updateGradeButton.setFont(buttonFont);
+        updateGradeButton.setPreferredSize(new Dimension(190, 30));
+        updateGradeButton.addActionListener(adminGradesManagementEvents);
+        
+        searchGradeButton = new JButton("Search Grade");
+        searchGradeButton.setFont(buttonFont);
+        searchGradeButton.setPreferredSize(new Dimension(190, 30));
+        searchGradeButton.addActionListener(adminGradesManagementEvents); 
 
-        clearButton = new JButton("Clear");
-        clearButton.setFont(buttonFont);
-        clearButton.setPreferredSize(new Dimension(110, 30));
-        clearButton.addActionListener(adminGradesManagementEvents);
+        topPanel.add(addGradeButton);
+        topPanel.add(deleteGradeButton);
+        topPanel.add(updateGradeButton);
+        topPanel.add(searchGradeButton);
 
-        topPanel.add(addButton);
-        topPanel.add(clearButton);
         add(topPanel, BorderLayout.NORTH);
 
 
@@ -59,99 +72,24 @@ public class AdminGradesManagementPage extends JFrame {
         buttonPanel.add(exitButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
+        String[] columnNames = {"Student ID", "Course ID", "Grade"};
+        // Retrieve data from the "grades" database and display it.
+        GradesDatabase gradesDatabase = new GradesDatabase();
+        Object[][] data = gradesDatabase.getGradesData();
 
-        JPanel centerPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        gradesTable = new JTable(model);
+        gradesTable.getTableHeader().setFont(tableFont);
+        gradesTable.setFont(tableFont);
+        gradesTable.setRowHeight(30);
+        gradesTableScrollPane = new JScrollPane(gradesTable);
+        gradesTable.setFillsViewportHeight(true);
 
-        titleLabel = new JLabel("Add Grades");
-        titleLabel.setFont(titleFont);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        centerPanel.add(titleLabel, gbc);
-
-        courseIDLabel = new JLabel("Course ID:");
-        courseIDLabel.setFont(font);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        centerPanel.add(courseIDLabel, gbc);
-
-        courseIDField = new JTextField(10);
-        courseIDField.setFont(font);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        centerPanel.add(courseIDField, gbc);
-
-        studentIDLabel = new JLabel("Student ID:");
-        studentIDLabel.setFont(font);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        centerPanel.add(studentIDLabel, gbc);
-
-        studentIDField = new JTextField(10);
-        studentIDField.setFont(font);
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        centerPanel.add(studentIDField, gbc);
-
-        gradeLabel = new JLabel("Grade:");
-        gradeLabel.setFont(font);
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
-        centerPanel.add(gradeLabel, gbc);
-
-        gradeField = new JTextField(10);
-        gradeField.setFont(font);
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
-        centerPanel.add(gradeField, gbc);
-
-        levelLabel = new JLabel("Level:");
-        levelLabel.setFont(font);
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.gridwidth = 1;
-        centerPanel.add(levelLabel, gbc);
-
-        levelComboBox = new JComboBox<String>();
-        levelComboBox.addItem("-");
-        levelComboBox.addItem("A");
-        levelComboBox.addItem("B");
-        levelComboBox.addItem("C");
-        levelComboBox.addItem("D");
-        levelComboBox.addItem("F");
-        levelComboBox.setPreferredSize(new Dimension(173, 28));
-        levelComboBox.setFont(font);
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.gridwidth = 1;
-        centerPanel.add(levelComboBox, gbc);
-
-        add(centerPanel, BorderLayout.CENTER);
+        add(gradesTableScrollPane, BorderLayout.CENTER);
     }
-    
-    public JTextField getCourseIDField() {
-        return courseIDField;
+    public void updateTable() {
+        Object[][] newData = new GradesDatabase().getGradesData(); 
+        DefaultTableModel model = (DefaultTableModel) gradesTable.getModel();
+        model.setDataVector(newData, new String[] {"Student ID", "Course ID", "Grade"});
     }
-
-    public JTextField getStudentIDField() {
-        return studentIDField;
-    }
-
-    public JTextField getGradeField() {
-        return gradeField;
-    }
-
-    public JComboBox<String> getLevelComboBox() {
-        return levelComboBox;
-    }
-
 }

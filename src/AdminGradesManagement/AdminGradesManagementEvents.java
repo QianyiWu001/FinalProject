@@ -5,6 +5,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import AdminGradesManagement.AddGrade.AddGradePage;
+import AdminGradesManagement.DeleteGrade.DeleteGradePage;
+import AdminGradesManagement.SearchGrade.SearchGradePage;
+import AdminGradesManagement.UpdateGrade.UpdateGradePage;
 import AdminJFrame.AdminLoginPage;
 
 public class AdminGradesManagementEvents implements ActionListener {
@@ -23,11 +27,14 @@ public class AdminGradesManagementEvents implements ActionListener {
             adminGradesManagementPage.dispose();
         } else if (buttonText.equals("Exit")) {
             System.exit(0);
-        } else if (buttonText.equals("Clear")) {
-            adminGradesManagementPage.getCourseIDField().setText("");
-            adminGradesManagementPage.getStudentIDField().setText("");
-            adminGradesManagementPage.getGradeField().setText("");
-            adminGradesManagementPage.getLevelComboBox().setSelectedIndex(0);
+        } else if (buttonText.equals("Add Grade")) {
+            new AddGradePage(adminGradesManagementPage);
+        } else if (buttonText.equals("Delete Grade")) {
+            new DeleteGradePage(adminGradesManagementPage);
+        } else if (buttonText.equals("Update Grade")) {
+            new UpdateGradePage();
+        } else if (buttonText.equals("Search Grade")) {
+            new SearchGradePage();
         }
     }
 }

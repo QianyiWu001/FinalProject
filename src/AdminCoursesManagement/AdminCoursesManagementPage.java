@@ -1,6 +1,8 @@
 package AdminCoursesManagement;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 
 public class AdminCoursesManagementPage extends JFrame {
@@ -71,15 +73,13 @@ public class AdminCoursesManagementPage extends JFrame {
         
         add(buttonPanel, BorderLayout.SOUTH);
         
-        
-        
-
-        
         String[] columnNames = {"Course ID", "CourseName", "Credits", "Description"};
-        //这里要改成数据库
-        Object[][] data = getTextData();
+        // Retrieve data from the "courses" database and display it.
+        CoursesDatabase coursesDatabase = new CoursesDatabase();
+        Object[][] data = coursesDatabase.getCoursesData();
 
-        coursesTable = new JTable(data, columnNames);
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        coursesTable = new JTable(model);
         coursesTable.getTableHeader().setFont(tableFont);
         coursesTable.setFont(tableFont);
         coursesTable.setRowHeight(30);
@@ -89,10 +89,9 @@ public class AdminCoursesManagementPage extends JFrame {
         add(coursesTableScrollPane, BorderLayout.CENTER);
     }
 
-    private Object[][] getTextData() {
-        return new Object[][] {
-            {"11111", "CS01", "2", "aaaaaaaaaaaa"},
-            {"22222", "CS02", "4", "aaaaaaaaaaaaaaaaaaaaaaaa"}
-        };
+    public void updateTable() {
+        Object[][] newData = new CoursesDatabase().getCoursesData();
+        DefaultTableModel model = (DefaultTableModel) coursesTable.getModel();
+        model.setDataVector(newData, new String[] {"Course ID", "CourseName", "Credits", "Description"});
     }
 }

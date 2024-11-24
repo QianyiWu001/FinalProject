@@ -1,14 +1,20 @@
 package AdminCoursesManagement.DeleteCourse;
 
 import javax.swing.*;
+
+import AdminCoursesManagement.AdminCoursesManagementPage;
+
 import java.awt.*;
 
 public class DeleteCoursePage extends JFrame {
     private JButton deleteButton, cancelButton;
     private JLabel titleLabel, courseIDLabel;
     private JTextField courseIDField;
+    private AdminCoursesManagementPage adminCoursesManagementPage;
 
-    public DeleteCoursePage() {
+
+    public DeleteCoursePage(AdminCoursesManagementPage adminCoursesManagementPage) {
+        this.adminCoursesManagementPage = adminCoursesManagementPage;
         setTitle("Delete Course");
         setLayout(new GridBagLayout());
         setDeleteCoursePagePanel();
@@ -19,7 +25,7 @@ public class DeleteCoursePage extends JFrame {
     }
 
     public void setDeleteCoursePagePanel() {
-        DeleteCourseEvents deleteCourseEvents = new DeleteCourseEvents(this);
+        DeleteCourseEvents deleteCourseEvents = new DeleteCourseEvents(this, adminCoursesManagementPage);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
@@ -30,7 +36,7 @@ public class DeleteCoursePage extends JFrame {
 
         titleLabel = new JLabel("Delete Course");
         titleLabel.setFont(titleFont);
-        gbc.gridx = 1;
+        gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 0, 30, 0);
@@ -41,14 +47,13 @@ public class DeleteCoursePage extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.insets = new Insets(0, 0, 10, 10);
         add(courseIDLabel, gbc);
 
         courseIDField = new JTextField(10);
         courseIDField.setFont(font);
         gbc.gridx = 1;
         gbc.gridy = 1;
-        gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 0, 10, 0);
         add(courseIDField, gbc);
 
@@ -57,8 +62,7 @@ public class DeleteCoursePage extends JFrame {
         deleteButton.addActionListener(deleteCourseEvents);
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.insets = new Insets(10, 0, 10, 0);
         add(deleteButton, gbc);
 
         cancelButton = new JButton("Cancel");
@@ -66,8 +70,11 @@ public class DeleteCoursePage extends JFrame {
         cancelButton.addActionListener(deleteCourseEvents);
         gbc.gridx = 1;
         gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.insets = new Insets(10, 0, 10, 0);
         add(cancelButton, gbc);
+    }
+
+    public JTextField getCourseIDField() {
+        return courseIDField;
     }
 }

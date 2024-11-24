@@ -28,14 +28,13 @@ public class AdminStudentsManagementEvents implements ActionListener {
         } else if (buttonText.equals("Exit")) {
             System.exit(0);
         } else if (buttonText.equals("Add Student")) {
-            new AddStudentPage();
+            new AddStudentPage(adminStudentsManagementPage);
         } else if (buttonText.equals("Delete Student")) {
-            new DeleteStudentPage();
+            new DeleteStudentPage(adminStudentsManagementPage);
         } else if (buttonText.equals("Update Student")) {
             new UpdateStudentPage();
         } else if (buttonText.equals("Search Students")) {
             new SearchStudentPage();
         }
     }
-    
 }

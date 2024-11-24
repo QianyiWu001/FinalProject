@@ -2,7 +2,17 @@ package BasicLogin;
 
 import javax.swing.*;
 import java.awt.*;
-
+/*
+ * Admin Login Information:
+ *     Username: admin1
+ *     Password: 123
+ *     User Type: Admin
+ * 
+ * Student Login Information:
+ *     Username: student1
+ *     Password: 123
+ *     User Type: Student
+ */
 public class BasicLoginPage extends JFrame {
     private JLabel pageLabel, usernameLabel, passwordLabel, userTypeLabel;
     private JTextField usernameField;

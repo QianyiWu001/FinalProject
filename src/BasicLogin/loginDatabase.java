@@ -2,20 +2,20 @@ package BasicLogin;
 
 import java.sql.*;
 
+import DatabaseUtilities.ConnectDB;
+
 
 public class loginDatabase {
+    private static final String query = "SELECT user_id FROM users WHERE role = ? AND username = ? AND password = ?";
+    
     public static int checkLogin(String username, String password, String userType) {
-        String dbURL = "jdbc:mysql://localhost:3306/StudentManagement"; //不知道要不要改
-        String dbUser = "root";//要不要改
-        String dbPassword = "123456";//要不要改
-        String query = "SELECT user_id FROM users WHERE role = ? AND username = ? AND password = ?";
-        
-        try (Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-                System.out.println("aaaaaaaaaaaaaaaaaaaaaaa");
-            stmt.setString(1, userType);
-            stmt.setString(2, username);
-            stmt.setString(3, password);
+        try (Connection conn = ConnectDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query)) {
+                System.out.println("Connect database successfully!");
+                
+                stmt.setString(1, userType);
+                stmt.setString(2, username);
+                stmt.setString(3, password);
             
             ResultSet result = stmt.executeQuery();
             if (result.next()) {

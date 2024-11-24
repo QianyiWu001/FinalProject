@@ -28,9 +28,9 @@ public class AdminCoursesManagementEvents implements ActionListener {
         } else if (buttonText.equals("Exit")) {
             System.exit(0);
         } else if (buttonText.equals("Add Course")) {
-            new AddCoursePage();
+            new AddCoursePage(adminCoursesManagementPage);
         } else if (buttonText.equals("Delete Course")) {
-            new DeleteCoursePage();
+            new DeleteCoursePage(adminCoursesManagementPage);
         } else if (buttonText.equals("Update Course")) {
             new UpdateCoursePage();
         } else if (buttonText.equals("Search Course")) {

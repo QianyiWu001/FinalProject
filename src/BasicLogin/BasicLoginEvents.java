@@ -5,6 +5,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import AdminJFrame.AdminLoginPage;
+import DatabaseUtilities.Session;
 import StudentJFrame.StudentLoginPage;
 /*
  * Admin Login Information:
@@ -71,8 +72,15 @@ public class BasicLoginEvents implements ActionListener {
                         new AdminLoginPage();
                         basicLoginPage.dispose();
                     } else if (userType.equals("ROLE_STUDENT")) {
-                        new StudentLoginPage();
-                        basicLoginPage.dispose();
+                        int studentID = loginDatabase.getStudentIDFromUserID(loginResult);
+
+                        if (studentID != -1) {
+                            Session.setStudentID(studentID);
+                            new StudentLoginPage();
+                            basicLoginPage.dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(basicLoginPage, "Profile cannot found.");
+                        }
                     }
                 } else {
                     JOptionPane.showMessageDialog(basicLoginPage, "Invalid Login Information, Please Check and Try Again.");

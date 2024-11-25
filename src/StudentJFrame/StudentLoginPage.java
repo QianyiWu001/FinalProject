@@ -1,6 +1,9 @@
 package StudentJFrame;
 
 import javax.swing.*;
+
+import DatabaseUtilities.Session;
+
 import java.awt.*;
 
 public class StudentLoginPage extends JFrame {

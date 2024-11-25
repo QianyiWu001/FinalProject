@@ -28,4 +28,22 @@ public class loginDatabase {
             return -1;
         }
     }
+
+    public static int getStudentIDFromUserID(int userID) {
+        String query = "SELECT student_id FROM students WHERE student_id = ?";
+        try (Connection conn = ConnectDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, userID);
+                ResultSet r = stmt.executeQuery();
+                if (r.next()) {
+                    int studentID = r.getInt("student_id");
+                    return studentID;
+                } else {
+                    return -1;
+                }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

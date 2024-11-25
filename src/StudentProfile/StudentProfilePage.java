@@ -5,20 +5,20 @@ import java.awt.*;
 
 public class StudentProfilePage extends JFrame {
     private JButton backButton, exitButton;
-    private JLabel titleLabel, studentIDLabel, nameLabel, emailLabel;
-    private JTextField studentIDTextField, nameTextField, emailTextField;
+    private JLabel titleLabel, studentIDLabel, nameLabel, emailLabel, phoneLabel, addressLabel;
+    private JTextField studentIDTextField, nameTextField, emailTextField, phoneTextField, addressTextField;;
 
-    public StudentProfilePage() {
+    public StudentProfilePage(String[] studentProfile) {
         setTitle("Student Profile Page");
         setLayout(new GridBagLayout());
-        setStudentProfilePagePanel();
+        setStudentProfilePagePanel(studentProfile);
         setSize(800,550);
         setVisible(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public void setStudentProfilePagePanel() {
+    public void setStudentProfilePagePanel(String[] studentProfile) {
         StudentProfileEvents studentProfileEvents = new StudentProfileEvents(this);
         
         GridBagConstraints gbc = new GridBagConstraints();
@@ -66,6 +66,8 @@ public class StudentProfilePage extends JFrame {
 
         studentIDTextField = new JTextField(15);
         studentIDTextField.setFont(font);
+        studentIDTextField.setText(studentProfile[0]);
+        studentIDTextField.setEditable(false);
         gbc.gridx = 2;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
@@ -82,6 +84,8 @@ public class StudentProfilePage extends JFrame {
 
         nameTextField = new JTextField(15);
         nameTextField.setFont(font);
+        nameTextField.setText(studentProfile[1]);
+        nameTextField.setEditable(false);
         gbc.gridx = 2;
         gbc.gridy = 3;
         gbc.gridwidth = 1;
@@ -98,10 +102,48 @@ public class StudentProfilePage extends JFrame {
 
         emailTextField = new JTextField(15);
         emailTextField.setFont(font);
+        emailTextField.setText(studentProfile[2]);
+        emailTextField.setEditable(false);
         gbc.gridx = 2;
         gbc.gridy = 4;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 0, 20, 0);
         add(emailTextField, gbc);
+
+        phoneLabel = new JLabel("Phone:");
+        phoneLabel.setFont(font);
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 20, 10);
+        add(phoneLabel, gbc);
+
+        phoneTextField = new JTextField(15);
+        phoneTextField.setFont(font);
+        phoneTextField.setText(studentProfile[3]);
+        phoneTextField.setEditable(false);
+        gbc.gridx = 2;
+        gbc.gridy = 5;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 20, 0);
+        add(phoneTextField, gbc);
+
+        addressLabel = new JLabel("Address:");
+        addressLabel.setFont(font);
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 20, 10);
+        add(addressLabel, gbc);
+
+        addressTextField = new JTextField(15);
+        addressTextField.setFont(font);
+        addressTextField.setText(studentProfile[4]);
+        addressTextField.setEditable(false);
+        gbc.gridx = 2;
+        gbc.gridy = 6;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 20, 0);
+        add(addressTextField, gbc);
     }
 }

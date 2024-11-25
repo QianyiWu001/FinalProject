@@ -25,4 +25,8 @@ public class StudentProfileEvents implements ActionListener {
             System.exit(0);
         }
     }
+
+    public void searchStudentProfile() {
+
+    }
 }

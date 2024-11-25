@@ -6,7 +6,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class AdminAttendanceManagementPage extends JFrame {
-    private JButton backButton, exitButton, addAttendanceButton, deleteAttendanceButton, updateAttendanceButton, searchAttendanceButton;
+    private JButton backButton, exitButton, addAttendanceButton, deleteAttendanceButton, updateAttendanceButton, searchAttendanceButton, refreshButton;
+    private JTextField searchStudentIDField, searchCourseIDField, searchDateField;
     private JTable attendanceTable;
     private JScrollPane attendanceTableScrollPane;
 
@@ -25,33 +26,56 @@ public class AdminAttendanceManagementPage extends JFrame {
 
         Font tableFont = new Font("Arial", Font.PLAIN, 16);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
+        Font functionFont = new Font("Arial", Font.PLAIN, 13);
+        Dimension functionDimension = new Dimension(130, 30);
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 50));
         
         addAttendanceButton = new JButton("Add Attendance");
-        addAttendanceButton.setFont(buttonFont);
-        addAttendanceButton.setPreferredSize(new Dimension(190, 30));
+        addAttendanceButton.setFont(functionFont);
+        addAttendanceButton.setPreferredSize(functionDimension);
         addAttendanceButton.addActionListener(adminAttendanceManagementEvents);
         
         deleteAttendanceButton = new JButton("Delete Attendance");
-        deleteAttendanceButton.setFont(buttonFont);
-        deleteAttendanceButton.setPreferredSize(new Dimension(190, 30));
+        deleteAttendanceButton.setFont(functionFont);
+        deleteAttendanceButton.setPreferredSize(functionDimension);
         deleteAttendanceButton.addActionListener(adminAttendanceManagementEvents);
         
         updateAttendanceButton = new JButton("Update Attendance");
-        updateAttendanceButton.setFont(buttonFont);
-        updateAttendanceButton.setPreferredSize(new Dimension(190, 30));
+        updateAttendanceButton.setFont(functionFont);
+        updateAttendanceButton.setPreferredSize(functionDimension);
         updateAttendanceButton.addActionListener(adminAttendanceManagementEvents);
         
         searchAttendanceButton = new JButton("Search Attendance");
-        searchAttendanceButton.setFont(buttonFont);
-        searchAttendanceButton.setPreferredSize(new Dimension(190, 30));
+        searchAttendanceButton.setFont(functionFont);
+        searchAttendanceButton.setPreferredSize(functionDimension);
         searchAttendanceButton.addActionListener(adminAttendanceManagementEvents); 
+
+        searchStudentIDField = new JTextField(10);
+        searchStudentIDField.setFont(functionFont);
+        searchStudentIDField.addActionListener(adminAttendanceManagementEvents);
+
+        searchCourseIDField = new JTextField(10);
+        searchCourseIDField.setFont(functionFont);
+        searchCourseIDField.addActionListener(adminAttendanceManagementEvents);
+
+        searchDateField = new JTextField(10);
+        searchDateField.setFont(functionFont);
+        searchDateField.addActionListener(adminAttendanceManagementEvents);
+
+        refreshButton = new JButton("Refresh");
+        refreshButton.setFont(functionFont);
+        refreshButton.setPreferredSize(functionDimension);
+        refreshButton.addActionListener(adminAttendanceManagementEvents);
 
         topPanel.add(addAttendanceButton);
         topPanel.add(deleteAttendanceButton);
         topPanel.add(updateAttendanceButton);
         topPanel.add(searchAttendanceButton);
+        topPanel.add(searchStudentIDField);
+        topPanel.add(searchCourseIDField);
+        topPanel.add(searchDateField);
+        topPanel.add(refreshButton);
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -89,8 +113,32 @@ public class AdminAttendanceManagementPage extends JFrame {
     }
 
     public void updateTable() {
+        // Retrieve all data from "Attendance" database.
         Object[][] newData = new AttendanceDatabase().getAttendanceData();
+        // Update.
         DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
         model.setDataVector(newData, new String[] {"Student ID", "Course ID", "Date", "Status"});
     }
+    public JTextField getSearchStudentIDField() {
+        return searchStudentIDField;
+    }
+
+    public JTextField getSearchCourseIDField() {
+        return searchCourseIDField;
+    }
+
+    public JTextField getSearchDateField() {
+        return searchDateField;
+    }
+
+    public void updateSearchedData(Object[][] data) {
+        // Retrieve data we need.
+        DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
+        model.setDataVector(data, new String[] {"Student ID", "Course ID", "Date", "Status"});
+    }
+
+    public JTable getAttendanceTable() {
+        return attendanceTable;
+    }
+
 }

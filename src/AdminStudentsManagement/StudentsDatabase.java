@@ -71,4 +71,56 @@ public class StudentsDatabase {
                 return false;
             }
     }
+
+    // Search for a student by name.
+    public Object[][] searchStudent(String IDOrName) {
+        String query = "SELECT student_id, name, email, phone, address FROM students WHERE student_id LIKE ? OR name LIKE ?";
+        
+        try (Connection conn = ConnectDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);) {
+                stmt.setString(1, "%" + IDOrName + "%");
+                stmt.setString(2, "%" + IDOrName + "%");
+                ResultSet r = stmt.executeQuery();
+                
+                r.last();
+                int numRows = r.getRow();
+                r.beforeFirst();
+
+                Object[][] data = new Object[numRows][5];
+                int i = 0;
+                while (r.next()) {
+                    data[i][0] = r.getInt("student_id");
+                    data[i][1] = r.getString("name");
+                    data[i][2] = r.getString("email");
+                    data[i][3] = r.getString("phone");
+                    data[i][4] = r.getString("address");
+                    i++;
+                }
+                return data;
+            } catch (SQLException e) {
+                System.out.println("Unable to find student in database.");
+                e.printStackTrace();
+                return new Object[0][0];
+            }
+    }
+
+    // Update student information.
+    public boolean updateStudent(int studentID, String updatedName, String updatedEmail, String updatedPhone, String updatedAddress) {
+        String query = "UPDATE students SET name = ?, email = ?, phone = ?, address = ? WHERE student_id = ?";
+        
+        try (Connection conn = ConnectDB.getConnection();
+            PreparedStatement stmt  = conn.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+                stmt.setString(1, updatedName);
+                stmt.setString(2, updatedEmail);
+                stmt.setString(3, updatedPhone);
+                stmt.setString(4, updatedAddress);
+                stmt.setInt(5, studentID);
+                stmt.executeUpdate();
+                return true;
+            } catch (SQLException e) {  
+                System.out.println("Unable to update student in database.");
+                e.printStackTrace();
+                return false; 
+            }
+    }
 }

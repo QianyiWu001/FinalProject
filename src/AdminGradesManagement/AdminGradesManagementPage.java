@@ -6,7 +6,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class AdminGradesManagementPage extends JFrame {
-    private JButton backButton, exitButton, addGradeButton, deleteGradeButton, updateGradeButton, searchGradeButton;
+    private JButton backButton, exitButton, addGradeButton, deleteGradeButton, updateGradeButton, searchGradeButton, refreshButton;
+    private JTextField searchGradeByStudentIDField, searchGradeByCourseIDField;
     private JTable gradesTable;
     private JScrollPane gradesTableScrollPane;
 
@@ -25,33 +26,51 @@ public class AdminGradesManagementPage extends JFrame {
 
         Font tableFont = new Font("Arial", Font.PLAIN, 16);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
+        Font functionFont = new Font("Arial", Font.PLAIN, 13);
+        Dimension functionDimension = new Dimension(130, 30);
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 50));
         
         addGradeButton = new JButton("Add Grade");
-        addGradeButton.setFont(buttonFont);
-        addGradeButton.setPreferredSize(new Dimension(190, 30));
+        addGradeButton.setFont(functionFont);
+        addGradeButton.setPreferredSize(functionDimension);
         addGradeButton.addActionListener(adminGradesManagementEvents);
         
         deleteGradeButton = new JButton("Delete Grade");
-        deleteGradeButton.setFont(buttonFont);
-        deleteGradeButton.setPreferredSize(new Dimension(190, 30));
+        deleteGradeButton.setFont(functionFont);
+        deleteGradeButton.setPreferredSize(functionDimension);
         deleteGradeButton.addActionListener(adminGradesManagementEvents);
         
         updateGradeButton = new JButton("Update Grade");
-        updateGradeButton.setFont(buttonFont);
-        updateGradeButton.setPreferredSize(new Dimension(190, 30));
+        updateGradeButton.setFont(functionFont);
+        updateGradeButton.setPreferredSize(functionDimension);
         updateGradeButton.addActionListener(adminGradesManagementEvents);
         
         searchGradeButton = new JButton("Search Grade");
-        searchGradeButton.setFont(buttonFont);
-        searchGradeButton.setPreferredSize(new Dimension(190, 30));
+        searchGradeButton.setFont(functionFont);
+        searchGradeButton.setPreferredSize(functionDimension);
         searchGradeButton.addActionListener(adminGradesManagementEvents); 
+
+        searchGradeByStudentIDField = new JTextField(10);
+        searchGradeByStudentIDField.setFont(functionFont);
+        searchGradeByStudentIDField.addActionListener(adminGradesManagementEvents);
+
+        searchGradeByCourseIDField = new JTextField(10);
+        searchGradeByCourseIDField.setFont(functionFont);
+        searchGradeByCourseIDField.addActionListener(adminGradesManagementEvents);
+
+        refreshButton = new JButton("Refresh");
+        refreshButton.setFont(functionFont);
+        refreshButton.setPreferredSize(functionDimension);
+        refreshButton.addActionListener(adminGradesManagementEvents);
 
         topPanel.add(addGradeButton);
         topPanel.add(deleteGradeButton);
         topPanel.add(updateGradeButton);
         topPanel.add(searchGradeButton);
+        topPanel.add(searchGradeByStudentIDField);
+        topPanel.add(searchGradeByCourseIDField);
+        topPanel.add(refreshButton);
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -88,8 +107,28 @@ public class AdminGradesManagementPage extends JFrame {
         add(gradesTableScrollPane, BorderLayout.CENTER);
     }
     public void updateTable() {
+        // Retrieve all data from the "grades" database.
         Object[][] newData = new GradesDatabase().getGradesData(); 
+        // Update the table with the new data.
         DefaultTableModel model = (DefaultTableModel) gradesTable.getModel();
         model.setDataVector(newData, new String[] {"Student ID", "Course ID", "Grade"});
+    }
+
+    public JTextField getSearchGradeByStudentIDField() {
+        return searchGradeByStudentIDField;
+    }
+
+    public JTextField getSearchGradeByCourseIDField() {
+        return searchGradeByCourseIDField;
+    }
+
+    public void updateSearchedData(Object[][] data) {
+        // Retrieve data we need.
+        DefaultTableModel model = (DefaultTableModel) gradesTable.getModel(); 
+        model.setDataVector(data, new String[] {"Student ID", "Course ID", "Grade"});
+    }
+
+    public JTable getGradesTable() {
+        return gradesTable;
     }
 }

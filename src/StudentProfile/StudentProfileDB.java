@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 
 import DatabaseUtilities.ConnectDB;
 
-public class StudentDB {
+public class StudentProfileDB {
     public String[] searchStudentById(int studentID) {
         String query = "SELECT student_id, name, email, phone, address FROM students WHERE student_id = ?";
 
@@ -18,10 +18,12 @@ public class StudentDB {
                 if (r.next()) {
                     String[] studentProfile = {r.getString("student_id"), r.getString("name"), r.getString("email"), r.getString("phone"), r.getString("address")};
                     return studentProfile;
+                } else {
+                    return null;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                return null;
             }
-            return null;
     }
 }

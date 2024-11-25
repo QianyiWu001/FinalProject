@@ -10,10 +10,11 @@ import DatabaseUtilities.Session;
 
 import BasicLogin.BasicLoginPage;
 import StudentAttendance.StudentAttendancePage;
+import StudentBill.StudentBillDB;
 import StudentBill.StudentBillPage;
 import StudentCoursesList.StudentCoursesListPage;
 import StudentGrades.StudentGradesPage;
-import StudentProfile.StudentDB;
+import StudentProfile.StudentProfileDB;
 import StudentProfile.StudentProfilePage;
 
 public class StudentLoginEvents implements ActionListener {
@@ -29,8 +30,8 @@ public class StudentLoginEvents implements ActionListener {
         
         if (buttonText.equals("View Profile")) {
             int studentID = Session.getStudentID();
-            StudentDB studentDB = new StudentDB();
-            String[] studentProfile = studentDB.searchStudentById(studentID);
+            StudentProfileDB DB = new StudentProfileDB();
+            String[] studentProfile = DB.searchStudentById(studentID);
 
             if (studentProfile == null) {
                 JOptionPane.showMessageDialog(studentLoginPage, "Cannot find student profile.");
@@ -42,8 +43,16 @@ public class StudentLoginEvents implements ActionListener {
             new StudentCoursesListPage();
             studentLoginPage.dispose();
         } else if (buttonText.equals("View Bill")) {
-            new StudentBillPage();
-            studentLoginPage.dispose();
+            int studentID = Session.getStudentID();
+            StudentBillDB DB = new StudentBillDB();
+            String[] studentBill = DB.getBillById(studentID);
+
+            if (studentBill == null) {
+                JOptionPane.showMessageDialog(studentLoginPage, "Cannot find student bill information.");
+            } else {
+                new StudentBillPage(studentBill);
+                studentLoginPage.dispose();
+            }
         } else if (buttonText.equals("View Attendance")) {
             new StudentAttendancePage();
             studentLoginPage.dispose();

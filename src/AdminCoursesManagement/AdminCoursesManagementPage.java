@@ -29,7 +29,7 @@ public class AdminCoursesManagementPage extends JFrame {
         Font functionFont = new Font("Arial", Font.PLAIN, 13);
         Dimension functionDimension = new Dimension(130, 30);
         
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 20));
         
         addCourseButton = new JButton("Add Course");
         addCourseButton.setFont(functionFont);
@@ -46,16 +46,16 @@ public class AdminCoursesManagementPage extends JFrame {
         updateCourseButton.setPreferredSize(functionDimension);
         updateCourseButton.addActionListener(adminCoursesManagementEvents);
         
-        searchCourseButton = new JButton("Search Course");
-        searchCourseButton.setFont(functionFont);
-        searchCourseButton.setPreferredSize(functionDimension);
-        searchCourseButton.addActionListener(adminCoursesManagementEvents); 
-
-        searchCourseField = new JTextField(10);
+        searchCourseField = new JTextField(15);
         searchCourseField.setFont(functionFont);
         searchCourseField.setPreferredSize(functionDimension);
         searchCourseField.addActionListener(adminCoursesManagementEvents);
 
+        searchCourseButton = new JButton("Search Course");
+        searchCourseButton.setFont(functionFont);
+        searchCourseButton.setPreferredSize(functionDimension);
+        searchCourseButton.addActionListener(adminCoursesManagementEvents); 
+        
         refreshButton = new JButton("Refresh");
         refreshButton.setFont(functionFont);
         refreshButton.setPreferredSize(functionDimension);
@@ -63,9 +63,12 @@ public class AdminCoursesManagementPage extends JFrame {
 
         topPanel.add(addCourseButton);
         topPanel.add(deleteCourseButton);
+        topPanel.add(Box.createRigidArea(functionDimension));
         topPanel.add(updateCourseButton);
-        topPanel.add(searchCourseButton);
+        topPanel.add(Box.createRigidArea(functionDimension));
         topPanel.add(searchCourseField);
+        topPanel.add(searchCourseButton);
+        topPanel.add(Box.createRigidArea(functionDimension));
         topPanel.add(refreshButton);
 
         add(topPanel, BorderLayout.NORTH);

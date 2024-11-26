@@ -29,7 +29,7 @@ public class AdminGradesManagementPage extends JFrame {
         Font functionFont = new Font("Arial", Font.PLAIN, 13);
         Dimension functionDimension = new Dimension(130, 30);
 
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 50));
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 20));
         
         addGradeButton = new JButton("Add Grade");
         addGradeButton.setFont(functionFont);
@@ -54,10 +54,12 @@ public class AdminGradesManagementPage extends JFrame {
         searchGradeByStudentIDField = new JTextField(10);
         searchGradeByStudentIDField.setFont(functionFont);
         searchGradeByStudentIDField.addActionListener(adminGradesManagementEvents);
+        searchGradeByStudentIDField.setPreferredSize(functionDimension);
 
         searchGradeByCourseIDField = new JTextField(10);
         searchGradeByCourseIDField.setFont(functionFont);
         searchGradeByCourseIDField.addActionListener(adminGradesManagementEvents);
+        searchGradeByCourseIDField.setPreferredSize(functionDimension);
 
         refreshButton = new JButton("Refresh");
         refreshButton.setFont(functionFont);
@@ -66,16 +68,19 @@ public class AdminGradesManagementPage extends JFrame {
 
         topPanel.add(addGradeButton);
         topPanel.add(deleteGradeButton);
+        topPanel.add(Box.createRigidArea(functionDimension));
         topPanel.add(updateGradeButton);
-        topPanel.add(searchGradeButton);
+        topPanel.add(Box.createRigidArea(functionDimension));
         topPanel.add(searchGradeByStudentIDField);
         topPanel.add(searchGradeByCourseIDField);
+        topPanel.add(searchGradeButton);
+        topPanel.add(Box.createRigidArea(functionDimension));
         topPanel.add(refreshButton);
 
         add(topPanel, BorderLayout.NORTH);
 
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 50));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 10));
 
         backButton = new JButton("Back");
         backButton.setFont(buttonFont);

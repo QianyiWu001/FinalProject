@@ -27,9 +27,9 @@ public class AdminAttendanceManagementPage extends JFrame {
         Font tableFont = new Font("Arial", Font.PLAIN, 16);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
         Font functionFont = new Font("Arial", Font.PLAIN, 13);
-        Dimension functionDimension = new Dimension(130, 30);
+        Dimension functionDimension = new Dimension(150, 30);
 
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 50));
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 20));
         
         addAttendanceButton = new JButton("Add Attendance");
         addAttendanceButton.setFont(functionFont);
@@ -54,14 +54,17 @@ public class AdminAttendanceManagementPage extends JFrame {
         searchStudentIDField = new JTextField(10);
         searchStudentIDField.setFont(functionFont);
         searchStudentIDField.addActionListener(adminAttendanceManagementEvents);
+        searchStudentIDField.setPreferredSize(functionDimension);
 
         searchCourseIDField = new JTextField(10);
         searchCourseIDField.setFont(functionFont);
         searchCourseIDField.addActionListener(adminAttendanceManagementEvents);
+        searchCourseIDField.setPreferredSize(functionDimension);
 
         searchDateField = new JTextField(10);
         searchDateField.setFont(functionFont);
         searchDateField.addActionListener(adminAttendanceManagementEvents);
+        searchDateField.setPreferredSize(functionDimension);
 
         refreshButton = new JButton("Refresh");
         refreshButton.setFont(functionFont);
@@ -70,17 +73,20 @@ public class AdminAttendanceManagementPage extends JFrame {
 
         topPanel.add(addAttendanceButton);
         topPanel.add(deleteAttendanceButton);
+        topPanel.add(Box.createRigidArea(functionDimension));
         topPanel.add(updateAttendanceButton);
-        topPanel.add(searchAttendanceButton);
+        topPanel.add(Box.createRigidArea(functionDimension));
         topPanel.add(searchStudentIDField);
         topPanel.add(searchCourseIDField);
         topPanel.add(searchDateField);
+        topPanel.add(searchAttendanceButton);
+        topPanel.add(Box.createRigidArea(functionDimension));
         topPanel.add(refreshButton);
 
         add(topPanel, BorderLayout.NORTH);
 
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 50));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 10));
         
         backButton = new JButton("Back");
         backButton.setFont(buttonFont);

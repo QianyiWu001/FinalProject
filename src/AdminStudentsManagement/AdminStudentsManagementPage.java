@@ -29,7 +29,7 @@ public class AdminStudentsManagementPage extends JFrame {
         Font functionFont = new Font("Arial", Font.PLAIN, 13);
         Dimension functionDimension = new Dimension(130, 30);
 
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 20));
 
         addStudentButton = new JButton("Add Student");
         addStudentButton.setFont(functionFont);
@@ -53,8 +53,9 @@ public class AdminStudentsManagementPage extends JFrame {
         searchStudentButton.setPreferredSize(functionDimension);
         searchStudentButton.addActionListener(adminStudentsManagementEvents);
 
-        searchStudentField = new JTextField(10);
+        searchStudentField = new JTextField(15);
         searchStudentField.setFont(functionFont);
+        searchStudentField.setPreferredSize(functionDimension);
         searchStudentField.addActionListener(adminStudentsManagementEvents);
 
         refreshButton = new JButton("Refresh");
@@ -65,9 +66,12 @@ public class AdminStudentsManagementPage extends JFrame {
         
         topPanel.add(addStudentButton);
         topPanel.add(deleteStudentButton);
+        topPanel.add(Box.createRigidArea(functionDimension));
         topPanel.add(updateStudentButton);
-        topPanel.add(searchStudentButton);
+        topPanel.add(Box.createRigidArea(functionDimension));
         topPanel.add(searchStudentField);
+        topPanel.add(searchStudentButton);
+        topPanel.add(Box.createRigidArea(functionDimension));
         topPanel.add(refreshButton);
         
         add(topPanel, BorderLayout.NORTH);

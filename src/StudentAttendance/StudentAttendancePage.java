@@ -1,6 +1,9 @@
 package StudentAttendance;
 
 import javax.swing.*;
+
+import DatabaseUtilities.Session;
+
 import java.awt.*;
 public class StudentAttendancePage extends JFrame {
     private JButton backButton, exitButton;
@@ -48,9 +51,8 @@ public class StudentAttendancePage extends JFrame {
         buttonPanel.add(exitButton);
         add(buttonPanel, BorderLayout.SOUTH);
         
-        String[] columnNames = {"Course ID", "Course Name", "Attendance Percentage"};
-        //这里要改成数据库
-        Object[][] data = getTextData();
+        String[] columnNames = {"Student ID", "Course ID", "Course Name", "Date", "Attendance Status"};
+        Object[][] data = getAttendanceData();
 
         attendanceTable = new JTable(data, columnNames);
         attendanceTable.getTableHeader().setFont(tableFont);
@@ -61,11 +63,10 @@ public class StudentAttendancePage extends JFrame {
 
         add(attendanceTableScrollPane, BorderLayout.CENTER);
     }
-    // 试试
-    private Object[][] getTextData() {
-        return new Object[][] {
-            {"CS101", "Introduction to Computer Science", "90%"},
-            {"CS102", "Data Structures and Algorithms", "85%"}
-        };
+
+    private Object[][] getAttendanceData() {
+        int studentID = Session.getStudentID();
+        StudentAttendanceDB studentAttendanceDB = new StudentAttendanceDB();
+        return studentAttendanceDB.getAttendanceByStudentId(studentID);
     }
 }

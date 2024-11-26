@@ -1,6 +1,9 @@
 package StudentCoursesList;
 
 import javax.swing.*;
+
+import DatabaseUtilities.Session;
+
 import java.awt.*;
 
 
@@ -52,9 +55,8 @@ public class StudentCoursesListPage extends JFrame {
 
         
         
-        String[] columnNames = {"Course ID", "CourseName", "Credits", "Description"};
-        //这里要改成数据库
-        Object[][] data = getTextData();
+        String[] columnNames = {"Student ID", "Course ID", "CourseName", "Credits"};
+        Object[][] data = getCoursesList();
 
         coursesTable = new JTable(data, columnNames);
         coursesTable.getTableHeader().setFont(tableFont);
@@ -66,10 +68,9 @@ public class StudentCoursesListPage extends JFrame {
         add(coursesTableScrollPane, BorderLayout.CENTER);
     }
 
-    private Object[][] getTextData() {
-        return new Object[][] {
-            {"11111", "CS01", "2", "aaaaaaaaaaaa"},
-            {"22222", "CS02", "4", "aaaaaaaaaaaaaaaaaaaaaaaa"}
-        };
+    private Object[][] getCoursesList() {
+        int studentID = Session.getStudentID();
+        StudentCoursesListDB studentCoursesListDB = new StudentCoursesListDB();
+        return studentCoursesListDB.getCoursesByStudentId(studentID);
     }
 }

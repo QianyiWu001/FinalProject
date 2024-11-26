@@ -1,6 +1,9 @@
 package StudentGrades;
 
 import javax.swing.*;
+
+import DatabaseUtilities.Session;
+
 import java.awt.*;
 
 public class StudentGradesPage extends JFrame {
@@ -48,9 +51,8 @@ public class StudentGradesPage extends JFrame {
         buttonPanel.add(exitButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        String[] columnNames = {"Course ID", "Course Name", "Grade"};
-        //这里要改成数据库
-        Object[][] data = getTextData();
+        String[] columnNames = {"Student ID", "Course ID", "Course Name", "Grade"};
+        Object[][] data = getGrades();
 
         gradesTable = new JTable(data, columnNames);
         gradesTable.getTableHeader().setFont(tableFont);
@@ -62,10 +64,9 @@ public class StudentGradesPage extends JFrame {
         add(gradesTableScrollPane, BorderLayout.CENTER);
     }
 
-    private Object[][] getTextData() {
-        return new Object[][]{
-            {"CS101", "Introduction to Computer Science", "90.0"},
-            {"CS102", "Data Structures and Algorithms", "60.0"}
-        };
+    private Object[][] getGrades() {
+        int studentID = Session.getStudentID();
+        StudentGradesDB studentGradesDB = new StudentGradesDB();
+        return studentGradesDB.getGradesByStudentId(studentID);
     }
 }

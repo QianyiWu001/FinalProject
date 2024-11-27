@@ -23,20 +23,17 @@ public class UserDAO {
     }
 
     // 添加用户到 users 表
-    public boolean addUser(int userId, String username, String password, String role) {
+    public boolean addUser(User user) {
         String query = "INSERT INTO users (user_id, username, password, role) VALUES (?, ?, ?, ?)";
-
+    
         try (Connection conn = ConnectDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setInt(1, userId);
-            stmt.setString(2, username);
-            stmt.setString(3, password);
-            stmt.setString(4, role);
-
+            stmt.setInt(1, user.getUserId());
+            stmt.setString(2, user.getUsername());
+            stmt.setString(3, user.getPassword());
+            stmt.setString(4, user.getRole());
             stmt.executeUpdate();
             return true;
-
         } catch (SQLException e) {
             System.out.println("Unable to add user to database.");
             e.printStackTrace();
@@ -104,6 +101,19 @@ public class UserDAO {
             e.printStackTrace();
             return null;
         }
+    }
+    public int generateUserId() {
+        int maxId = 0;
+        try (Connection conn = ConnectDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT MAX(user_id) AS max_id FROM users");
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                maxId = rs.getInt("max_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maxId + 1; // 返回下一个唯一 ID
     }
 
     // Retrieves user information by userId

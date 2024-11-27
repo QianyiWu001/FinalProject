@@ -3,8 +3,15 @@ package service;
 import dao.StudentDAO;
 import dao.UserDAO;
 import entity.Student;
+import entity.User;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+
+import DatabaseUtilities.ConnectDB;
 
 public class StudentService {
     private final StudentDAO studentDAO;
@@ -15,35 +22,48 @@ public class StudentService {
         this.studentDAO = studentDAO;
         this.userDAO = userDAO;
     }
+
     // 添加无参构造函数
     public StudentService() {
         this.studentDAO = new StudentDAO();
         this.userDAO = new UserDAO();
     }
-    // add student
-    public boolean addStudent(Student student) {
-        // Step 1: 确保 user 信息有效，先添加到 users 表
-        boolean userAdded = userDAO.addUser(
-                student.getUserId(),
-                student.getUsername(),
-                student.getPassword(),
-                student.getRole()
-        );
-        if (!userAdded) {
-            System.out.println("Failed to add user to users table.");
-            return false;
-        }
 
-        // Step 2: 确保 student 信息有效，添加到 students 表
-        boolean studentAdded = studentDAO.addStudent(student);
-        if (!studentAdded) {
-            System.out.println("Failed to add student to students table.");
-            // 如果 students 表添加失败，则从 users 表回滚
-            userDAO.deleteUser(student.getUserId());
-            return false;
-        }
+ public boolean addStudent(Student student) {
+    // Step 1: 生成 user_id
+    int userId = userDAO.generateUserId(); // 手动生成唯一 user_id
+    student.setUserId(userId); // 将 user_id 赋值给 Student
 
-        return true;
+    // Step 2: 添加到 users 表
+    boolean userAdded = userDAO.addUser(new User(userId, student.getName(), "default_password", "ROLE_STUDENT"));
+    if (!userAdded) {
+        System.out.println("Failed to add user to users table.");
+        return false;
+    }
+
+    // Step 3: 添加到 students 表
+    boolean studentAdded = studentDAO.addStudent(student);
+    if (!studentAdded) {
+        System.out.println("Failed to add student to students table.");
+        // 如果学生添加失败，回滚删除 users 表中的记录
+        userDAO.deleteUser(userId);
+        return false;
+    }
+
+    return true;
+}
+    public int generateUserId() {
+        int maxId = 0;
+        try (Connection conn = ConnectDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement("SELECT MAX(user_id) AS max_id FROM users");
+                ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                maxId = rs.getInt("max_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maxId + 1; // 返回下一个唯一 ID
     }
 
     // 删除学生（同步 users 和 students 表）
@@ -72,8 +92,7 @@ public class StudentService {
                 student.getUserId(),
                 student.getUsername(),
                 student.getPassword(),
-                student.getRole()
-        );
+                student.getRole());
         if (!userUpdated) {
             System.out.println("Failed to update user in users table.");
             return false;

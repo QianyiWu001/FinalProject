@@ -7,8 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import DatabaseUtilities.Session;
-
-import BasicLogin.BasicLoginPage;
 import StudentAttendance.StudentAttendancePage;
 import StudentBill.StudentBillDB;
 import StudentBill.StudentBillPage;
@@ -16,6 +14,7 @@ import StudentCoursesList.StudentCoursesListPage;
 import StudentGrades.StudentGradesPage;
 import StudentProfile.StudentProfileDB;
 import StudentProfile.StudentProfilePage;
+import view.BasicLoginPage;
 
 public class StudentLoginEvents implements ActionListener {
     private StudentLoginPage studentLoginPage;

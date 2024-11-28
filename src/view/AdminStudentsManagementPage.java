@@ -122,8 +122,7 @@ public class AdminStudentsManagementPage extends JFrame {
         }
     }
 
-    private void handleAddStudent() {
-        // 打开添加学生页面（需创建 AddStudentPage 类）
+    private void handleAddStudent() {   
         new AddStudentPage(this, studentController);
     }
 

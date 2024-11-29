@@ -1,4 +1,4 @@
-package view;
+package view.Admin;
 
 import javax.swing.*;
 import java.awt.*;
@@ -156,7 +156,7 @@ public class AddCoursePage extends JFrame {
 
         Course course = new Course();
         course.setCourseId(intCourseID);
-        course.setcourse_name(courseName);
+        course.setCourseName(courseName);
         course.setCredits(intCredits);
         course.setDescription(description);
 

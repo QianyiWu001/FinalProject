@@ -108,4 +108,29 @@ public class GradesDAO {
         }
         return grades;
     }
+
+    public List<Grade> getGradesByStudentId(int studentId) {
+        List<Grade> grades = new ArrayList<>();
+        String query = "SELECT g.enrollment_id, e.course_id, g.grade " +
+                       "FROM grades g " +
+                       "JOIN enrollments e ON g.enrollment_id = e.enrollment_id " +
+                       "WHERE e.student_id = ?";
+        try (Connection conn = ConnectDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, studentId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                grades.add(new Grade(
+                    rs.getInt("enrollment_id"),
+                    studentId,
+                    rs.getInt("course_id"),
+                    rs.getInt("grade")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return grades;
+    }
 }

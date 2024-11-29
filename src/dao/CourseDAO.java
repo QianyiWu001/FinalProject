@@ -20,7 +20,7 @@ public class CourseDAO {
             while (rs.next()) {
                 Course course = new Course();
                 course.setCourseId(rs.getInt("course_id"));
-                course.setcourse_name(rs.getString("course_name"));
+                course.setCourseName(rs.getString("course_name"));
                 course.setDescription(rs.getString("description"));
                 course.setCredits(rs.getInt("credits"));
                 courses.add(course);
@@ -39,7 +39,7 @@ public class CourseDAO {
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setInt(1, course.getCourseId());
-            pstmt.setString(2, course.getcourse_name());
+            pstmt.setString(2, course.getCourseName());
             pstmt.setString(3, course.getDescription());
             pstmt.setInt(4, course.getCredits());
             return pstmt.executeUpdate() > 0;
@@ -57,7 +57,7 @@ public class CourseDAO {
         try (Connection conn = ConnectDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setString(1, course.getcourse_name());
+            pstmt.setString(1, course.getCourseName());
             pstmt.setString(2, course.getDescription());
             pstmt.setInt(3, course.getCredits());
             pstmt.setInt(4, course.getCourseId());
@@ -99,7 +99,7 @@ public class CourseDAO {
             while (rs.next()) {
                 Course course = new Course();
                 course.setCourseId(rs.getInt("course_id"));
-                course.setcourse_name(rs.getString("course_name"));
+                course.setCourseName(rs.getString("course_name"));
                 course.setDescription(rs.getString("description"));
                 course.setCredits(rs.getInt("credits"));
                 courses.add(course);

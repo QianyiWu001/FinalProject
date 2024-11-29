@@ -1,4 +1,4 @@
-package view;
+package view.Admin;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -117,7 +117,7 @@ public class AdminCoursesManagementPage extends JFrame {
         for (Course course : courses) {
             model.addRow(new Object[]{
                 course.getCourseId(),
-                course.getcourse_name(),
+                course.getCourseName(),
                 course.getDescription(),
                 course.getCredits()
             });
@@ -161,7 +161,7 @@ public class AdminCoursesManagementPage extends JFrame {
 
         Course updatedCourse = new Course();
         updatedCourse.setCourseId(courseId);
-        updatedCourse.setcourse_name(courseName);
+        updatedCourse.setCourseName(courseName);
         updatedCourse.setDescription(description);
         updatedCourse.setCredits(credits);
 
@@ -193,7 +193,7 @@ public class AdminCoursesManagementPage extends JFrame {
         for (Course course : courses) {
             model.addRow(new Object[]{
                 course.getCourseId(),
-                course.getcourse_name(),
+                course.getCourseName(),
                 course.getDescription(),
                 course.getCredits()
             });

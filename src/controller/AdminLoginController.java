@@ -1,11 +1,11 @@
 package controller;
 
-import view.AdminAttendanceManagementPage;
-import view.AdminCoursesManagementPage;
-import view.AdminGradesManagementPage;
-import view.AdminLoginPage;
-import view.AdminStudentsManagementPage;
 import view.BasicLoginPage;
+import view.Admin.AdminAttendanceManagementPage;
+import view.Admin.AdminCoursesManagementPage;
+import view.Admin.AdminGradesManagementPage;
+import view.Admin.AdminLoginPage;
+import view.Admin.AdminStudentsManagementPage;
 
 
 public class AdminLoginController {

@@ -8,7 +8,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AttendanceDAO {
+    public List<Attendance> getAttendanceByStudentId(int studentId) {
+        List<Attendance> attendanceList = new ArrayList<>();
+        String query = "SELECT a.enrollment_id, a.date, a.status " +
+                       "FROM attendance a " +
+                       "JOIN enrollments e ON a.enrollment_id = e.enrollment_id " +
+                       "WHERE e.student_id = ?";
+        try (Connection conn = ConnectDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, studentId);
+            ResultSet rs = pstmt.executeQuery();
 
+            while (rs.next()) {
+                Attendance attendance = new Attendance();
+                attendance.setEnrollmentId(rs.getInt("enrollment_id"));
+
+                // 处理 date 为 null 的情况
+                Date date = rs.getDate("date");
+                if (date != null) {
+                    attendance.setDate(date);
+                }
+
+                // 确保 status 不为空
+                attendance.setStatus(rs.getString("status").toUpperCase());
+
+                attendanceList.add(attendance);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return attendanceList;
+    }
     public List<Attendance> getAllAttendance() {
         List<Attendance> attendanceList = new ArrayList<>();
         String query = "SELECT a.enrollment_id, a.date, a.status, e.student_id, e.course_id " +

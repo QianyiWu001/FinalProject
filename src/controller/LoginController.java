@@ -2,7 +2,7 @@ package controller;
 
 import dao.UserDAO;
 import entity.User;
-import session.Session;
+import DatabaseUtilities.Session;
 
 public class LoginController {
     private UserDAO userDAO;

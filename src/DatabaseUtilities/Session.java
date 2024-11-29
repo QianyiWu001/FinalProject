@@ -1,17 +1,18 @@
 package DatabaseUtilities;
+
+
 public class Session {
-    private static int studentID;
+    private static int studentId;
 
-    public static int getStudentID() {
-        return studentID;
+    public static int getStudentId() {
+        return studentId;
     }
 
-    public static void setStudentID(int studentID) {
-        Session.studentID = studentID;
+    public static void setStudentId(int studentId) {
+        Session.studentId = studentId;
     }
 
-    // clear the studentID when exit.
     public static void clear() {
-        studentID = 0;
+        studentId = 0;
     }
 }

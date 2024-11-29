@@ -1,24 +1,30 @@
 package entity;
 
-
 import java.util.Date;
-
 
 public class Attendance {
 
     private int studentID;
 
-
     private int courseID;
-
 
     private Date date;
 
-
     private String status;
-  private Student student;
+    private Student student;
 
-     private Course course;
+    private Course course;
+
+    // 默认无参构造函数
+    public Attendance() {
+    }
+
+    public Attendance(int studentID, int courseID, Date date, String status) {
+        this.studentID = studentID;
+        this.courseID = courseID;
+        this.date = date;
+        this.status = status;
+    }
 
     // Getters 和 Setters
     public int getStudentID() {

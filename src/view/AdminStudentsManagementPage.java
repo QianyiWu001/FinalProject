@@ -95,22 +95,29 @@ public class AdminStudentsManagementPage extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
 
         String[] columnNames = {"Student ID", "Name", "Email", "Phone", "Address"};
-        studentsTable = new JTable(new DefaultTableModel(new Object[0][0], columnNames));
+        DefaultTableModel model = new DefaultTableModel(new Object[0][0], columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // 所有列可编辑
+                return true;
+            }
+        };
+        studentsTable = new JTable(model);
         studentsTable.getTableHeader().setFont(tableFont);
         studentsTable.setFont(tableFont);
         studentsTable.setRowHeight(30);
         studentsTableScrollPane = new JScrollPane(studentsTable);
         studentsTable.setFillsViewportHeight(true);
-
+        
         add(studentsTableScrollPane, BorderLayout.CENTER);
-
+        
         refreshTable();
     }
 
     void refreshTable() {
         List<Student> students = studentController.getAllStudents();
         DefaultTableModel model = (DefaultTableModel) studentsTable.getModel();
-        model.setRowCount(0);
+        model.setRowCount(0); // 清空现有数据
         for (Student student : students) {
             model.addRow(new Object[]{
                 student.getUserId(),
@@ -140,28 +147,47 @@ public class AdminStudentsManagementPage extends JFrame {
             JOptionPane.showMessageDialog(this, "Failed to delete student.");
         }
     }
-
     private void handleUpdateStudent() {
+        if (studentsTable.isEditing()) {
+            studentsTable.getCellEditor().stopCellEditing(); // 提交用户编辑的数据
+        }
+    
         int selectedRow = studentsTable.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Please select a student to update.");
             return;
         }
-        int studentId = (int) studentsTable.getValueAt(selectedRow, 0);
-        String name = (String) studentsTable.getValueAt(selectedRow, 1);
-        String email = (String) studentsTable.getValueAt(selectedRow, 2);
-        String phone = (String) studentsTable.getValueAt(selectedRow, 3);
-        String address = (String) studentsTable.getValueAt(selectedRow, 4);
-
-        Student updatedStudent = new Student(studentId, "", "", "ROLE_STUDENT", name, email, phone, address);
-        if (studentController.updateStudent(updatedStudent)) {
-            JOptionPane.showMessageDialog(this, "Student updated successfully.");
-            refreshTable();
-        } else {
-            JOptionPane.showMessageDialog(this, "Failed to update student.");
+    
+        try {
+            // 从表格中获取更新后的数据
+            int studentId = Integer.parseInt(studentsTable.getValueAt(selectedRow, 0).toString());
+            String name = studentsTable.getValueAt(selectedRow, 1).toString();
+            String email = studentsTable.getValueAt(selectedRow, 2).toString();
+            String phone = studentsTable.getValueAt(selectedRow, 3).toString();
+            String address = studentsTable.getValueAt(selectedRow, 4).toString();
+    
+            // 获取现有 Student 对象（假设通过 studentId 查询）
+            Student student = studentController.getStudentById(studentId);
+            if (student != null) {
+                student.setName(name);
+                student.setEmail(email);
+                student.setPhone(phone);
+                student.setAddress(address);
+    
+                // 更新数据库
+                if (studentController.updateStudent(student)) {
+                    JOptionPane.showMessageDialog(this, "Student updated successfully.");
+                    refreshTable();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Failed to update student.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Student not found.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid data format. Please check your input.");
         }
     }
-
     private void handleSearchStudent() {
         String query = searchStudentField.getText().trim();
         if (query.isEmpty()) {

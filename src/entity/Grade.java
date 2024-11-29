@@ -1,26 +1,30 @@
 package entity;
 
 public class Grade {
-
-    private GradeId id; // 嵌入式主键
-
-
+    private int studentId;
+    private int courseId;
     private int grade;
 
-
-    private Student student;
-
-
-
-    private Course course;
-
-    // Getters 和 Setters
-    public GradeId getId() {
-        return id;
+    public Grade(int studentId, int courseId, int grade) {
+        this.studentId = studentId;
+        this.courseId = courseId;
+        this.grade = grade;
     }
 
-    public void setId(GradeId id) {
-        this.id = id;
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
     public int getGrade() {
@@ -29,21 +33,5 @@ public class Grade {
 
     public void setGrade(int grade) {
         this.grade = grade;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
     }
 }

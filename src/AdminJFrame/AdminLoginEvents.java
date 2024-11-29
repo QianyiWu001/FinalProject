@@ -6,7 +6,7 @@ import javax.swing.JButton;
 
 import AdminAttendanceManagement.AdminAttendanceManagementPage;
 import AdminCoursesManagement.AdminCoursesManagementPage;
-import AdminGradesManagement.AdminGradesManagementPage;
+import view.AdminGradesManagementPage;
 import view.AdminStudentsManagementPage;
 import view.BasicLoginPage;
 public class AdminLoginEvents implements ActionListener {

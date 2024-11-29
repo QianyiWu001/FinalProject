@@ -27,7 +27,9 @@ public class StudentController {
     public boolean updateStudent(Student student) {
         return studentService.updateStudent(student);
     }
-
+    public Student getStudentById(int studentId) {
+        return studentService.getStudentById(studentId);
+    }
     public List<Student> searchStudents(String searchText) {
     
         throw new UnsupportedOperationException("Unimplemented method 'searchStudents'");

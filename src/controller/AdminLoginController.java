@@ -1,7 +1,7 @@
 package controller;
 
 import AdminAttendanceManagement.AdminAttendanceManagementPage;
-import AdminCoursesManagement.AdminCoursesManagementPage;
+import view.AdminCoursesManagementPage;
 import view.AdminGradesManagementPage;
 import view.AdminLoginPage;
 import view.AdminStudentsManagementPage;

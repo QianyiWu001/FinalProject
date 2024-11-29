@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import AdminAttendanceManagement.AdminAttendanceManagementPage;
-import AdminCoursesManagement.AdminCoursesManagementPage;
+import view.AdminCoursesManagementPage;
 import view.AdminGradesManagementPage;
 import view.AdminStudentsManagementPage;
 import view.BasicLoginPage;

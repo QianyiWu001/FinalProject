@@ -132,4 +132,22 @@ public class AttendanceDAO {
     
         return -1; // 未找到对应的 enrollment_id
     }
+    public boolean isEnrollmentValid(int enrollmentId) {
+        String query = "SELECT COUNT(*) FROM enrollments WHERE enrollment_id = ?";
+    
+        try (Connection conn = ConnectDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+    
+            pstmt.setInt(1, enrollmentId);
+            ResultSet rs = pstmt.executeQuery();
+    
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // 如果 COUNT(*) > 0，则表示 enrollment_id 有效
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // 打印异常信息
+        }
+    
+        return false; // 如果查询失败或未找到，返回 false
+    }
 }

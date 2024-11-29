@@ -1,38 +1,34 @@
 package service;
-import java.util.List;
 
 import dao.GradesDAO;
 import entity.Grade;
 
+import java.util.List;
+
 public class GradesService {
-    private GradesDAO gradesDao;
+    private GradesDAO gradesDAO;
 
     public GradesService() {
-        this.gradesDao = new GradesDAO(); // 初始化 DAO 层
+        this.gradesDAO = new GradesDAO();
     }
 
-    // 获取所有成绩
     public List<Grade> getAllGrades() {
-        return gradesDao.getAllGrades();
+        return gradesDAO.getAllGrades();
     }
 
-    // 添加成绩
-    public boolean addGrades(Grade grades) {
-        return gradesDao.insertGrades(grades);
+    public boolean addGrade(Grade grade) {
+        return gradesDAO.addGrade(grade);
     }
 
-    // 删除成绩
-    public boolean deleteGrades(int studentId, int courseId) {
-        return gradesDao.deleteGrades(studentId, courseId);
+    public boolean deleteGrade(int enrollmentId) {
+        return gradesDAO.deleteGrade(enrollmentId);
     }
 
-    // 更新成绩
-    public boolean updateGrades(Grade grades) {
-        return gradesDao.updateGrades(grades);
+    public boolean updateGrade(Grade grade) {
+        return gradesDAO.updateGrade(grade);
     }
 
-    // 搜索成绩
     public List<Grade> searchGrades(String query) {
-        return gradesDao.searchGrades(query);
+        return gradesDAO.searchGrades(query);
     }
 }

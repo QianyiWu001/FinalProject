@@ -1,28 +1,32 @@
 package dao;
 
 import entity.Grade;
-
-import java.util.ArrayList;
-import java.util.List;
 import DatabaseUtilities.ConnectDB;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GradesDAO {
 
     public List<Grade> getAllGrades() {
         List<Grade> grades = new ArrayList<>();
-        String query = "SELECT student_id, course_id, grade FROM grades";
-
+        String query = "SELECT g.enrollment_id, e.student_id, e.course_id, g.grade " +
+                       "FROM grades g " +
+                       "JOIN enrollments e ON g.enrollment_id = e.enrollment_id";
+    
         try (Connection conn = ConnectDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
-
+    
             while (rs.next()) {
-                int studentId = rs.getInt("student_id");
-                int courseId = rs.getInt("course_id");
-                int gradeValue = rs.getInt("grade");
-                grades.add(new Grade(studentId, courseId, gradeValue));
+                Grade grade = new Grade(
+                    rs.getInt("enrollment_id"),
+                    rs.getInt("student_id"),
+                    rs.getInt("course_id"),
+                    rs.getInt("grade")
+                );
+                grades.add(grade);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -30,15 +34,14 @@ public class GradesDAO {
         return grades;
     }
 
-    public boolean insertGrades(Grade grade) {
-        String query = "INSERT INTO grades (student_id, course_id, grade) VALUES (?, ?, ?)";
+    public boolean addGrade(Grade grade) {
+        String query = "INSERT INTO grades (enrollment_id, grade) VALUES (?, ?)";
 
         try (Connection conn = ConnectDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setInt(1, grade.getStudentId());
-            pstmt.setInt(2, grade.getCourseId());
-            pstmt.setInt(3, grade.getGrade());
+            pstmt.setInt(1, grade.getEnrollmentId());
+            pstmt.setInt(2, grade.getGrade());
 
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
@@ -48,14 +51,13 @@ public class GradesDAO {
         return false;
     }
 
-    public boolean deleteGrades(int studentId, int courseId) {
-        String query = "DELETE FROM grades WHERE student_id = ? AND course_id = ?";
+    public boolean deleteGrade(int enrollmentId) {
+        String query = "DELETE FROM grades WHERE enrollment_id = ?";
 
         try (Connection conn = ConnectDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setInt(1, studentId);
-            pstmt.setInt(2, courseId);
+            pstmt.setInt(1, enrollmentId);
 
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
@@ -65,15 +67,14 @@ public class GradesDAO {
         return false;
     }
 
-    public boolean updateGrades(Grade grade) {
-        String query = "UPDATE grades SET grade = ? WHERE student_id = ? AND course_id = ?";
+    public boolean updateGrade(Grade grade) {
+        String query = "UPDATE grades SET grade = ? WHERE enrollment_id = ?";
 
         try (Connection conn = ConnectDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setInt(1, grade.getGrade());
-            pstmt.setInt(2, grade.getStudentId());
-            pstmt.setInt(3, grade.getCourseId());
+            pstmt.setInt(2, grade.getEnrollmentId());
 
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
@@ -85,22 +86,22 @@ public class GradesDAO {
 
     public List<Grade> searchGrades(String query) {
         List<Grade> grades = new ArrayList<>();
-        String sqlQuery = "SELECT student_id, course_id, grade FROM grades " +
-                          "WHERE student_id LIKE ? OR course_id LIKE ?";
+        String sqlQuery = "SELECT enrollment_id, student_id, course_id, grade FROM grades WHERE grade LIKE ?";
 
         try (Connection conn = ConnectDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sqlQuery)) {
 
             pstmt.setString(1, "%" + query + "%");
-            pstmt.setString(2, "%" + query + "%");
+            ResultSet rs = pstmt.executeQuery();
 
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    int studentId = rs.getInt("student_id");
-                    int courseId = rs.getInt("course_id");
-                    int gradeValue = rs.getInt("grade");
-                    grades.add(new Grade(studentId, courseId, gradeValue));
-                }
+            while (rs.next()) {
+                Grade grade = new Grade(
+                    rs.getInt("enrollment_id"),
+                    rs.getInt("student_id"),
+                    rs.getInt("course_id"),
+                    rs.getInt("grade")
+                );
+                grades.add(grade);
             }
         } catch (SQLException e) {
             e.printStackTrace();

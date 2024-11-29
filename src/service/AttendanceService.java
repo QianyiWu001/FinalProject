@@ -31,9 +31,11 @@ public class AttendanceService {
     public List<Attendance> searchAttendance(String searchText) {
         return attendanceDAO.searchAttendance(searchText);
     }
+
     public boolean isEnrollmentValid(int enrollmentId) {
         return attendanceDAO.isEnrollmentValid(enrollmentId);
     }
+    
     public int getEnrollmentId(int studentId, int courseId) {
         return attendanceDAO.getEnrollmentId(studentId, courseId);
     }

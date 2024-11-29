@@ -24,11 +24,14 @@ public class AttendanceController {
         return attendanceService.updateAttendance(attendance);
     }
 
-    public boolean deleteAttendance(int studentId, int courseId, String date) {
-        return attendanceService.deleteAttendance(studentId, courseId, date);
+    public boolean deleteAttendance(int enrollmentId, String date) {
+        return attendanceService.deleteAttendance(enrollmentId, date);
     }
 
     public List<Attendance> searchAttendance(String searchText) {
         return attendanceService.searchAttendance(searchText);
+    }
+    public int getEnrollmentId(int studentId, int courseId) {
+        return attendanceService.getEnrollmentId(studentId, courseId);
     }
 }

@@ -1,7 +1,7 @@
 package view;
 
 import controller.GradesController;
-import entity.Grade;
+import entity.Grades;
 
 import javax.swing.*;
 import java.awt.*;

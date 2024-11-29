@@ -2,8 +2,6 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import controller.AttendanceController;
 import entity.Attendance;
 
@@ -11,11 +9,13 @@ public class AddAttendancePage extends JFrame {
     private JButton addButton, cancelButton;
     private JLabel titleLabel, studentIdLabel, courseIdLabel, dateLabel, statusLabel;
     private JTextField studentIdField, courseIdField, dateField, statusField;
-    private AdminAttendanceManagementPage adminAttendanceManagementPage;
     private AttendanceController attendanceController;
 
+    private AdminAttendanceManagementPage adminAttendanceManagementPage;
+
+
     public AddAttendancePage(AdminAttendanceManagementPage adminAttendanceManagementPage, AttendanceController attendanceController) {
-        this.adminAttendanceManagementPage = adminAttendanceManagementPage;
+        this.adminAttendanceManagementPage = adminAttendanceManagementPage; // 记录调用页面
         this.attendanceController = attendanceController; // 初始化控制器
         setTitle("Add Attendance");
         setLayout(new GridBagLayout());
@@ -94,12 +94,7 @@ public class AddAttendancePage extends JFrame {
 
         addButton = new JButton("Add");
         addButton.setFont(buttonFont);
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleAddAttendance();
-            }
-        });
+        addButton.addActionListener(e -> handleAddAttendance());
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.insets = new Insets(20, 0, 10, 0);
@@ -114,40 +109,44 @@ public class AddAttendancePage extends JFrame {
     }
 
     private void handleAddAttendance() {
-        String studentId = studentIdField.getText().trim();
-        String courseId = courseIdField.getText().trim();
-        String dateInput = dateField.getText().trim(); // 输入的日期
+        String studentIdInput = studentIdField.getText().trim();
+        String courseIdInput = courseIdField.getText().trim();
+        String dateInput = dateField.getText().trim();
         String status = statusField.getText().trim();
-    
-        if (studentId.isEmpty() || courseId.isEmpty() || dateInput.isEmpty() || status.isEmpty()) {
+
+        if (studentIdInput.isEmpty() || courseIdInput.isEmpty() || dateInput.isEmpty() || status.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill out all fields.");
             return;
         }
-    
-        int intStudentId, intCourseId;
+
+        int studentId, courseId;
         try {
-            intStudentId = Integer.parseInt(studentId);
-            intCourseId = Integer.parseInt(courseId);
+            studentId = Integer.parseInt(studentIdInput);
+            courseId = Integer.parseInt(courseIdInput);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Student ID and Course ID must be numbers.");
             return;
         }
-    
-        // 解析日期
+
         java.sql.Date date;
         try {
-            date = java.sql.Date.valueOf(dateInput); // 格式为 YYYY-MM-DD
+            date = java.sql.Date.valueOf(dateInput);
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, "Invalid date format. Use YYYY-MM-DD.");
             return;
         }
-    
-        // 创建并添加 Attendance 对象
-        Attendance attendance = new Attendance(intStudentId, intCourseId, date, status);
-    
+
+        // 验证 Enrollment 是否有效
+        int enrollmentId = attendanceController.getEnrollmentId(studentId, courseId);
+        if (enrollmentId == -1) {
+            JOptionPane.showMessageDialog(this, "Invalid Student ID and Course ID combination.");
+            return;
+        }
+
+        Attendance attendance = new Attendance(enrollmentId, date, status, studentId, courseId);
+
         if (attendanceController.addAttendance(attendance)) {
             JOptionPane.showMessageDialog(this, "Attendance record added successfully.");
-            adminAttendanceManagementPage.refreshTable();
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Failed to add attendance record.");

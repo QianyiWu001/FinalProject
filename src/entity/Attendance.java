@@ -4,43 +4,31 @@ import java.util.Date;
 
 public class Attendance {
 
-    private int studentID;
-
-    private int courseID;
-
+    private int enrollmentId;
     private Date date;
-
     private String status;
-    private Student student;
+    private int studentId; // 新增字段
+    private int courseId;  // 新增字段
 
-    private Course course;
+    // 无参数构造器
+    public Attendance() {}
 
-    // 默认无参构造函数
-    public Attendance() {
-    }
-
-    public Attendance(int studentID, int courseID, Date date, String status) {
-        this.studentID = studentID;
-        this.courseID = courseID;
+    // 全参数构造器
+    public Attendance(int enrollmentId, Date date, String status, int studentId, int courseId) {
+        this.enrollmentId = enrollmentId;
         this.date = date;
         this.status = status;
+        this.studentId = studentId;
+        this.courseId = courseId;
     }
 
     // Getters 和 Setters
-    public int getStudentID() {
-        return studentID;
+    public int getEnrollmentId() {
+        return enrollmentId;
     }
 
-    public void setStudentID(int studentID) {
-        this.studentID = studentID;
-    }
-
-    public int getCourseID() {
-        return courseID;
-    }
-
-    public void setCourseID(int courseID) {
-        this.courseID = courseID;
+    public void setEnrollmentId(int enrollmentId) {
+        this.enrollmentId = enrollmentId;
     }
 
     public Date getDate() {
@@ -59,19 +47,30 @@ public class Attendance {
         this.status = status;
     }
 
-    public Student getStudent() {
-        return student;
+    public int getStudentId() {
+        return studentId;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
     }
 
-    public Course getCourse() {
-        return course;
+    public int getCourseId() {
+        return courseId;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    @Override
+    public String toString() {
+        return "Attendance{" +
+                "enrollmentId=" + enrollmentId +
+                ", date=" + date +
+                ", status='" + status + '\'' +
+                ", studentId=" + studentId +
+                ", courseId=" + courseId +
+                '}';
     }
 }

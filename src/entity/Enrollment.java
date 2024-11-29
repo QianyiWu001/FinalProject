@@ -2,35 +2,53 @@ package entity;
 
 public class Enrollment {
 
-    private EnrollmentId id;
+    private int enrollmentId;
+    private int studentId;
+    private int courseId;
 
-    private Student student;
+    // 无参数构造器
+    public Enrollment() {
+        // 默认构造器
+    }
 
-
-    private Course course;
+    // 全参数构造器
+    public Enrollment(int enrollmentId, int studentId, int courseId) {
+        this.enrollmentId = enrollmentId;
+        this.studentId = studentId;
+        this.courseId = courseId;
+    }
 
     // Getters and Setters
-    public EnrollmentId getId() {
-        return id;
+    public int getEnrollmentId() {
+        return enrollmentId;
     }
 
-    public void setId(EnrollmentId id) {
-        this.id = id;
+    public void setEnrollmentId(int enrollmentId) {
+        this.enrollmentId = enrollmentId;
     }
 
-    public Student getStudent() {
-        return student;
+    public int getStudentId() {
+        return studentId;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
     }
 
-    public Course getCourse() {
-        return course;
+    public int getCourseId() {
+        return courseId;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    @Override
+    public String toString() {
+        return "Enrollment{" +
+                "enrollmentId=" + enrollmentId +
+                ", studentId=" + studentId +
+                ", courseId=" + courseId +
+                '}';
     }
 }

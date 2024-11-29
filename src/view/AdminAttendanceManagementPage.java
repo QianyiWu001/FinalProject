@@ -90,14 +90,17 @@ public class AdminAttendanceManagementPage extends JFrame {
         buttonPanel.add(exitButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
-
-        DefaultTableModel model = new DefaultTableModel(new Object[0][0], new String[]{"Student ID", "Course ID", "Date", "Status"}) {
+        DefaultTableModel model = new DefaultTableModel(
+            new Object[0][0], 
+            new String[]{"Enrollment ID", "Student ID", "Course ID", "Date", "Status"}
+        ) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return true; // 所有列可编辑
+                // 仅允许编辑 Date 和 Status 列
+                return column == 3 || column == 4;
             }
         };
-
+        
         attendanceTable = new JTable(model);
         attendanceTable.getTableHeader().setFont(tableFont);
         attendanceTable.setFont(tableFont);
@@ -111,7 +114,6 @@ public class AdminAttendanceManagementPage extends JFrame {
         refreshTable();
     }
 
-
     private void handleAddAttendance() {
         new AddAttendancePage(this, attendanceController);
     }
@@ -122,11 +124,10 @@ public class AdminAttendanceManagementPage extends JFrame {
             JOptionPane.showMessageDialog(this, "Please select an attendance record to delete.");
             return;
         }
-        int studentId = Integer.parseInt(attendanceTable.getValueAt(selectedRow, 0).toString());
-        int courseId = Integer.parseInt(attendanceTable.getValueAt(selectedRow, 1).toString());
-        String date = attendanceTable.getValueAt(selectedRow, 2).toString();
+        int enrollmentId = Integer.parseInt(attendanceTable.getValueAt(selectedRow, 0).toString());
+        String date = attendanceTable.getValueAt(selectedRow, 1).toString();
 
-        if (attendanceController.deleteAttendance(studentId, courseId, date)) {
+        if (attendanceController.deleteAttendance(enrollmentId, date)) {
             JOptionPane.showMessageDialog(this, "Attendance record deleted successfully.");
             refreshTable();
         } else {
@@ -144,76 +145,87 @@ public class AdminAttendanceManagementPage extends JFrame {
             return;
         }
     
-        int studentId = Integer.parseInt(attendanceTable.getValueAt(selectedRow, 0).toString());
-        int courseId = Integer.parseInt(attendanceTable.getValueAt(selectedRow, 1).toString());
-        String dateString = attendanceTable.getValueAt(selectedRow, 2).toString();
-        String status = attendanceTable.getValueAt(selectedRow, 3).toString();
+        int enrollmentId = Integer.parseInt(attendanceTable.getValueAt(selectedRow, 0).toString());
+        String dateString = attendanceTable.getValueAt(selectedRow, 3).toString(); // 获取 Date 列
+        String status = attendanceTable.getValueAt(selectedRow, 4).toString(); // 获取 Status 列
+
+        dateString = formatDate(dateString);
     
-        // 解析日期字符串为 Date 对象
-        java.sql.Date date;
-        try {
-            date = java.sql.Date.valueOf(dateString); // 格式化为 SQL Date
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(this, "Invalid date format. Please use YYYY-MM-DD.");
+        if (dateString == null) {
+            JOptionPane.showMessageDialog(this, "Invalid date format. Please ensure the date is in YYYY-MM-DD format.");
             return;
         }
     
-        Attendance updatedAttendance = new Attendance(studentId, courseId, date, status);
+        Attendance updatedAttendance = new Attendance();
+        updatedAttendance.setEnrollmentId(enrollmentId);
+        updatedAttendance.setDate(java.sql.Date.valueOf(dateString)); // 转换为 SQL 日期
+        updatedAttendance.setStatus(status);
     
         if (attendanceController.updateAttendance(updatedAttendance)) {
-            JOptionPane.showMessageDialog(this, "Attendance record updated successfully.");
+            JOptionPane.showMessageDialog(this, "Attendance status updated successfully.");
             refreshTable();
         } else {
-            JOptionPane.showMessageDialog(this, "Failed to update attendance record.");
+            JOptionPane.showMessageDialog(this, "Failed to update attendance status.");
         }
-    }
-
-    private void handleSearchAttendance() {
-        String query = searchField.getText().trim();
-        if (query.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter a search query.");
-            return;
-        }
-        List<Attendance> attendanceList = attendanceController.searchAttendance(query);
-        if (attendanceList.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No attendance record found.");
-        } else {
-            updateTableData(attendanceList);
-        }
-    }
-
-
-
-    private void updateTableData(List<Attendance> attendanceList) {
-        DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
-        model.setRowCount(0);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // 格式化日期
+    }                   
     
-        for (Attendance attendance : attendanceList) {
-            String formattedDate = dateFormat.format(attendance.getDate()); // 格式化日期为字符串
-            model.addRow(new Object[]{
-                attendance.getStudentID(),
-                attendance.getCourseID(),
-                formattedDate,
-                attendance.getStatus()
-            });
+    // 格式化日期为 YYYY-MM-DD，如果格式无效返回 null
+    private String formatDate(String dateString) {
+        try {
+            if (dateString.contains(" ")) { // 如果包含时间部分
+                dateString = dateString.split(" ")[0]; // 提取日期部分
+            }
+            java.sql.Date.valueOf(dateString); // 检查格式
+            return dateString;
+        } catch (IllegalArgumentException e) {
+            return null; // 格式无效
         }
     }
-    
+
+
     void refreshTable() {
         List<Attendance> attendanceList = attendanceController.getAllAttendance();
         DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
         model.setRowCount(0); // 清空表格数据
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (Attendance attendance : attendanceList) {
-            String formattedDate = dateFormat.format(attendance.getDate());
             model.addRow(new Object[]{
-                attendance.getStudentID(),
-                attendance.getCourseID(),
-                formattedDate,
+                attendance.getEnrollmentId(),
+                attendance.getStudentId(),  // 添加 Student ID
+                attendance.getCourseId(),  // 添加 Course ID
+                dateFormat.format(attendance.getDate()),
                 attendance.getStatus()
             });
+        }
+    }
+    private void handleSearchAttendance() {
+        String searchText = searchField.getText().trim(); // Get the search text from the input field
+    
+        if (searchText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter text to search.");
+            return;
+        }
+    
+        // Call the controller to search attendance records
+        List<Attendance> attendanceList = attendanceController.searchAttendance(searchText);
+    
+        if (attendanceList.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No matching attendance records found.");
+        } else {
+            // Populate the table with the search results
+            DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
+            model.setRowCount(0); // Clear the table before adding new rows
+    
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            for (Attendance attendance : attendanceList) {
+                String formattedDate = dateFormat.format(attendance.getDate());
+                model.addRow(new Object[]{
+                    attendance.getEnrollmentId(),
+                    formattedDate,
+                    attendance.getStatus()
+                });
+            }
         }
     }
     private void handleBack() {

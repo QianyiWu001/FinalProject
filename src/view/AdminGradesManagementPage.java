@@ -26,6 +26,7 @@ public class AdminGradesManagementPage extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    @SuppressWarnings("unused")
     private void setAdminGradesManagementPagePanel() {
         Font tableFont = new Font("Arial", Font.PLAIN, 16);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);

@@ -24,11 +24,17 @@ public class AttendanceService {
         return attendanceDAO.updateAttendance(attendance);
     }
 
-    public boolean deleteAttendance(int studentId, int courseId, String date) {
-        return attendanceDAO.deleteAttendance(studentId, courseId, date);
+    public boolean deleteAttendance(int enrollmentId, String date) {
+        return attendanceDAO.deleteAttendance(enrollmentId, date);
     }
 
     public List<Attendance> searchAttendance(String searchText) {
         return attendanceDAO.searchAttendance(searchText);
+    }
+    public boolean isEnrollmentValid(int enrollmentId) {
+        return attendanceDAO.isEnrollmentValid(enrollmentId);
+    }
+    public int getEnrollmentId(int studentId, int courseId) {
+        return attendanceDAO.getEnrollmentId(studentId, courseId);
     }
 }

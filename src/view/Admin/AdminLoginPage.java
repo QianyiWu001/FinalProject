@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class AdminLoginPage extends JFrame {
     private JLabel titleLabel;
-    private JButton courseBtn, studentBtn, attendanceBtn, gradeBtn, enrollmentBtn, backButton, logoutButton;
+    private JButton courseBtn, studentBtn, attendanceBtn, gradeBtn, enrollmentBtn, billButton, backButton, logoutButton;
 
     public AdminLoginPage() {
         setTitle("Admin Main Page");
@@ -94,14 +94,23 @@ public class AdminLoginPage extends JFrame {
         gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 0, 20, 0);
         add(enrollmentBtn, gbc);
-
+        // bill
+        billButton = new JButton("Bill Management");
+        billButton.setFont(font);
+        billButton.setPreferredSize(new Dimension(250, 40));
+        billButton.addActionListener(e -> adminLoginController.handleBillManagement());
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(0, 0, 20, 0);
+        add(billButton, gbc);
         // 返回按钮
         backButton = new JButton("Back");
         backButton.setFont(buttonFont);
         backButton.setPreferredSize(new Dimension(110, 30));
         backButton.addActionListener(e -> adminLoginController.handleBack());
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 7;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(10, 0, 10, 0);
         add(backButton, gbc);
@@ -112,7 +121,7 @@ public class AdminLoginPage extends JFrame {
         logoutButton.setPreferredSize(new Dimension(110, 30));
         logoutButton.addActionListener(e -> adminLoginController.handleExit());
         gbc.gridx = 1;
-        gbc.gridy = 6;
+        gbc.gridy = 7;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(10, 50, 10, 0);
         add(logoutButton, gbc);

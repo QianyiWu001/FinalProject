@@ -23,4 +23,18 @@ public class BillService {
     public boolean deleteBill(int billId) {
         return billDAO.deleteBill(billId);
     }
+      // 获取所有账单
+      public List<Bill> getAllBills() {
+        return billDAO.getAllBills();
+    }
+
+    // 根据查询条件搜索账单
+    public List<Bill> searchBills(String query) {
+        return billDAO.searchBills(query);
+    }
+
+    // 更新账单
+    public boolean updateBill(Bill bill) {
+        return billDAO.updateBill(bill);
+    }
 }

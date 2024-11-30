@@ -45,17 +45,7 @@ package "Entity Layer" as entity {
     + setCredits(int): void
   }
 
-  class Enrollment {
-    - enrollmentId: int
-    - studentId: int
-    - courseId: int
-    + getEnrollmentId(): int
-    + setEnrollmentId(int): void
-    + getStudentId(): int
-    + setStudentId(int): void
-    + getCourseId(): int
-    + setCourseId(int): void
-  }
+
 
   class Grade {
     - enrollmentId: int
@@ -71,17 +61,16 @@ package "Entity Layer" as entity {
     + getGrade(): int
     + setGrade(int): void
   }
-
   class Bill {
     - billID: int
-    - student: Student
+    - studentId: int
     - billAmount: double
     - dueDate: LocalDate
-    - paidStatus: PaidStatus
+    - paidStatus: String
     + getBillID(): int
     + setBillID(int): void
-    + getStudent(): Student
-    + setStudent(Student): void
+    + getStudentId(): int
+    + setStudentId(int): void
     + getBillAmount(): double
     + setBillAmount(double): void
     + getDueDate(): LocalDate
@@ -89,6 +78,20 @@ package "Entity Layer" as entity {
     + getPaidStatus(): PaidStatus
     + setPaidStatus(PaidStatus): void
   }
+
+  class Enrollment {
+    - enrollmentId: int
+    - studentId: int
+    - courseId: int
+    + getEnrollmentId(): int
+    + setEnrollmentId(int): void
+    + getStudentId(): int
+    + setStudentId(int): void
+    + getCourseId(): int
+    + setCourseId(int): void
+  }
+
+
 
   class Attendance {
     - enrollmentId: int
@@ -109,12 +112,13 @@ package "Entity Layer" as entity {
   }
 }
 
-' 类关系：实体与 DAO
-Student --|> User
-Enrollment --> Student : *..1
-Enrollment --> Course : *..1
-Grade --> Student : *..1
-Grade --> Course : *..1
-Bill --> Student : *..1
-Attendance --> Student : *..1
-Attendance --> Course : *..1
+  Student --|> User
+
+
+  Enrollment --> Student : *..1
+  Enrollment --> Course : *..1
+  Grade --> Student : *..1
+  Grade --> Course : *..1
+  Bill --> Student : *..1
+  Attendance --> Student : *..1
+  Attendance --> Course : *..1

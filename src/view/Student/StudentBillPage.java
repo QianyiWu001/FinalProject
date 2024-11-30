@@ -78,9 +78,9 @@ public class StudentBillPage extends JFrame {
         model.setRowCount(0);
         for (Bill bill : bills) {
             model.addRow(new Object[]{
-                bill.getbill_id(),
-                bill.getbill_amount(),
-                bill.getdue_date(),
+                bill.getBillID(),
+                bill.getBillAmount(),
+                bill.getDueDate(),
                 bill.getPaidStatus().name()
             });
         }

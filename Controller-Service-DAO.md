@@ -52,11 +52,7 @@ package "DAO Layer" as dao {
     + getAllCourses(): List<Course>
   }
 
-  class EnrollmentDAO {
-    + getCoursesByStudentId(int studentId): List<Course>
-    + enrollStudentInCourse(int studentId, int courseId): boolean
-    + unenrollStudentFromCourse(int studentId, int courseId): boolean
-  }
+
 
   class GradesDAO {
     + getAllGrades(): List<Grade>
@@ -67,14 +63,21 @@ package "DAO Layer" as dao {
     + getGradesByStudentId(int studentId): List<Grade>
   }
 
-  class BillDAO {
-    + addBill(Bill bill): boolean
-    + deleteBill(int billId): boolean
-    + updateBill(Bill bill): boolean
-    + getBillById(int billId): Bill
-    + getBillsByStudentId(int studentId): List<Bill>
+ class BillDAO {
+    + getAllBills(): List<Bill>
+    + getBillsByStudentId(int): List<Bill>
+    + addBill(Bill): boolean
+    + deleteBill(int): boolean
+    + updateBill(Bill): boolean
   }
 
+  class EnrollmentDAO {
+    + getAllEnrollments(): List<Enrollment>
+    + getCoursesByStudentId(int): List<Course>
+    + addEnrollment(Enrollment): boolean
+    + deleteEnrollment(int): boolean
+    + updateEnrollment(Enrollment): boolean
+  }
   class AttendanceDAO {
     + markAttendance(Attendance attendance): boolean
     + getAttendanceByStudentId(int studentId): List<Attendance>
@@ -109,12 +112,21 @@ package "Service Layer" as service {
     + searchGrades(String query): List<Grade>
   }
 
-  class BillService {
-    + getBillsByStudentId(int studentId): List<Bill>
-    + addBill(Bill bill): boolean
-    + deleteBill(int billId): boolean
+ class BillService {
+    + getAllBills(): List<Bill>
+    + getBillsByStudentId(int): List<Bill>
+    + addBill(Bill): boolean
+    + deleteBill(int): boolean
+    + updateBill(Bill): boolean
   }
 
+  class EnrollmentService {
+    + getAllEnrollments(): List<Enrollment>
+    + deleteEnrollment(int): void
+    + getCoursesByStudentId(int): List<Course>
+    + addEnrollment(Enrollment): boolean
+    + updateEnrollment(Enrollment): boolean
+  }
   class AttendanceService {
     + getAllAttendance(): List<Attendance>
     + addAttendance(Attendance attendance): boolean
@@ -150,9 +162,19 @@ package "Controller Layer" as controller {
   }
 
   class BillController {
-    + getBillsByStudentId(int studentId): List<Bill>
-    + addBill(Bill bill): boolean
-    + deleteBill(int billId): boolean
+    + getAllBills(): List<Bill>
+    + getBillsByStudentId(int): List<Bill>
+    + addBill(Bill): boolean
+    + deleteBill(int): boolean
+    + updateBill(Bill): boolean
+  }
+
+  class EnrollmentController {
+    + getAllEnrollments(): List<Enrollment>
+    + getCoursesByStudentId(int): List<Course>
+    + addEnrollment(Enrollment): boolean
+    + deleteEnrollment(int): boolean
+    + updateEnrollment(Enrollment): boolean
   }
 
   class CourseController {
@@ -163,11 +185,6 @@ package "Controller Layer" as controller {
     + searchCourses(String searchText): List<Course>
   }
 
-  class EnrollmentController {
-    + getCoursesByStudentId(int studentId): List<Course>
-    + enrollStudentInCourse(int studentId, int courseId): boolean
-    + unenrollStudentFromCourse(int studentId, int courseId): boolean
-  }
 
   class GradesController {
     + getAllGrades(): List<Grade>
@@ -191,28 +208,30 @@ package "Controller Layer" as controller {
 
 
 
+ ' Service 与 DAO 的依赖
+  StudentService --> StudentDAO
+  StudentService --> UserDAO
+  CourseService --> CourseDAO
+  GradesService --> GradesDAO
+  BillService --> BillDAO
+  AttendanceService --> AttendanceDAO
+  EnrollmentService --> EnrollmentDAO
 
-' Service 与 DAO 的依赖
-StudentService --> StudentDAO
-StudentService --> UserDAO
-CourseService --> CourseDAO
-GradesService --> GradesDAO
-BillService --> BillDAO
-AttendanceService --> AttendanceDAO
+ ' Controller 与 Service 或 DAO 的依赖
+  LoginController --> UserDAO
+  AdminLoginController --> AttendanceController
+  AdminLoginController --> BillController
+  AdminLoginController --> CourseController
+  AdminLoginController --> GradesController
+  AdminLoginController --> StudentController
+  AdminLoginController --> EnrollmentController
 
-' Controller 与 Service 或 DAO 的依赖
-LoginController --> UserDAO
-AdminLoginController --> AttendanceController
-AdminLoginController --> BillController
-AdminLoginController --> CourseController
-AdminLoginController --> GradesController
-AdminLoginController --> StudentController
-AttendanceController --> AttendanceService
-BillController --> BillService
-CourseController --> CourseService
-EnrollmentController --> EnrollmentDAO
-GradesController --> GradesService
-StudentController --> StudentService
+  AttendanceController --> AttendanceService
+  BillController --> BillService
+  CourseController --> CourseService
+  GradesController --> GradesService
+  StudentController --> StudentService
+  EnrollmentController --> EnrollmentService
 
 
 ' DAO 继承 BaseDAO

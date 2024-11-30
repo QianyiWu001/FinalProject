@@ -1,12 +1,7 @@
 package controller;
 
 import view.BasicLoginPage;
-import view.Admin.AdminAttendanceManagementPage;
-import view.Admin.AdminCoursesManagementPage;
-import view.Admin.AdminGradesManagementPage;
-import view.Admin.AdminLoginPage;
-import view.Admin.AdminStudentsManagementPage;
-import view.Admin.AdminEnrollmentManagementPage;
+import view.Admin.*;
 
 
 public class AdminLoginController {
@@ -42,6 +37,11 @@ public class AdminLoginController {
 
     public void handleEnrollmentManagement() {
         new AdminEnrollmentManagementPage(); // 打开 Enrollment 管理页面
+        adminLoginPage.dispose(); // 关闭当前页面
+    }
+
+    public void handleBillManagement() {
+        new AdminBillManagementPage(); // 打开 Enrollment 管理页面
         adminLoginPage.dispose(); // 关闭当前页面
     }
     // 返回到登录页面

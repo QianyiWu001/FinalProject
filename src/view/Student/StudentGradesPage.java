@@ -1,7 +1,7 @@
 package view.Student;
 
 
-import dao.GradesDAO;
+import dao.GradeDAO;
 import entity.Grade;
 import DatabaseUtilities.Session;
 
@@ -13,10 +13,10 @@ import java.util.List;
 public class StudentGradesPage extends JFrame {
     private JButton backButton, refreshButton;
     private JTable gradesTable;
-    private GradesDAO gradesDAO;
+    private GradeDAO gradesDAO;
 
     public StudentGradesPage() {
-        gradesDAO = new GradesDAO();
+        gradesDAO = new GradeDAO();
         setTitle("Student Grades Page");
         setLayout(new BorderLayout());
         setSize(800, 550);

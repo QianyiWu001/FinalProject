@@ -6,6 +6,7 @@ import view.Admin.AdminCoursesManagementPage;
 import view.Admin.AdminGradesManagementPage;
 import view.Admin.AdminLoginPage;
 import view.Admin.AdminStudentsManagementPage;
+import view.Admin.AdminEnrollmentManagementPage;
 
 
 public class AdminLoginController {
@@ -39,6 +40,10 @@ public class AdminLoginController {
         adminLoginPage.dispose();
     }
 
+    public void handleEnrollmentManagement() {
+        new AdminEnrollmentManagementPage(); // 打开 Enrollment 管理页面
+        adminLoginPage.dispose(); // 关闭当前页面
+    }
     // 返回到登录页面
     public void handleBack() {
         new BasicLoginPage();

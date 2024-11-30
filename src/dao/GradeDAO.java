@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GradesDAO {
+public class GradeDAO {
 
     public List<Grade> getAllGrades() {
         List<Grade> grades = new ArrayList<>();

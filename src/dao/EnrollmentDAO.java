@@ -35,29 +35,111 @@ public class EnrollmentDAO {
         return courses;
     }
 
-    public boolean enrollStudentInCourse(int studentId, int courseId) {
-        String query = "INSERT INTO enrollments (student_id, course_id) VALUES (?, ?)";
-        try (Connection conn = ConnectDB.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setInt(1, studentId);
-            pstmt.setInt(2, courseId);
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
+  // 获取所有 Enrollment 数据
+  public List<Enrollment> getAllEnrollments() {
+    List<Enrollment> enrollments = new ArrayList<>();
+    String query = "SELECT enrollment_id, student_id, course_id FROM enrollments";
+
+    try (Connection connection = ConnectDB.getConnection();
+         PreparedStatement statement = connection.prepareStatement(query);
+         ResultSet resultSet = statement.executeQuery()) {
+
+        while (resultSet.next()) {
+            Enrollment enrollment = new Enrollment();
+            enrollment.setEnrollmentId(resultSet.getInt("enrollment_id"));
+            enrollment.setStudentId(resultSet.getInt("student_id"));
+            enrollment.setCourseId(resultSet.getInt("course_id"));
+            enrollments.add(enrollment);
         }
-        return false;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
 
-    public boolean unenrollStudentFromCourse(int studentId, int courseId) {
-        String query = "DELETE FROM enrollments WHERE student_id = ? AND course_id = ?";
-        try (Connection conn = ConnectDB.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setInt(1, studentId);
-            pstmt.setInt(2, courseId);
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+    return enrollments;
+}
+
+// 添加新的 Enrollment
+public boolean addEnrollment(Enrollment enrollment) {
+    String query = "INSERT INTO enrollments (enrollment_id, student_id, course_id) VALUES (?, ?, ?)";
+
+    try (Connection connection = ConnectDB.getConnection();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        statement.setInt(1, enrollment.getEnrollmentId());
+        statement.setInt(2, enrollment.getStudentId());
+        statement.setInt(3, enrollment.getCourseId());
+
+        int rowsAffected = statement.executeUpdate();
+        return rowsAffected > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+
+    return false;
+}
+
+// 删除指定的 Enrollment
+public boolean deleteEnrollment(int enrollmentId) {
+    String query = "DELETE FROM enrollments WHERE enrollment_id = ?";
+
+    try (Connection connection = ConnectDB.getConnection();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        statement.setInt(1, enrollmentId);
+
+        int rowsAffected = statement.executeUpdate();
+        return rowsAffected > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return false;
+}
+
+// 更新 Enrollment 数据
+public boolean updateEnrollment(Enrollment updatedEnrollment) {
+    String query = "UPDATE enrollments SET student_id = ?, course_id = ? WHERE enrollment_id = ?";
+
+    try (Connection connection = ConnectDB.getConnection();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        statement.setInt(1, updatedEnrollment.getStudentId());
+        statement.setInt(2, updatedEnrollment.getCourseId());
+        statement.setInt(3, updatedEnrollment.getEnrollmentId());
+
+        int rowsAffected = statement.executeUpdate();
+        return rowsAffected > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return false;
+}
+
+// 根据查询条件搜索 Enrollment
+public List<Enrollment> searchEnrollments(String queryText) {
+    List<Enrollment> enrollments = new ArrayList<>();
+    String query = "SELECT enrollment_id, student_id, course_id " +
+                   "FROM enrollments " +
+                   "WHERE CONCAT(enrollment_id, student_id, course_id) LIKE ?";
+
+    try (Connection connection = ConnectDB.getConnection();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        statement.setString(1, "%" + queryText + "%");
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            Enrollment enrollment = new Enrollment();
+            enrollment.setEnrollmentId(resultSet.getInt("enrollment_id"));
+            enrollment.setStudentId(resultSet.getInt("student_id"));
+            enrollment.setCourseId(resultSet.getInt("course_id"));
+            enrollments.add(enrollment);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return enrollments;
+}
 }

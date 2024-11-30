@@ -1,15 +1,15 @@
 package service;
 
-import dao.GradesDAO;
+import dao.GradeDAO;
 import entity.Grade;
 
 import java.util.List;
 
 public class GradesService {
-    private GradesDAO gradesDAO;
+    private GradeDAO gradesDAO;
 
     public GradesService() {
-        this.gradesDAO = new GradesDAO();
+        this.gradesDAO = new GradeDAO();
     }
 
     public List<Grade> getAllGrades() {

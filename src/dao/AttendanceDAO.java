@@ -119,20 +119,29 @@ public class AttendanceDAO {
 
         return false; // 如果操作失败，返回 false
     }
-
-    public List<Attendance> searchAttendance(String searchText) {
+    public List<Attendance> searchAttendance(String keyword) {
         List<Attendance> attendanceList = new ArrayList<>();
-        String query = "SELECT * FROM attendance WHERE status LIKE ?";
-
+        String query = "SELECT a.enrollment_id, e.student_id, e.course_id, a.date, a.status " +
+                       "FROM attendance a " +
+                       "JOIN enrollments e ON a.enrollment_id = e.enrollment_id " +
+                       "WHERE CAST(a.enrollment_id AS CHAR) LIKE ? " +
+                       "   OR CAST(e.student_id AS CHAR) LIKE ? " +
+                       "   OR CAST(e.course_id AS CHAR) LIKE ? " +
+                       "   OR a.status LIKE ?";
         try (Connection conn = ConnectDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            pstmt.setString(1, "%" + searchText + "%");
+            String likeKeyword = "%" + keyword + "%";
+            pstmt.setString(1, likeKeyword);
+            pstmt.setString(2, likeKeyword);
+            pstmt.setString(3, likeKeyword);
+            pstmt.setString(4, likeKeyword);
             ResultSet rs = pstmt.executeQuery();
-
+    
             while (rs.next()) {
                 Attendance attendance = new Attendance();
                 attendance.setEnrollmentId(rs.getInt("enrollment_id"));
+                attendance.setStudentId(rs.getInt("student_id"));
+                attendance.setCourseId(rs.getInt("course_id"));
                 attendance.setDate(rs.getDate("date"));
                 attendance.setStatus(rs.getString("status"));
                 attendanceList.add(attendance);
@@ -140,7 +149,6 @@ public class AttendanceDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return attendanceList;
     }
     public int getEnrollmentId(int studentId, int courseId) {

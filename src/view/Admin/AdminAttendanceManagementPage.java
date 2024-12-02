@@ -67,7 +67,20 @@ public class AdminAttendanceManagementPage extends JFrame {
         searchAttendanceButton = new JButton("Search Attendance");
         searchAttendanceButton.setFont(functionFont);
         searchAttendanceButton.setPreferredSize(functionDimension);
-        searchAttendanceButton.addActionListener(e -> handleSearchAttendance());
+        searchAttendanceButton.addActionListener(e -> {
+            String keyword = searchField.getText().trim();
+            if (keyword.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter a keyword to search.");
+                return;
+            }
+        
+            List<Attendance> searchResults = attendanceController.searchAttendance(keyword);
+            if (searchResults.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No matching records found.");
+            } else {
+                updateTableData(searchResults);
+            }
+        });
 
         refreshButton = new JButton("Refresh");
         refreshButton.setFont(functionFont);
@@ -190,10 +203,10 @@ public class AdminAttendanceManagementPage extends JFrame {
 
     refreshTable();
 }
-private void updateTableData(List<Attendance> attendances) {
+private void updateTableData(List<Attendance> attendanceList) {
     DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
     model.setRowCount(0); // 清空表格数据
-    for (Attendance attendance : attendances) {
+    for (Attendance attendance : attendanceList) {
         Object[] row = {
             attendance.getEnrollmentId(),
             attendance.getStudentId(),
@@ -204,7 +217,6 @@ private void updateTableData(List<Attendance> attendances) {
         model.addRow(row);
     }
 }
-
 
     private void handleAddAttendance() {
         new AddAttendancePage(this, attendanceController);

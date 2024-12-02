@@ -2,12 +2,16 @@ package view.Admin;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.List;
 import controller.AttendanceController;
 import entity.Attendance;
 
-import java.awt.*;
-import java.text.SimpleDateFormat;
-import java.util.List;
 
 public class AdminAttendanceManagementPage extends JFrame {
     private JButton backButton, exitButton, addAttendanceButton, deleteAttendanceButton, updateAttendanceButton, searchAttendanceButton, refreshButton;
@@ -15,6 +19,11 @@ public class AdminAttendanceManagementPage extends JFrame {
     private JTable attendanceTable;
     private JScrollPane attendanceTableScrollPane;
     private AttendanceController attendanceController;
+    private List<Attendance> attendances;
+    private int activeColumn = -1;
+
+    // 排序逻辑
+    boolean[] sortStates = new boolean[5]; // 记录每列的排序状态
 
     public AdminAttendanceManagementPage() {
         attendanceController = new AttendanceController(); // 初始化控制器
@@ -90,29 +99,112 @@ public class AdminAttendanceManagementPage extends JFrame {
         buttonPanel.add(exitButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
-        DefaultTableModel model = new DefaultTableModel(
-            new Object[0][0], 
-            new String[]{"Enrollment ID", "Student ID", "Course ID", "Date", "Status"}
-        ) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                // 仅允许编辑 Date 和 Status 列
-                return column == 3 || column == 4;
+
+    // 表格初始化，包含 enrollmentId，但隐藏该列
+    DefaultTableModel model = new DefaultTableModel(
+        new Object[0][0],
+        new String[]{"Enrollment ID", "Student ID", "Course ID", "Date", "Status"}
+    ) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return column == 3 || column == 4; // 仅允许编辑 Date 和 Status 列
+        }
+    };
+
+    attendanceTable = new JTable(model);
+    attendanceTable.getTableHeader().setFont(tableFont);
+    attendanceTable.setFont(tableFont);
+    attendanceTable.setRowHeight(30);
+
+    // 隐藏 enrollmentId 列
+    attendanceTable.getColumnModel().getColumn(0).setMinWidth(0);
+    attendanceTable.getColumnModel().getColumn(0).setMaxWidth(0);
+    attendanceTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+    attendanceTableScrollPane = new JScrollPane(attendanceTable);
+    attendanceTable.setFillsViewportHeight(true);
+    add(attendanceTableScrollPane, BorderLayout.CENTER);
+    // 添加表头排序功能和符号
+    JTableHeader header = attendanceTable.getTableHeader();
+    header.setReorderingAllowed(false); // 禁止拖动列
+
+    // 记录每列的排序状态
+    boolean[] sortStates = new boolean[5]; // false = 升序, true = 降序
+
+    header.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int column = attendanceTable.columnAtPoint(e.getPoint());
+            if (column >= 0) { // 仅当点击有效列时执行
+                List<Attendance> attendances = attendanceController.getAllAttendance();
+
+                // 根据列号排序
+                attendances.sort((a1, a2) -> {
+                    if (column == 0) { // 按 Enrollment ID 排序
+                        return sortStates[column]
+                                ? Integer.compare(a2.getEnrollmentId(), a1.getEnrollmentId())
+                                : Integer.compare(a1.getEnrollmentId(), a2.getEnrollmentId());
+                    } else if (column == 1) { // 按 Student ID 排序
+                        return sortStates[column]
+                                ? Integer.compare(a2.getStudentId(), a1.getStudentId())
+                                : Integer.compare(a1.getStudentId(), a2.getStudentId());
+                    } else if (column == 2) { // 按 Course ID 排序
+                        return sortStates[column]
+                                ? Integer.compare(a2.getCourseId(), a1.getCourseId())
+                                : Integer.compare(a1.getCourseId(), a2.getCourseId());
+                    } else if (column == 3) { // 按 Date 排序
+                        return sortStates[column]
+                                ? a2.getDate().compareTo(a1.getDate())
+                                : a1.getDate().compareTo(a2.getDate());
+                    } else if (column == 4) { // 按 Status 排序
+                        return sortStates[column]
+                                ? a2.getStatus().compareTo(a1.getStatus())
+                                : a1.getStatus().compareTo(a2.getStatus());
+                    }
+                    return 0; // 默认不变
+                });
+
+                // 切换当前列的排序状态
+                sortStates[column] = !sortStates[column];
+
+                // 更新表格数据
+                updateTableData(attendances);
+
+                // 更新表头符号
+                for (int i = 0; i < attendanceTable.getColumnCount(); i++) {
+                    String columnName = attendanceTable.getColumnName(i).replaceAll(" ▲| ▼", "");
+                    if (i == column) {
+                        columnName += sortStates[column] ? " ▼" : " ▲";
+                    }
+                    attendanceTable.getColumnModel().getColumn(i).setHeaderValue(columnName);
+                }
+                header.repaint(); // 刷新表头
             }
+        }
+    });
+
+    attendanceTableScrollPane = new JScrollPane(attendanceTable);
+    attendanceTable.setFillsViewportHeight(true);
+
+    add(attendanceTableScrollPane, BorderLayout.CENTER);
+
+    refreshTable();
+}
+private void updateTableData(List<Attendance> attendances) {
+    DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
+    model.setRowCount(0); // 清空表格数据
+    for (Attendance attendance : attendances) {
+        Object[] row = {
+            attendance.getEnrollmentId(),
+            attendance.getStudentId(),
+            attendance.getCourseId(),
+            attendance.getDate(),
+            attendance.getStatus()
         };
-        
-        attendanceTable = new JTable(model);
-        attendanceTable.getTableHeader().setFont(tableFont);
-        attendanceTable.setFont(tableFont);
-        attendanceTable.setRowHeight(30);
-
-        attendanceTableScrollPane = new JScrollPane(attendanceTable);
-        attendanceTable.setFillsViewportHeight(true);
-
-        add(attendanceTableScrollPane, BorderLayout.CENTER);
-
-        refreshTable();
+        model.addRow(row);
     }
+}
+
 
     private void handleAddAttendance() {
         new AddAttendancePage(this, attendanceController);

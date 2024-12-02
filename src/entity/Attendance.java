@@ -21,6 +21,13 @@ public class Attendance {
         this.studentId = studentId;
         this.courseId = courseId;
     }
+    public Attendance(int studentId, int courseId,Date date, String status) {
+
+        this.date = date;
+        this.status = status;
+        this.studentId = studentId;
+        this.courseId = courseId;
+    }
 
     // Getters 和 Setters
     public int getEnrollmentId() {

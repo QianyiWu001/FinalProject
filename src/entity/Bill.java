@@ -11,7 +11,8 @@ public class Bill {
     public enum PaidStatus {
         PAID,
         UNPAID,
-        PENDING
+        PENDING,
+        NOBill
     }
 
     private PaidStatus paidStatus;

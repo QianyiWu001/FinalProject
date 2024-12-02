@@ -15,17 +15,17 @@ public class BillDAO {
     public List<Bill> getAllBills() {
         List<Bill> bills = new ArrayList<>();
         String query = "SELECT bill_id, student_id, bill_amount, due_date, paid_status FROM bills";
-    
+
         try (Connection conn = ConnectDB.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-    
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
                 Bill bill = new Bill();
                 bill.setBillID(rs.getInt("bill_id"));
                 bill.setStudentId(rs.getInt("student_id"));
                 bill.setBillAmount(rs.getDouble("bill_amount"));
-    
+
                 // Null check for due_date
                 Date dueDate = rs.getDate("due_date");
                 if (dueDate != null) {
@@ -33,31 +33,32 @@ public class BillDAO {
                 } else {
                     bill.setDueDate(null); // 或设置默认值
                 }
-    
+
                 // 处理 paid_status 映射
                 String paidStatus = rs.getString("paid_status").toUpperCase(); // 转换为大写
                 try {
                     bill.setPaidStatus(Bill.PaidStatus.valueOf(paidStatus));
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Warning: Invalid paid_status '" + paidStatus + "' for bill_id " + rs.getInt("bill_id"));
+                    System.out.println(
+                            "Warning: Invalid paid_status '" + paidStatus + "' for bill_id " + rs.getInt("bill_id"));
                     bill.setPaidStatus(null); // 或设置默认值
                 }
-    
+
                 bills.add(bill);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    
+
         return bills;
     }
+
     // 根据学生 ID 获取账单
     public List<Bill> getBillsByStudentId(int studentId) {
         List<Bill> bills = new ArrayList<>();
-        String query = "SELECT bill_id, bill_amount, due_date, paid_status FROM bills WHERE student_id = ?";
-
+        String query = "SELECT bill_id, student_id, bill_amount, due_date, paid_status FROM bills WHERE student_id = ?";
         try (Connection conn = ConnectDB.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+                PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, studentId);
             ResultSet rs = stmt.executeQuery();
@@ -65,11 +66,21 @@ public class BillDAO {
             while (rs.next()) {
                 Bill bill = new Bill();
                 bill.setBillID(rs.getInt("bill_id"));
-                bill.setStudentId(studentId); // 设置 studentId
+                bill.setStudentId(rs.getInt("student_id"));
                 bill.setBillAmount(rs.getDouble("bill_amount"));
-                bill.setDueDate(rs.getDate("due_date").toLocalDate());
-                bill.setPaidStatus(PaidStatus.valueOf(rs.getString("paid_status")));
+                bill.setDueDate(rs.getDate("due_date") != null ? rs.getDate("due_date").toLocalDate() : null);
+            
+                // 将数据库的 paid_status 映射为枚举
+                String paidStatusString = rs.getString("paid_status");
+                bill.setPaidStatus(paidStatusString != null ? PaidStatus.valueOf(paidStatusString.toUpperCase()) : PaidStatus.PENDING);
                 bills.add(bill);
+            }
+            
+            // 如果没有账单，返回一个默认的 No Bill 对象
+            if (bills.isEmpty()) {
+                Bill noBill = new Bill();
+                noBill.setPaidStatus(PaidStatus.NOBill); // 设置为 NOBill 状态
+                bills.add(noBill);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,18 +88,19 @@ public class BillDAO {
 
         return bills;
     }
+
     public List<Bill> searchBills(String query) {
         List<Bill> bills = new ArrayList<>();
         String sql = "SELECT bill_id, student_id, bill_amount, due_date, paid_status " +
-                     "FROM bills " +
-                     "WHERE CONCAT(bill_id, student_id, bill_amount, due_date, paid_status) LIKE ?";
-    
+                "FROM bills " +
+                "WHERE CONCAT(bill_id, student_id, bill_amount, due_date, paid_status) LIKE ?";
+
         try (Connection conn = ConnectDB.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-    
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, "%" + query + "%");
             ResultSet rs = stmt.executeQuery();
-    
+
             while (rs.next()) {
                 Bill bill = new Bill();
                 bill.setBillID(rs.getInt("bill_id"));
@@ -101,15 +113,16 @@ public class BillDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    
+
         return bills;
     }
+
     // 添加账单
     public boolean addBill(Bill bill) {
         String query = "INSERT INTO bills (bill_id, student_id, bill_amount, due_date, paid_status) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectDB.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+                PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, bill.getBillID());
             stmt.setInt(2, bill.getStudentId()); // 使用 studentId
@@ -131,7 +144,7 @@ public class BillDAO {
         String query = "DELETE FROM bills WHERE bill_id = ?";
 
         try (Connection conn = ConnectDB.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+                PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, billId);
 
@@ -149,7 +162,7 @@ public class BillDAO {
         String query = "UPDATE bills SET student_id = ?, bill_amount = ?, due_date = ?, paid_status = ? WHERE bill_id = ?";
 
         try (Connection conn = ConnectDB.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+                PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, bill.getStudentId()); // 使用 studentId
             stmt.setDouble(2, bill.getBillAmount());

@@ -13,9 +13,14 @@ public class BillService {
     }
 
     public List<Bill> getBillsByStudentId(int studentId) {
-        return billDAO.getBillsByStudentId(studentId);
+        List<Bill> bills = billDAO.getBillsByStudentId(studentId);
+        if (bills.isEmpty()) {
+            Bill noBill = new Bill();
+            noBill.setPaidStatus(null);
+            bills.add(noBill);
+        }
+        return bills;
     }
-
     public boolean addBill(Bill bill) {
         return billDAO.addBill(bill);
     }

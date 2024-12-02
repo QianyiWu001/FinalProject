@@ -84,30 +84,6 @@ public class GradeDAO {
         return false;
     }
 
-    public List<Grade> searchGrades(String query) {
-        List<Grade> grades = new ArrayList<>();
-        String sqlQuery = "SELECT enrollment_id, student_id, course_id, grade FROM grades WHERE grade LIKE ?";
-
-        try (Connection conn = ConnectDB.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sqlQuery)) {
-
-            pstmt.setString(1, "%" + query + "%");
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                Grade grade = new Grade(
-                    rs.getInt("enrollment_id"),
-                    rs.getInt("student_id"),
-                    rs.getInt("course_id"),
-                    rs.getInt("grade")
-                );
-                grades.add(grade);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return grades;
-    }
 
     public List<Grade> getGradesByStudentId(int studentId) {
         List<Grade> grades = new ArrayList<>();
@@ -132,5 +108,36 @@ public class GradeDAO {
             e.printStackTrace();
         }
         return grades;
+    }
+    public List<Grade> searchGrades(String keyword) {
+        List<Grade> gradesList = new ArrayList<>();
+        String query = "SELECT g.grade, e.enrollment_id, e.student_id, e.course_id " +
+                       "FROM grades g " +
+                       "JOIN enrollments e ON g.enrollment_id = e.enrollment_id " +
+                       "WHERE CAST(e.student_id AS CHAR) LIKE ? " +
+                       "   OR CAST(e.course_id AS CHAR) LIKE ? " +
+                       "   OR CAST(e.enrollment_id AS CHAR) LIKE ? " +
+                       "   OR CAST(g.grade AS CHAR) LIKE ?";
+        try (Connection conn = ConnectDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            String likeKeyword = "%" + keyword + "%";
+            pstmt.setString(1, likeKeyword);
+            pstmt.setString(2, likeKeyword);
+            pstmt.setString(3, likeKeyword);
+            pstmt.setString(4, likeKeyword);
+    
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Grade grade = new Grade();
+                grade.setGrade(rs.getInt("grade"));
+                grade.setEnrollmentId(rs.getInt("enrollment_id"));
+                grade.setStudentId(rs.getInt("student_id"));
+                grade.setCourseId(rs.getInt("course_id"));
+                gradesList.add(grade);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return gradesList;
     }
 }

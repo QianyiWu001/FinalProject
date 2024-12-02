@@ -2,6 +2,7 @@ package view.Student;
 
 import controller.BillController;
 import entity.Bill;
+import entity.Bill.PaidStatus;
 import DatabaseUtilities.Session;
 
 import javax.swing.*;
@@ -25,6 +26,7 @@ public class StudentBillPage extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    @SuppressWarnings("unused")
     private void setBillPagePanel() {
         Font tableFont = new Font("Arial", Font.PLAIN, 16);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
@@ -45,15 +47,10 @@ public class StudentBillPage extends JFrame {
         backButton.addActionListener(e -> handleBack());
         refreshButton = createButton("Refresh", buttonFont);
         refreshButton.addActionListener(e -> refreshTable());
-        // addBillButton = createButton("Add Bill", buttonFont);
-        // addBillButton.addActionListener(e -> handleAddBill());
-        // deleteBillButton = createButton("Delete Bill", buttonFont);
-        // deleteBillButton.addActionListener(e -> handleDeleteBill());
 
         buttonPanel.add(backButton);
         buttonPanel.add(refreshButton);
-        buttonPanel.add(addBillButton);
-        buttonPanel.add(deleteBillButton);
+
 
         add(buttonPanel, BorderLayout.SOUTH);
 
@@ -73,37 +70,27 @@ public class StudentBillPage extends JFrame {
         updateTableData(bills);
     }
 
-    private void updateTableData(List<Bill> bills) {
-        DefaultTableModel model = (DefaultTableModel) billsTable.getModel();
-        model.setRowCount(0);
+
+private void updateTableData(List<Bill> bills) {
+    DefaultTableModel model = (DefaultTableModel) billsTable.getModel();
+    model.setRowCount(0); // 清空表格数据
+
+    if (bills.size() == 1 && bills.get(0).getPaidStatus() == PaidStatus.NOBill) {
+        // 如果是 No Bill 状态
+        model.addRow(new Object[]{"N/A", "N/A", "N/A", "No Bill"});
+    } else {
         for (Bill bill : bills) {
-            model.addRow(new Object[]{
-                bill.getBillID(),
+            Object[] row = {
+                bill.getStudentId(),
+               
                 bill.getBillAmount(),
-                bill.getDueDate(),
-                bill.getPaidStatus().name()
-            });
+                bill.getDueDate() != null ? bill.getDueDate() : "N/A",
+                bill.getPaidStatus().toString() // 显示枚举的名称
+            };
+            model.addRow(row);
         }
     }
-
-    private void handleAddBill() {
-        JOptionPane.showMessageDialog(this, "Add Bill functionality is not implemented yet.");
-    }
-
-    private void handleDeleteBill() {
-        int selectedRow = billsTable.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a bill to delete.");
-            return;
-        }
-        int billId = (int) billsTable.getValueAt(selectedRow, 0);
-        if (billController.deleteBill(billId)) {
-            JOptionPane.showMessageDialog(this, "Bill deleted successfully.");
-            refreshTable();
-        } else {
-            JOptionPane.showMessageDialog(this, "Failed to delete bill.");
-        }
-    }
+}
 
     private void handleBack() {
         new StudentLoginPage();

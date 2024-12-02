@@ -88,14 +88,20 @@ public class CourseDAO {
 
     public List<Course> searchCourses(String searchText) {
         List<Course> courses = new ArrayList<>();
-        String query = "SELECT course_id, course_name, description, credits FROM courses WHERE course_name LIKE ?";
-
+        String query = "SELECT course_id, course_name, description, credits " +
+                       "FROM courses " +
+                       "WHERE course_id LIKE ? OR course_name LIKE ? OR description LIKE ?";
+    
         try (Connection conn = ConnectDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            pstmt.setString(1, "%" + searchText + "%");
+    
+            // 将搜索内容应用于 ID、Name 和 Description
+            pstmt.setString(1, "%" + searchText + "%"); // 用于 ID 的模糊匹配
+            pstmt.setString(2, "%" + searchText + "%"); // 用于 Name 的模糊匹配
+            pstmt.setString(3, "%" + searchText + "%"); // 用于 Description 的模糊匹配
+    
             ResultSet rs = pstmt.executeQuery();
-
+    
             while (rs.next()) {
                 Course course = new Course();
                 course.setCourseId(rs.getInt("course_id"));
@@ -107,7 +113,7 @@ public class CourseDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+    
         return courses;
     }
 }

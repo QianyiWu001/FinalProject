@@ -20,7 +20,7 @@ public class StudentDAO {
             throw new RuntimeException("Unable to establish database connection.", e);
         }
     }
- // 添加学生到 students 表
+//add into usertable at the same time 
  public boolean addStudent(Student student) {
     String query = "INSERT INTO students (student_id, name, email, phone, address) VALUES (?, ?, ?, ?, ?)";
 
@@ -43,7 +43,6 @@ public class StudentDAO {
     }
 }
 
-// 根据 student_id 删除学生
 public boolean deleteStudent(int studentId) {
     String query = "DELETE FROM students WHERE student_id = ?";
 
@@ -62,7 +61,6 @@ public boolean deleteStudent(int studentId) {
     }
 }
 
-// 更新学生信息
 public boolean updateStudent(Student student) {
     String query = "UPDATE students SET name = ?, email = ?, phone = ?, address = ? WHERE student_id = ?";
 
@@ -85,7 +83,7 @@ public boolean updateStudent(Student student) {
     }
 }
 
-// 根据 student_id 获取学生详细信息
+// get detail by student id
 public Student getStudentById(int studentId) {
     String query = "SELECT * FROM students WHERE student_id = ?";
 
@@ -116,7 +114,6 @@ public Student getStudentById(int studentId) {
     }
 }
 
-// 搜索学生（按 student_id 或 name）
 public List<Student> searchStudents(String keyword) {
     String query = "SELECT * FROM students WHERE student_id LIKE ? OR name LIKE ?";
     List<Student> students = new ArrayList<>();
@@ -147,7 +144,7 @@ public List<Student> searchStudents(String keyword) {
     return students;
 }
 
-// 获取所有学生信息
+
 public List<Student> getAllStudents() {
     String query = "SELECT * FROM students";
     List<Student> students = new ArrayList<>();

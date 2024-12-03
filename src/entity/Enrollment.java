@@ -6,19 +6,17 @@ public class Enrollment {
     private int studentId;
     private int courseId;
 
-    // 无参数构造器
+
     public Enrollment() {
-        // 默认构造器
+     
     }
 
-    // 全参数构造器
     public Enrollment(int enrollmentId, int studentId, int courseId) {
         this.enrollmentId = enrollmentId;
         this.studentId = studentId;
         this.courseId = courseId;
     }
 
-    // Getters and Setters
     public int getEnrollmentId() {
         return enrollmentId;
     }

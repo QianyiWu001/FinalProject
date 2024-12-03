@@ -5,13 +5,13 @@ import entity.Bill.PaidStatus;
 import DatabaseUtilities.ConnectDB;
 
 import java.sql.*;
-import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class BillDAO {
 
-    // 获取所有账单
+
     public List<Bill> getAllBills() {
         List<Bill> bills = new ArrayList<>();
         String query = "SELECT bill_id, student_id, bill_amount, due_date, paid_status FROM bills";
@@ -31,17 +31,17 @@ public class BillDAO {
                 if (dueDate != null) {
                     bill.setDueDate(dueDate.toLocalDate());
                 } else {
-                    bill.setDueDate(null); // 或设置默认值
+                    bill.setDueDate(null); 
                 }
 
-                // 处理 paid_status 映射
-                String paidStatus = rs.getString("paid_status").toUpperCase(); // 转换为大写
+                // paid status mapping
+                String paidStatus = rs.getString("paid_status").toUpperCase(); //change to caps
                 try {
                     bill.setPaidStatus(Bill.PaidStatus.valueOf(paidStatus));
                 } catch (IllegalArgumentException e) {
                     System.out.println(
                             "Warning: Invalid paid_status '" + paidStatus + "' for bill_id " + rs.getInt("bill_id"));
-                    bill.setPaidStatus(null); // 或设置默认值
+                    bill.setPaidStatus(null); 
                 }
 
                 bills.add(bill);
@@ -53,7 +53,7 @@ public class BillDAO {
         return bills;
     }
 
-    // 根据学生 ID 获取账单
+
     public List<Bill> getBillsByStudentId(int studentId) {
         List<Bill> bills = new ArrayList<>();
         String query = "SELECT bill_id, student_id, bill_amount, due_date, paid_status FROM bills WHERE student_id = ?";
@@ -70,16 +70,16 @@ public class BillDAO {
                 bill.setBillAmount(rs.getDouble("bill_amount"));
                 bill.setDueDate(rs.getDate("due_date") != null ? rs.getDate("due_date").toLocalDate() : null);
             
-                // 将数据库的 paid_status 映射为枚举
+  
                 String paidStatusString = rs.getString("paid_status");
                 bill.setPaidStatus(paidStatusString != null ? PaidStatus.valueOf(paidStatusString.toUpperCase()) : PaidStatus.PENDING);
                 bills.add(bill);
             }
             
-            // 如果没有账单，返回一个默认的 No Bill 对象
+      //if no bill, return no bill
             if (bills.isEmpty()) {
                 Bill noBill = new Bill();
-                noBill.setPaidStatus(PaidStatus.NOBill); // 设置为 NOBill 状态
+                noBill.setPaidStatus(PaidStatus.NOBill); 
                 bills.add(noBill);
             }
         } catch (SQLException e) {
@@ -117,7 +117,7 @@ public class BillDAO {
         return bills;
     }
 
-    // 添加账单
+    // add bill
     public boolean addBill(Bill bill) {
         String query = "INSERT INTO bills (bill_id, student_id, bill_amount, due_date, paid_status) VALUES (?, ?, ?, ?, ?)";
 
@@ -125,7 +125,7 @@ public class BillDAO {
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, bill.getBillID());
-            stmt.setInt(2, bill.getStudentId()); // 使用 studentId
+            stmt.setInt(2, bill.getStudentId());
             stmt.setDouble(3, bill.getBillAmount());
             stmt.setDate(4, Date.valueOf(bill.getDueDate()));
             stmt.setString(5, bill.getPaidStatus().name());
@@ -139,7 +139,7 @@ public class BillDAO {
         return false;
     }
 
-    // 删除账单
+    // delete
     public boolean deleteBill(int billId) {
         String query = "DELETE FROM bills WHERE bill_id = ?";
 
@@ -157,14 +157,14 @@ public class BillDAO {
         return false;
     }
 
-    // 更新账单
+    // update
     public boolean updateBill(Bill bill) {
         String query = "UPDATE bills SET student_id = ?, bill_amount = ?, due_date = ?, paid_status = ? WHERE bill_id = ?";
 
         try (Connection conn = ConnectDB.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, bill.getStudentId()); // 使用 studentId
+            stmt.setInt(1, bill.getStudentId()); 
             stmt.setDouble(2, bill.getBillAmount());
             stmt.setDate(3, Date.valueOf(bill.getDueDate()));
             stmt.setString(4, bill.getPaidStatus().name());

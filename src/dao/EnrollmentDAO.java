@@ -35,7 +35,7 @@ public class EnrollmentDAO {
         return courses;
     }
 
-  // 获取所有 Enrollment 数据
+  // get all enrollment
   public List<Enrollment> getAllEnrollments() {
     List<Enrollment> enrollments = new ArrayList<>();
     String query = "SELECT enrollment_id, student_id, course_id FROM enrollments";
@@ -58,7 +58,7 @@ public class EnrollmentDAO {
     return enrollments;
 }
 
-// 添加新的 Enrollment
+// add new
 public boolean addEnrollment(Enrollment enrollment) {
     String query = "INSERT INTO enrollments (enrollment_id, student_id, course_id) VALUES (?, ?, ?)";
 
@@ -78,7 +78,7 @@ public boolean addEnrollment(Enrollment enrollment) {
     return false;
 }
 
-// 删除指定的 Enrollment
+
 public boolean deleteEnrollment(int enrollmentId) {
     String query = "DELETE FROM enrollments WHERE enrollment_id = ?";
 
@@ -96,7 +96,6 @@ public boolean deleteEnrollment(int enrollmentId) {
     return false;
 }
 
-// 更新 Enrollment 数据
 public boolean updateEnrollment(Enrollment updatedEnrollment) {
     String query = "UPDATE enrollments SET student_id = ?, course_id = ? WHERE enrollment_id = ?";
 
@@ -116,7 +115,7 @@ public boolean updateEnrollment(Enrollment updatedEnrollment) {
     return false;
 }
 
-// 根据查询条件搜索 Enrollment
+// enrollment
 public List<Enrollment> searchEnrollments(String queryText) {
     List<Enrollment> enrollments = new ArrayList<>();
     String query = "SELECT enrollment_id, student_id, course_id " +

@@ -22,7 +22,6 @@ public class UserDAO {
         }
     }
 
-    // 添加用户到 users 表
     public boolean addUser(User user) {
         String query = "INSERT INTO users (user_id, username, password, role) VALUES (?, ?, ?, ?)";
     
@@ -41,7 +40,6 @@ public class UserDAO {
         }
     }
 
-    // 删除 users 表中的用户
     public boolean deleteUser(int userId) {
         String query = "DELETE FROM users WHERE user_id = ?";
 
@@ -59,7 +57,7 @@ public class UserDAO {
         }
     }
 
-    // 更新用户信息
+
     public boolean updateUser(int userId, String username, String password, String role) {
         String query = "UPDATE users SET username = ?, password = ?, role = ? WHERE user_id = ?";
 
@@ -81,7 +79,6 @@ public class UserDAO {
         }
     }
 
-    // 根据 user_id 获取用户角色
     public String getUserRole(int userId) {
         String query = "SELECT role FROM users WHERE user_id = ?";
 
@@ -102,6 +99,7 @@ public class UserDAO {
             return null;
         }
     }
+    //generate id automatically
     public int generateUserId() {
         int maxId = 0;
         try (Connection conn = ConnectDB.getConnection();
@@ -113,7 +111,7 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return maxId + 1; // 返回下一个唯一 ID
+        return maxId + 1; 
     }
 
     // Retrieves user information by userId
@@ -168,7 +166,6 @@ public User validateLogin(String username, String password) {
     }
 }
 
-    // 根据用户名获取 user_id
     public int getUserIdByUsername(String username) {
         String query = "SELECT user_id FROM users WHERE username = ?";
 

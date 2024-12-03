@@ -11,46 +11,46 @@ public class AdminLoginController {
         this.adminLoginPage = adminLoginPage;
     }
 
-    // 处理课程管理
+    // course management
     public void handleCourseManagement() {
         new AdminCoursesManagementPage();
         adminLoginPage.dispose();
     }
 
-    // 处理学生管理
+    // student management
     public void handleStudentManagement() {
         new AdminStudentsManagementPage();
         adminLoginPage.dispose();
     }
 
-    // 处理考勤管理
+    // attendance 
     public void handleAttendanceManagement() {
         new AdminAttendanceManagementPage();
         adminLoginPage.dispose();
     }
 
-    // 处理成绩管理
+    // grades
     public void handleGradesManagement() {
         new AdminGradesManagementPage();
         adminLoginPage.dispose();
     }
 
     public void handleEnrollmentManagement() {
-        new AdminEnrollmentManagementPage(); // 打开 Enrollment 管理页面
-        adminLoginPage.dispose(); // 关闭当前页面
+        new AdminEnrollmentManagementPage(); 
+        adminLoginPage.dispose();
     }
 
     public void handleBillManagement() {
-        new AdminBillManagementPage(); // 打开 Enrollment 管理页面
-        adminLoginPage.dispose(); // 关闭当前页面
+        new AdminBillManagementPage(); 
+        adminLoginPage.dispose(); 
     }
-    // 返回到登录页面
+    // login
     public void handleBack() {
         new BasicLoginPage();
         adminLoginPage.dispose();
     }
 
-    // 退出程序
+  //exit
     public void handleExit() {
         System.exit(0);
     }

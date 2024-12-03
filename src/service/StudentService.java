@@ -17,35 +17,35 @@ public class StudentService {
     private final StudentDAO studentDAO;
     private final UserDAO userDAO;
 
-    // 构造函数初始化 DAOs
+
     public StudentService(StudentDAO studentDAO, UserDAO userDAO) {
         this.studentDAO = studentDAO;
         this.userDAO = userDAO;
     }
 
-    // 添加无参构造函数
+
     public StudentService() {
         this.studentDAO = new StudentDAO();
         this.userDAO = new UserDAO();
     }
 
  public boolean addStudent(Student student) {
-    // Step 1: 生成 user_id
-    int userId = userDAO.generateUserId(); // 手动生成唯一 user_id
-    student.setUserId(userId); // 将 user_id 赋值给 Student
 
-    // Step 2: 添加到 users 表
+    int userId = userDAO.generateUserId(); 
+    student.setUserId(userId);
+
+    // add to user table also
     boolean userAdded = userDAO.addUser(new User(userId, student.getName(), "default_password", "ROLE_STUDENT"));
     if (!userAdded) {
         System.out.println("Failed to add user to users table.");
         return false;
     }
 
-    // Step 3: 添加到 students 表
+    //add to student table
     boolean studentAdded = studentDAO.addStudent(student);
     if (!studentAdded) {
         System.out.println("Failed to add student to students table.");
-        // 如果学生添加失败，回滚删除 users 表中的记录
+        //if fail, delete from user table
         userDAO.deleteUser(userId);
         return false;
     }
@@ -63,19 +63,19 @@ public class StudentService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return maxId + 1; // 返回下一个唯一 ID
+        return maxId + 1; 
     }
 
-    // 删除学生（同步 users 和 students 表）
+    // delete
     public boolean deleteStudent(int studentId) {
-        // Step 1: 删除 students 表中的学生记录
+        // delete from student 
         boolean studentDeleted = studentDAO.deleteStudent(studentId);
         if (!studentDeleted) {
             System.out.println("Failed to delete student from students table.");
             return false;
         }
 
-        // Step 2: 删除 users 表中的用户记录
+        // delete form user
         boolean userDeleted = userDAO.deleteUser(studentId);
         if (!userDeleted) {
             System.out.println("Failed to delete user from users table.");
@@ -85,9 +85,9 @@ public class StudentService {
         return true;
     }
 
-    // 更新学生信息（同步更新 users 和 students 表）
+    // update
     public boolean updateStudent(Student student) {
-        // Step 1: 更新 users 表中的用户信息
+        // update user
         boolean userUpdated = userDAO.updateUser(
                 student.getUserId(),
                 student.getUsername(),
@@ -98,7 +98,7 @@ public class StudentService {
             return false;
         }
 
-        // Step 2: 更新 students 表中的学生信息
+        // update student
         boolean studentUpdated = studentDAO.updateStudent(student);
         if (!studentUpdated) {
             System.out.println("Failed to update student in students table.");
@@ -108,16 +108,16 @@ public class StudentService {
         return true;
     }
 
-    // 根据 studentId 获取完整学生信息
+ 
     public Student getStudentById(int studentId) {
-        // 从 students 表中获取学生基本信息
+   
         Student student = studentDAO.getStudentById(studentId);
         if (student == null) {
             System.out.println("No student found with ID: " + studentId);
             return null;
         }
 
-        // 从 users 表中补充用户名、密码、角色信息
+     
         String[] userInfo = userDAO.getUserById(studentId);
         if (userInfo != null) {
             student.setUsername(userInfo[0]);
@@ -128,12 +128,12 @@ public class StudentService {
         return student;
     }
 
-    // 搜索学生
+
     public List<Student> searchStudents(String keyword) {
         return studentDAO.searchStudents(keyword);
     }
 
-    // 获取所有学生
+
     public List<Student> getAllStudents() {
         return studentDAO.getAllStudents();
     }

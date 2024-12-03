@@ -96,10 +96,9 @@ public class CourseDAO {
              PreparedStatement pstmt = conn.prepareStatement(query)) {
     
             // 将搜索内容应用于 ID、Name 和 Description
-            pstmt.setString(1, "%" + searchText + "%"); // 用于 ID 的模糊匹配
-            pstmt.setString(2, "%" + searchText + "%"); // 用于 Name 的模糊匹配
-            pstmt.setString(3, "%" + searchText + "%"); // 用于 Description 的模糊匹配
-    
+            pstmt.setString(1, "%" + searchText + "%"); //id
+            pstmt.setString(2, "%" + searchText + "%"); // name
+            pstmt.setString(3, "%" + searchText + "%"); //description
             ResultSet rs = pstmt.executeQuery();
     
             while (rs.next()) {

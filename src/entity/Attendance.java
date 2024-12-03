@@ -7,13 +7,13 @@ public class Attendance {
     private int enrollmentId;
     private Date date;
     private String status;
-    private int studentId; // 新增字段
-    private int courseId;  // 新增字段
+    private int studentId;
+    private int courseId;  
 
-    // 无参数构造器
+
     public Attendance() {}
 
-    // 全参数构造器
+
     public Attendance(int enrollmentId, Date date, String status, int studentId, int courseId) {
         this.enrollmentId = enrollmentId;
         this.date = date;
@@ -29,7 +29,7 @@ public class Attendance {
         this.courseId = courseId;
     }
 
-    // Getters 和 Setters
+
     public int getEnrollmentId() {
         return enrollmentId;
     }

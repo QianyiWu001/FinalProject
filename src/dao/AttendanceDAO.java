@@ -23,13 +23,13 @@ public class AttendanceDAO {
                 Attendance attendance = new Attendance();
                 attendance.setEnrollmentId(rs.getInt("enrollment_id"));
 
-                // 处理 date 为 null 的情况
+            
                 Date date = rs.getDate("date");
                 if (date != null) {
                     attendance.setDate(date);
                 }
 
-                // 确保 status 不为空
+               //status cannot be null
                 attendance.setStatus(rs.getString("status").toUpperCase());
 
                 attendanceList.add(attendance);
@@ -54,8 +54,8 @@ public class AttendanceDAO {
                 attendance.setEnrollmentId(rs.getInt("enrollment_id"));
                 attendance.setDate(rs.getDate("date"));
                 attendance.setStatus(rs.getString("status"));
-                attendance.setStudentId(rs.getInt("student_id")); // 从 enrollments 表获取 student_id
-                attendance.setCourseId(rs.getInt("course_id"));   // 从 enrollments 表获取 course_id
+                attendance.setStudentId(rs.getInt("student_id")); // get student id from enrollments
+                attendance.setCourseId(rs.getInt("course_id"));   // get course id from enrollments table 
                 attendanceList.add(attendance);
             }
         } catch (SQLException e) {
@@ -72,7 +72,7 @@ public class AttendanceDAO {
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setInt(1, attendance.getEnrollmentId());
-            pstmt.setDate(2, new java.sql.Date(attendance.getDate().getTime())); // 转换为 SQL 日期
+            pstmt.setDate(2, new java.sql.Date(attendance.getDate().getTime()));
             pstmt.setString(3, attendance.getStatus());
 
             return pstmt.executeUpdate() > 0;
@@ -91,7 +91,7 @@ public class AttendanceDAO {
 
             pstmt.setString(1, attendance.getStatus());
             pstmt.setInt(2, attendance.getEnrollmentId());
-            pstmt.setDate(3, new java.sql.Date(attendance.getDate().getTime())); // 转换为 SQL 日期
+            pstmt.setDate(3, new java.sql.Date(attendance.getDate().getTime())); 
 
             return pstmt.executeUpdate() > 0;
 
@@ -108,16 +108,15 @@ public class AttendanceDAO {
         try (Connection conn = ConnectDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
-            pstmt.setInt(1, enrollmentId); // 设置 enrollment_id 参数
-            pstmt.setDate(2, java.sql.Date.valueOf(date)); // 将日期字符串转换为 SQL 日期类型
+            pstmt.setInt(1, enrollmentId); 
+            pstmt.setDate(2, java.sql.Date.valueOf(date)); 
 
-            return pstmt.executeUpdate() > 0; // 如果删除的行数大于 0，则表示删除成功
-
+            return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace(); // 捕获并打印异常
+            e.printStackTrace(); 
         }
 
-        return false; // 如果操作失败，返回 false
+        return false; 
     }
     public List<Attendance> searchAttendance(String keyword) {
         List<Attendance> attendanceList = new ArrayList<>();
@@ -168,7 +167,7 @@ public class AttendanceDAO {
             e.printStackTrace();
         }
     
-        return -1; // 未找到对应的 enrollment_id
+        return -1; 
     }
     public boolean isEnrollmentValid(int enrollmentId) {
         String query = "SELECT COUNT(*) FROM enrollments WHERE enrollment_id = ?";
@@ -180,12 +179,12 @@ public class AttendanceDAO {
             ResultSet rs = pstmt.executeQuery();
     
             if (rs.next()) {
-                return rs.getInt(1) > 0; // 如果 COUNT(*) > 0，则表示 enrollment_id 有效
+                return rs.getInt(1) > 0; 
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // 打印异常信息
+            e.printStackTrace(); 
         }
     
-        return false; // 如果查询失败或未找到，返回 false
+        return false; 
     }
 }

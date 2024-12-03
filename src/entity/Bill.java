@@ -4,7 +4,7 @@ import java.time.LocalDate;
 public class Bill {
 
     private int billID;
-    private int studentId; // 使用 studentId 而不是 Student 对象
+    private int studentId; 
     private double billAmount;
     private LocalDate dueDate;
 
@@ -17,7 +17,7 @@ public class Bill {
 
     private PaidStatus paidStatus;
 
-    // Getters and Setters
+
     public int getBillID() {
         return billID;
     }

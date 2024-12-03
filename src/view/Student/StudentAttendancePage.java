@@ -15,7 +15,7 @@ public class StudentAttendancePage extends JFrame {
     private AttendanceDAO attendanceDAO;
 
     public StudentAttendancePage() {
-        attendanceDAO = new AttendanceDAO(); // 初始化 DAO
+        attendanceDAO = new AttendanceDAO();
         setTitle("Student Attendance Page");
         setLayout(new BorderLayout());
         setSize(800, 550);
@@ -29,7 +29,7 @@ public class StudentAttendancePage extends JFrame {
         Font tableFont = new Font("Arial", Font.PLAIN, 16);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
 
-        // 表格
+        // table
         String[] columnNames = {"Enrollment ID", "Date", "Status"};
         attendanceTable = new JTable(new DefaultTableModel(new Object[0][0], columnNames));
         attendanceTable.getTableHeader().setFont(tableFont);
@@ -39,7 +39,7 @@ public class StudentAttendancePage extends JFrame {
         attendanceTable.setFillsViewportHeight(true);
         add(scrollPane, BorderLayout.CENTER);
 
-        // 底部按钮
+        // button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
         backButton = createButton("Back", buttonFont);
         backButton.addActionListener(e -> handleBack());
@@ -62,7 +62,7 @@ public class StudentAttendancePage extends JFrame {
     }
 
     private void refreshTable() {
-        int studentId = Session.getStudentId(); // 从 Session 获取当前学生 ID
+        int studentId = Session.getStudentId(); 
         List<Attendance> attendanceList = attendanceDAO.getAttendanceByStudentId(studentId);
         updateTableData(attendanceList);
     }

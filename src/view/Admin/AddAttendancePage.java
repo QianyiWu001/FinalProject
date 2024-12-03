@@ -15,8 +15,8 @@ public class AddAttendancePage extends JFrame {
 
 
     public AddAttendancePage(AdminAttendanceManagementPage adminAttendanceManagementPage, AttendanceController attendanceController) {
-        this.adminAttendanceManagementPage = adminAttendanceManagementPage; // 记录调用页面
-        this.attendanceController = attendanceController; // 初始化控制器
+        this.adminAttendanceManagementPage = adminAttendanceManagementPage; 
+        this.attendanceController = attendanceController; 
         setTitle("Add Attendance");
         setLayout(new GridBagLayout());
         setAddAttendancePagePanel();
@@ -136,7 +136,7 @@ public class AddAttendancePage extends JFrame {
             return;
         }
 
-        // 验证 Enrollment 是否有效
+        
         int enrollmentId = attendanceController.getEnrollmentId(studentId, courseId);
         if (enrollmentId == -1) {
             JOptionPane.showMessageDialog(this, "Invalid Student ID and Course ID combination.");

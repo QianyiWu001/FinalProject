@@ -22,11 +22,11 @@ public class AdminAttendanceManagementPage extends JFrame {
     private List<Attendance> attendances;
     private int activeColumn = -1;
 
-    // 排序逻辑
-    boolean[] sortStates = new boolean[5]; // 记录每列的排序状态
+    // sorting order
+    boolean[] sortStates = new boolean[5]; 
 
     public AdminAttendanceManagementPage() {
-        attendanceController = new AttendanceController(); // 初始化控制器
+        attendanceController = new AttendanceController(); 
         setTitle("Admin Attendance Management Page");
         setLayout(new BorderLayout());
         setAdminAttendanceManagementPagePanel();
@@ -113,7 +113,7 @@ public class AdminAttendanceManagementPage extends JFrame {
 
         add(buttonPanel, BorderLayout.SOUTH);
 
-    // 表格初始化，包含 enrollmentId，但隐藏该列
+    // table with hided enrollment id 
     DefaultTableModel model = new DefaultTableModel(
         new Object[0][0],
         new String[]{"Enrollment ID", "Student ID", "Course ID", "Date", "Status"}
@@ -129,7 +129,7 @@ public class AdminAttendanceManagementPage extends JFrame {
     attendanceTable.setFont(tableFont);
     attendanceTable.setRowHeight(30);
 
-    // 隐藏 enrollmentId 列
+    // hide enrollment id 
     attendanceTable.getColumnModel().getColumn(0).setMinWidth(0);
     attendanceTable.getColumnModel().getColumn(0).setMaxWidth(0);
     attendanceTable.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -137,53 +137,53 @@ public class AdminAttendanceManagementPage extends JFrame {
     attendanceTableScrollPane = new JScrollPane(attendanceTable);
     attendanceTable.setFillsViewportHeight(true);
     add(attendanceTableScrollPane, BorderLayout.CENTER);
-    // 添加表头排序功能和符号
+    // add sorting 
     JTableHeader header = attendanceTable.getTableHeader();
-    header.setReorderingAllowed(false); // 禁止拖动列
+    header.setReorderingAllowed(false); 
 
-    // 记录每列的排序状态
-    boolean[] sortStates = new boolean[5]; // false = 升序, true = 降序
+    //sorting status
+    boolean[] sortStates = new boolean[5]; 
 
     header.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             int column = attendanceTable.columnAtPoint(e.getPoint());
-            if (column >= 0) { // 仅当点击有效列时执行
+            if (column >= 0) { 
                 List<Attendance> attendances = attendanceController.getAllAttendance();
 
-                // 根据列号排序
+              
                 attendances.sort((a1, a2) -> {
-                    if (column == 0) { // 按 Enrollment ID 排序
+                    if (column == 0) {//enrollmet id 
                         return sortStates[column]
                                 ? Integer.compare(a2.getEnrollmentId(), a1.getEnrollmentId())
                                 : Integer.compare(a1.getEnrollmentId(), a2.getEnrollmentId());
-                    } else if (column == 1) { // 按 Student ID 排序
+                    } else if (column == 1) { // student id 
                         return sortStates[column]
                                 ? Integer.compare(a2.getStudentId(), a1.getStudentId())
                                 : Integer.compare(a1.getStudentId(), a2.getStudentId());
-                    } else if (column == 2) { // 按 Course ID 排序
+                    } else if (column == 2) { //course id
                         return sortStates[column]
                                 ? Integer.compare(a2.getCourseId(), a1.getCourseId())
                                 : Integer.compare(a1.getCourseId(), a2.getCourseId());
-                    } else if (column == 3) { // 按 Date 排序
+                    } else if (column == 3) { //date
                         return sortStates[column]
                                 ? a2.getDate().compareTo(a1.getDate())
                                 : a1.getDate().compareTo(a2.getDate());
-                    } else if (column == 4) { // 按 Status 排序
+                    } else if (column == 4) { //status
                         return sortStates[column]
                                 ? a2.getStatus().compareTo(a1.getStatus())
                                 : a1.getStatus().compareTo(a2.getStatus());
                     }
-                    return 0; // 默认不变
+                    return 0; 
                 });
 
-                // 切换当前列的排序状态
+            
                 sortStates[column] = !sortStates[column];
 
-                // 更新表格数据
+           
                 updateTableData(attendances);
 
-                // 更新表头符号
+                
                 for (int i = 0; i < attendanceTable.getColumnCount(); i++) {
                     String columnName = attendanceTable.getColumnName(i).replaceAll(" ▲| ▼", "");
                     if (i == column) {
@@ -191,7 +191,7 @@ public class AdminAttendanceManagementPage extends JFrame {
                     }
                     attendanceTable.getColumnModel().getColumn(i).setHeaderValue(columnName);
                 }
-                header.repaint(); // 刷新表头
+                header.repaint(); 
             }
         }
     });
@@ -205,7 +205,7 @@ public class AdminAttendanceManagementPage extends JFrame {
 }
 private void updateTableData(List<Attendance> attendanceList) {
     DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
-    model.setRowCount(0); // 清空表格数据
+    model.setRowCount(0); 
     for (Attendance attendance : attendanceList) {
         Object[] row = {
             attendance.getEnrollmentId(),
@@ -240,7 +240,7 @@ private void updateTableData(List<Attendance> attendanceList) {
     }
     private void handleUpdateAttendance() {
         if (attendanceTable.isEditing()) {
-            attendanceTable.getCellEditor().stopCellEditing(); // 提交用户编辑的数据
+            attendanceTable.getCellEditor().stopCellEditing();
         }
     
         int selectedRow = attendanceTable.getSelectedRow();
@@ -250,8 +250,8 @@ private void updateTableData(List<Attendance> attendanceList) {
         }
     
         int enrollmentId = Integer.parseInt(attendanceTable.getValueAt(selectedRow, 0).toString());
-        String dateString = attendanceTable.getValueAt(selectedRow, 3).toString(); // 获取 Date 列
-        String status = attendanceTable.getValueAt(selectedRow, 4).toString(); // 获取 Status 列
+        String dateString = attendanceTable.getValueAt(selectedRow, 3).toString(); 
+        String status = attendanceTable.getValueAt(selectedRow, 4).toString(); 
 
         dateString = formatDate(dateString);
     
@@ -262,7 +262,7 @@ private void updateTableData(List<Attendance> attendanceList) {
     
         Attendance updatedAttendance = new Attendance();
         updatedAttendance.setEnrollmentId(enrollmentId);
-        updatedAttendance.setDate(java.sql.Date.valueOf(dateString)); // 转换为 SQL 日期
+        updatedAttendance.setDate(java.sql.Date.valueOf(dateString)); 
         updatedAttendance.setStatus(status);
     
         if (attendanceController.updateAttendance(updatedAttendance)) {
@@ -273,16 +273,16 @@ private void updateTableData(List<Attendance> attendanceList) {
         }
     }                   
     
-    // 格式化日期为 YYYY-MM-DD，如果格式无效返回 null
+    // string to dddd-mm-yy
     private String formatDate(String dateString) {
         try {
-            if (dateString.contains(" ")) { // 如果包含时间部分
-                dateString = dateString.split(" ")[0]; // 提取日期部分
+            if (dateString.contains(" ")) { 
+                dateString = dateString.split(" ")[0]; 
             }
-            java.sql.Date.valueOf(dateString); // 检查格式
+            java.sql.Date.valueOf(dateString); 
             return dateString;
         } catch (IllegalArgumentException e) {
-            return null; // 格式无效
+            return null; 
         }
     }
 
@@ -296,8 +296,8 @@ private void updateTableData(List<Attendance> attendanceList) {
         for (Attendance attendance : attendanceList) {
             model.addRow(new Object[]{
                 attendance.getEnrollmentId(),
-                attendance.getStudentId(),  // 添加 Student ID
-                attendance.getCourseId(),  // 添加 Course ID
+                attendance.getStudentId(),  
+                attendance.getCourseId(),  
                 dateFormat.format(attendance.getDate()),
                 attendance.getStatus()
             });

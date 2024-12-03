@@ -73,10 +73,10 @@ public class StudentBillPage extends JFrame {
 
 private void updateTableData(List<Bill> bills) {
     DefaultTableModel model = (DefaultTableModel) billsTable.getModel();
-    model.setRowCount(0); // 清空表格数据
+    model.setRowCount(0); 
 
     if (bills.size() == 1 && bills.get(0).getPaidStatus() == PaidStatus.NOBill) {
-        // 如果是 No Bill 状态
+        // if no bill, exception
         model.addRow(new Object[]{"N/A", "N/A", "N/A", "No Bill"});
     } else {
         for (Bill bill : bills) {

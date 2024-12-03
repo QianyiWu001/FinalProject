@@ -64,7 +64,7 @@ public class StudentGradesPage extends JFrame {
     }
 
     private void refreshTable() {
-        int studentId = Session.getStudentId(); // 从 Session 中获取当前登录学生的 ID
+        int studentId = Session.getStudentId(); //get student id from session
         List<Grade> grades = gradesDAO.getGradesByStudentId(studentId);
         updateTableData(grades);
     }

@@ -147,16 +147,16 @@ public class StudentLoginPage extends JFrame implements ActionListener {
     }
 
     private void handleViewBill() {
-    int studentID = Session.getStudentId(); // 从 Session 获取当前学生 ID
-    BillController billController = new BillController(); // 初始化 BillController
+    int studentID = Session.getStudentId(); // get username form session
+    BillController billController = new BillController(); //call controller
 
-    List<Bill> studentBills = billController.getBillsByStudentId(studentID); // 获取学生账单信息
+    List<Bill> studentBills = billController.getBillsByStudentId(studentID); 
 
     if (studentBills == null || studentBills.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Cannot find student bill information.");
     } else {
-        new StudentBillPage(); // 打开账单页面
-        dispose(); // 关闭当前窗口
+        new StudentBillPage(); 
+        dispose(); 
     }
 }
 }

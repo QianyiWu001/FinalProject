@@ -62,7 +62,7 @@ public class StudentCoursesListPage extends JFrame {
     }
 
     private void refreshTable() {
-        int studentId = Session.getStudentId(); // 从 Session 获取当前学生 ID
+        int studentId = Session.getStudentId(); 
         List<Course> courses = enrollmentController.getCoursesByStudentId(studentId);
         updateTableData(courses);
     }

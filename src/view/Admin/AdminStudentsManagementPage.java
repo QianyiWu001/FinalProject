@@ -1,4 +1,4 @@
-package view.Admin; // 根据项目结构修改为实际的包名
+package view.Admin; 
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -7,10 +7,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.Collections;
 
-import controller.StudentController; // 控制器类
-import entity.Student; // 学生实体类
+
+import controller.StudentController; 
+import entity.Student; 
 
 
 
@@ -22,7 +22,7 @@ public class AdminStudentsManagementPage extends JFrame {
     private StudentController studentController;
 
     public AdminStudentsManagementPage() {
-        studentController = new StudentController(); // 初始化控制器
+        studentController = new StudentController(); 
         setTitle("Admin Students Management Page");
         setLayout(new BorderLayout());
         setAdminStudentsManagementPagePanel();
@@ -106,52 +106,51 @@ public class AdminStudentsManagementPage extends JFrame {
     studentsTable.setFont(tableFont);
     studentsTable.setRowHeight(30);
 
-    // 添加表头排序功能和符号
+    // table sorting
     JTableHeader header = studentsTable.getTableHeader();
-    header.setReorderingAllowed(false); // 禁止拖动列
+    header.setReorderingAllowed(false); 
 
-    boolean[] sortStates = new boolean[4]; // 排序状态：false = 升序, true = 降序
+    boolean[] sortStates = new boolean[4]; // sorting status
 
     header.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
-            int viewColumn = studentsTable.columnAtPoint(e.getPoint()); // 视图列索引
-            int modelColumn = studentsTable.convertColumnIndexToModel(viewColumn); // 转换为模型列索引
-            int columnCount = studentsTable.getModel().getColumnCount(); // 获取模型列数
+            int viewColumn = studentsTable.columnAtPoint(e.getPoint()); 
+            int modelColumn = studentsTable.convertColumnIndexToModel(viewColumn); 
+            int columnCount = studentsTable.getModel().getColumnCount(); 
 
-            // 确保模型列索引有效
+       //sorting by lists
             if (modelColumn >= 0 && modelColumn < columnCount) {
                 List<Student> students = studentController.getAllStudents();
 
-                // 根据列号排序
+              
                 students.sort((s1, s2) -> {
-                    if (modelColumn == 0) { // 按 Student ID 排序
+                    if (modelColumn == 0) { //studentid 
                         return sortStates[modelColumn]
                                 ? Integer.compare(s2.getUserId(), s1.getUserId())
                                 : Integer.compare(s1.getUserId(), s2.getUserId());
-                    } else if (modelColumn == 1) { // 按 Name 排序
+                    } else if (modelColumn == 1) { // name
                         return sortStates[modelColumn]
                                 ? s2.getName().compareTo(s1.getName())
                                 : s1.getName().compareTo(s2.getName());
-                    } else if (modelColumn == 2) { // 按 Email 排序
+                    } else if (modelColumn == 2) { // email
                         return sortStates[modelColumn]
                                 ? s2.getEmail().compareTo(s1.getEmail())
                                 : s1.getEmail().compareTo(s2.getEmail());
-                    } else if (modelColumn == 3) { // 按 Phone 排序
+                    } else if (modelColumn == 3) { // phone
                         return sortStates[modelColumn]
                                 ? s2.getPhone().compareTo(s1.getPhone())
                                 : s1.getPhone().compareTo(s2.getPhone());
                     }
-                    return 0; // 默认不变
+                    return 0; // 
                 });
 
-                // 切换当前列的排序状态
+          
                 sortStates[modelColumn] = !sortStates[modelColumn];
 
-                // 更新表格数据
                 updateTableData(students);
 
-                // 更新表头符号
+                // logo
                 for (int i = 0; i < columnCount; i++) {
                     String columnName = studentsTable.getColumnName(i).replaceAll(" ▲| ▼", "");
                     if (i == modelColumn) {
@@ -159,7 +158,7 @@ public class AdminStudentsManagementPage extends JFrame {
                     }
                     studentsTable.getColumnModel().getColumn(i).setHeaderValue(columnName);
                 }
-                header.repaint(); // 刷新表头
+                header.repaint(); // refresh table
             }
         }
     });
@@ -168,13 +167,13 @@ public class AdminStudentsManagementPage extends JFrame {
     studentsTableScrollPane.setPreferredSize(new Dimension(750, 300));
     add(studentsTableScrollPane, BorderLayout.CENTER);
 
-    refreshTable(); // 初始化表格数据
+    refreshTable(); 
 }
 
     void refreshTable() {
         List<Student> students = studentController.getAllStudents();
         DefaultTableModel model = (DefaultTableModel) studentsTable.getModel();
-        model.setRowCount(0); // 清空现有数据
+        model.setRowCount(0); // clean table
         for (Student student : students) {
             model.addRow(new Object[]{
                 student.getUserId(),
@@ -185,11 +184,11 @@ public class AdminStudentsManagementPage extends JFrame {
             });
         }
     }
-
+//add student
     private void handleAddStudent() {   
         new AddStudentPage(this, studentController);
     }
-
+//delete
     private void handleDeleteStudent() {
         int selectedRow = studentsTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -206,7 +205,7 @@ public class AdminStudentsManagementPage extends JFrame {
     }
     private void handleUpdateStudent() {
         if (studentsTable.isEditing()) {
-            studentsTable.getCellEditor().stopCellEditing(); // 提交用户编辑的数据
+            studentsTable.getCellEditor().stopCellEditing(); // submit edited data
         }
     
         int selectedRow = studentsTable.getSelectedRow();
@@ -216,14 +215,14 @@ public class AdminStudentsManagementPage extends JFrame {
         }
     
         try {
-            // 从表格中获取更新后的数据
+            // get updated data
             int studentId = Integer.parseInt(studentsTable.getValueAt(selectedRow, 0).toString());
             String name = studentsTable.getValueAt(selectedRow, 1).toString();
             String email = studentsTable.getValueAt(selectedRow, 2).toString();
             String phone = studentsTable.getValueAt(selectedRow, 3).toString();
             String address = studentsTable.getValueAt(selectedRow, 4).toString();
     
-            // 获取现有 Student 对象（假设通过 studentId 查询）
+            // get updated student
             Student student = studentController.getStudentById(studentId);
             if (student != null) {
                 student.setName(name);
@@ -231,7 +230,7 @@ public class AdminStudentsManagementPage extends JFrame {
                 student.setPhone(phone);
                 student.setAddress(address);
     
-                // 更新数据库
+                // update database
                 if (studentController.updateStudent(student)) {
                     JOptionPane.showMessageDialog(this, "Student updated successfully.");
                     refreshTable();
@@ -260,7 +259,7 @@ public class AdminStudentsManagementPage extends JFrame {
     }
     private void updateTableData(List<Student> students) {
         DefaultTableModel model = (DefaultTableModel) studentsTable.getModel();
-        model.setRowCount(0); // 清空表格数据
+        model.setRowCount(0); 
     
         for (Student student : students) {
             Object[] row = {
@@ -273,7 +272,7 @@ public class AdminStudentsManagementPage extends JFrame {
         }
     }
     private void handleBack() {
-        new AdminLoginPage(); // 返回管理员主页
+        new AdminLoginPage(); 
         dispose();
     }
 }

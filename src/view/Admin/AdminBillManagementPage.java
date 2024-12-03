@@ -22,7 +22,7 @@ public class AdminBillManagementPage extends JFrame {
     private BillController billController;
 
     public AdminBillManagementPage() {
-        billController = new BillController(); // 初始化控制器
+        billController = new BillController(); 
         setTitle("Admin Bill Management Page");
         setLayout(new BorderLayout());
         setAdminBillManagementPagePanel();
@@ -100,7 +100,7 @@ public class AdminBillManagementPage extends JFrame {
                 new String[] { "Bill ID", "Student ID", "Amount", "Due Date", "Status" }) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return true; // 所有列可编辑
+                return true; 
             }
         };
 
@@ -120,57 +120,57 @@ public class AdminBillManagementPage extends JFrame {
     
         add(billsTableScrollPane, BorderLayout.CENTER);
 
- // 添加表头排序功能和符号
-    JTableHeader header = billsTable.getTableHeader();
-    header.setReorderingAllowed(false); // 禁止拖动列
 
-    // 记录每列的排序状态
-    boolean[] sortStates = new boolean[4]; // false = 升序, true = 降序
+    JTableHeader header = billsTable.getTableHeader();
+    header.setReorderingAllowed(false);
+
+    // sorting status
+    boolean[] sortStates = new boolean[4]; //ascending and decending 
 
     header.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
-            int viewColumn = billsTable.columnAtPoint(e.getPoint()); // 获取视图列索引
-            int modelColumn = billsTable.convertColumnIndexToModel(viewColumn); // 转换为模型列索引
-            int columnCount = billsTable.getModel().getColumnCount(); // 获取模型列数
+            int viewColumn = billsTable.columnAtPoint(e.getPoint()); 
+            int modelColumn = billsTable.convertColumnIndexToModel(viewColumn); 
+            int columnCount = billsTable.getModel().getColumnCount(); 
     
-            // 确保模型列索引有效
+        
             if (modelColumn >= 0 && modelColumn < columnCount) {
                 List<Bill> bills = billController.getAllBills();
     
-                // 根据列号排序
+                
                 bills.sort((b1, b2) -> {
-                    if (modelColumn == 0) { // 按 Bill ID 排序
+                    if (modelColumn == 0) { // bill id
                         return sortStates[modelColumn]
                                 ? Integer.compare(b2.getBillID(), b1.getBillID())
                                 : Integer.compare(b1.getBillID(), b2.getBillID());
-                    } else if (modelColumn == 1) { // 按 Student ID 排序
+                    } else if (modelColumn == 1) { //student id
                         return sortStates[modelColumn]
                                 ? Integer.compare(b2.getStudentId(), b1.getStudentId())
                                 : Integer.compare(b1.getStudentId(), b2.getStudentId());
-                    } else if (modelColumn == 2) { // 按 Bill Amount 排序
+                    } else if (modelColumn == 2) { // bill
                         return sortStates[modelColumn]
                                 ? Double.compare(b2.getBillAmount(), b1.getBillAmount())
                                 : Double.compare(b1.getBillAmount(), b2.getBillAmount());
-                    } else if (modelColumn == 3) { // 按 Due Date 排序
+                    } else if (modelColumn == 3) { // due date
                         return sortStates[modelColumn]
                                 ? b2.getDueDate().compareTo(b1.getDueDate())
                                 : b1.getDueDate().compareTo(b2.getDueDate());
-                    } else if (modelColumn == 4) { // 按 Paid Status 排序
+                    } else if (modelColumn == 4) { //paid status
                         return sortStates[modelColumn]
                                 ? b2.getPaidStatus().compareTo(b1.getPaidStatus())
                                 : b1.getPaidStatus().compareTo(b2.getPaidStatus());
                     }
-                    return 0; // 默认不变
+                    return 0; 
                 });
     
-                // 切换当前列的排序状态
+                // change sorting status
                 sortStates[modelColumn] = !sortStates[modelColumn];
     
-                // 更新表格数据
+                
                 updateTableData(bills);
     
-                // 更新表头符号
+           
                 JTableHeader header = billsTable.getTableHeader();
                 for (int i = 0; i < columnCount; i++) {
                     String columnName = billsTable.getColumnName(i).replaceAll(" ▲| ▼", "");
@@ -179,7 +179,7 @@ public class AdminBillManagementPage extends JFrame {
                     }
                     billsTable.getColumnModel().getColumn(i).setHeaderValue(columnName);
                 }
-                header.repaint(); // 刷新表头
+                header.repaint();
             }
         }
     });
@@ -189,7 +189,7 @@ public class AdminBillManagementPage extends JFrame {
     void refreshTable() {
         List<Bill> bills = billController.getAllBills();
         DefaultTableModel model = (DefaultTableModel) billsTable.getModel();
-        model.setRowCount(0); // 清空表格数据
+        model.setRowCount(0);
         for (Bill bill : bills) {
             model.addRow(new Object[] {
                     bill.getBillID(),
@@ -221,12 +221,12 @@ public class AdminBillManagementPage extends JFrame {
     }
 
     private void handleUpdateBill() {
-        // 停止表格编辑，提交用户输入的数据
+        
         if (billsTable.isEditing()) {
             billsTable.getCellEditor().stopCellEditing();
         }
 
-        // 检查是否选中了一行
+        // if selected 
         int selectedRow = billsTable.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Please select a bill to update.");
@@ -234,23 +234,22 @@ public class AdminBillManagementPage extends JFrame {
         }
 
         try {
-            // 从表格中获取用户输入的数据
+        
             int billId = Integer.parseInt(billsTable.getValueAt(selectedRow, 0).toString());
             double amount = Double.parseDouble(billsTable.getValueAt(selectedRow, 2).toString());
             String dueDate = billsTable.getValueAt(selectedRow, 3).toString();
             String status = billsTable.getValueAt(selectedRow, 4).toString();
 
-            // 创建更新后的 Bill 对象
             Bill updatedBill = new Bill();
             updatedBill.setBillID(billId);
             updatedBill.setBillAmount(amount);
             updatedBill.setDueDate(java.time.LocalDate.parse(dueDate));
             updatedBill.setPaidStatus(Bill.PaidStatus.valueOf(status));
 
-            // 调用控制器更新账单
+            
             if (billController.updateBill(updatedBill)) {
                 JOptionPane.showMessageDialog(this, "Bill updated successfully.");
-                refreshTable(); // 刷新表格数据
+                refreshTable(); 
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to update bill.");
             }
@@ -275,10 +274,10 @@ public class AdminBillManagementPage extends JFrame {
 
     private void updateTableData(List<Bill> bills) {
         DefaultTableModel model = (DefaultTableModel) billsTable.getModel();
-        model.setRowCount(0); // 清空表格数据
+        model.setRowCount(0); 
     
     if (bills.size() == 1 && bills.get(0).getPaidStatus() == PaidStatus.NOBill) {
-        // 如果是 No Bill 状态
+
         model.addRow(new Object[]{"N/A", "N/A", "N/A","N/A", "No Bill"});
     } else{
         for (Bill bill : bills) {
@@ -296,7 +295,7 @@ public class AdminBillManagementPage extends JFrame {
     }
 
     private void handleBack() {
-        new AdminLoginPage(); // 返回管理员主页
+        new AdminLoginPage(); 
         dispose();
     }
 }

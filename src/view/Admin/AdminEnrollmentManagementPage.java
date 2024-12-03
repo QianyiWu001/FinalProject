@@ -7,10 +7,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.Collections;
-
-import controller.EnrollmentController; // 控制器类
-import entity.Enrollment; // 实体类
+import controller.EnrollmentController;
+import entity.Enrollment; 
 
 public class AdminEnrollmentManagementPage extends JFrame {
     private JButton backButton, exitButton, addEnrollmentButton, deleteEnrollmentButton, updateEnrollmentButton, searchEnrollmentButton, refreshButton;
@@ -20,7 +18,7 @@ public class AdminEnrollmentManagementPage extends JFrame {
     private EnrollmentController enrollmentController;
 
     public AdminEnrollmentManagementPage() {
-        enrollmentController = new EnrollmentController(); // 初始化控制器
+        enrollmentController = new EnrollmentController(); 
         setTitle("Admin Enrollment Management Page");
         setLayout(new BorderLayout());
         setAdminEnrollmentManagementPagePanel();
@@ -30,6 +28,7 @@ public class AdminEnrollmentManagementPage extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    @SuppressWarnings("unused")
     private void setAdminEnrollmentManagementPagePanel() {
         Font tableFont = new Font("Arial", Font.PLAIN, 16);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
@@ -89,9 +88,9 @@ public class AdminEnrollmentManagementPage extends JFrame {
 
     buttonPanel.add(backButton);
     buttonPanel.add(exitButton);
-
+//table model
     add(buttonPanel, BorderLayout.SOUTH);
-        // 初始化表格模型
+        
         DefaultTableModel model = new DefaultTableModel(
                 new Object[0][0],
                 new String[]{"Enrollment ID", "Student ID", "Course ID"}
@@ -102,48 +101,46 @@ public class AdminEnrollmentManagementPage extends JFrame {
         enrollmentTable.setFont(tableFont);
         enrollmentTable.setRowHeight(30);
     
-        // 添加表头排序功能和符号
+        // sorting
         JTableHeader header = enrollmentTable.getTableHeader();
-        header.setReorderingAllowed(false); // 禁止拖动列
+        header.setReorderingAllowed(false); 
     
-        boolean[] sortStates = new boolean[3]; // 排序状态：false = 升序, true = 降序
-    
+        boolean[] sortStates = new boolean[3]; //ascending and decending
         header.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int viewColumn = enrollmentTable.columnAtPoint(e.getPoint()); // 视图列索引
-                int modelColumn = enrollmentTable.convertColumnIndexToModel(viewColumn); // 转换为模型列索引
-                int columnCount = enrollmentTable.getModel().getColumnCount(); // 获取模型列数
+                int viewColumn = enrollmentTable.columnAtPoint(e.getPoint()); 
+                int modelColumn = enrollmentTable.convertColumnIndexToModel(viewColumn); 
+                int columnCount = enrollmentTable.getModel().getColumnCount(); 
     
-                // 确保模型列索引有效
                 if (modelColumn >= 0 && modelColumn < columnCount) {
                     List<Enrollment> enrollments = enrollmentController.getAllEnrollments();
     
-                    // 根据列号排序
+                    // sorting
                     enrollments.sort((e1, e2) -> {
-                        if (modelColumn == 0) { // 按 Enrollment ID 排序
+                        if (modelColumn == 0) { //enrollment id
                             return sortStates[modelColumn]
                                     ? Integer.compare(e2.getEnrollmentId(), e1.getEnrollmentId())
                                     : Integer.compare(e1.getEnrollmentId(), e2.getEnrollmentId());
-                        } else if (modelColumn == 1) { // 按 Student ID 排序
+                        } else if (modelColumn == 1) { //student id
                             return sortStates[modelColumn]
                                     ? Integer.compare(e2.getStudentId(), e1.getStudentId())
                                     : Integer.compare(e1.getStudentId(), e2.getStudentId());
-                        } else if (modelColumn == 2) { // 按 Course ID 排序
+                        } else if (modelColumn == 2) { // course id 
                             return sortStates[modelColumn]
                                     ? Integer.compare(e2.getCourseId(), e1.getCourseId())
                                     : Integer.compare(e1.getCourseId(), e2.getCourseId());
                         }
-                        return 0; // 默认不变
+                        return 0; 
                     });
     
-                    // 切换当前列的排序状态
+                  
                     sortStates[modelColumn] = !sortStates[modelColumn];
     
-                    // 更新表格数据
+                  
                     updateTableData(enrollments);
     
-                    // 更新表头符号
+                    // sorting logo
                     for (int i = 0; i < columnCount; i++) {
                         String columnName = enrollmentTable.getColumnName(i).replaceAll(" ▲| ▼", "");
                         if (i == modelColumn) {
@@ -151,7 +148,7 @@ public class AdminEnrollmentManagementPage extends JFrame {
                         }
                         enrollmentTable.getColumnModel().getColumn(i).setHeaderValue(columnName);
                     }
-                    header.repaint(); // 刷新表头
+                    header.repaint();
                 }
             }
         });
@@ -160,13 +157,13 @@ public class AdminEnrollmentManagementPage extends JFrame {
         enrollmentTableScrollPane.setPreferredSize(new Dimension(750, 300));
         add(enrollmentTableScrollPane, BorderLayout.CENTER);
     
-        refreshTable(); // 初始化表格数据
+        refreshTable(); 
     }
 
     void refreshTable() {
         List<Enrollment> enrollments = enrollmentController.getAllEnrollments();
         DefaultTableModel model = (DefaultTableModel) enrollmentTable.getModel();
-        model.setRowCount(0); // 清空表格数据
+        model.setRowCount(0); 
         for (Enrollment enrollment : enrollments) {
             model.addRow(new Object[]{
                 enrollment.getEnrollmentId(),
@@ -197,7 +194,7 @@ public class AdminEnrollmentManagementPage extends JFrame {
 
     private void handleUpdateEnrollment() {
         if (enrollmentTable.isEditing()) {
-            enrollmentTable.getCellEditor().stopCellEditing(); // 提交用户编辑的数据
+            enrollmentTable.getCellEditor().stopCellEditing(); //submit edited data
         }
 
         int selectedRow = enrollmentTable.getSelectedRow();
@@ -239,7 +236,7 @@ public class AdminEnrollmentManagementPage extends JFrame {
 
 private void updateTableData(List<Enrollment> enrollments) {
     DefaultTableModel model = (DefaultTableModel) enrollmentTable.getModel();
-    model.setRowCount(0); // 清空表格数据
+    model.setRowCount(0);
 
     for (Enrollment enrollment : enrollments) {
         Object[] row = {
@@ -252,7 +249,7 @@ private void updateTableData(List<Enrollment> enrollments) {
 }
 
     private void handleBack() {
-        new AdminLoginPage(); // 返回管理员主页
+        new AdminLoginPage();
         dispose();
     }
 }

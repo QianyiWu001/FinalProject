@@ -1,13 +1,11 @@
 package view.Admin;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Comparator;
 import java.util.List;
 import controller.CourseController;
 import entity.Course;
@@ -21,12 +19,12 @@ public class AdminCoursesManagementPage extends JFrame {
     private List<Course> courses;
     private int activeColumn = -1;
 
-    // 排序逻辑
-    boolean[] sortStates = new boolean[4]; // 记录每列的排序状态
+    //sorting logic
+    boolean[] sortStates = new boolean[4]; 
 
 
     public AdminCoursesManagementPage() {
-        courseController = new CourseController(); // 初始化控制器
+        courseController = new CourseController(); 
         setTitle("Admin Courses Management Page");
         setLayout(new BorderLayout());
         setAdminCoursesManagementPagePanel();
@@ -105,7 +103,7 @@ private void setAdminCoursesManagementPagePanel() {
     DefaultTableModel model = new DefaultTableModel(new Object[0][0], new String[]{"Course ID", "Course Name", "Description", "Credits"}) {
         @Override
         public boolean isCellEditable(int row, int column) {
-            return true; // 所有列可编辑
+            return true; 
         }
     };
 
@@ -114,60 +112,59 @@ private void setAdminCoursesManagementPagePanel() {
     coursesTable.setFont(tableFont);
     coursesTable.setRowHeight(30);
 
-    // 添加表头排序功能和符号
+    // sorting 
     JTableHeader header = coursesTable.getTableHeader();
-    header.setReorderingAllowed(false); // 禁止拖动列
+    header.setReorderingAllowed(false); 
 
-    // 记录每列的排序状态
-    boolean[] sortStates = new boolean[4]; // false = 升序, true = 降序
+    boolean[] sortStates = new boolean[4]; // ascending and decending
 
     header.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             int column = coursesTable.columnAtPoint(e.getPoint());
-            if (column >= 0) { // 仅当点击有效列时执行
+            if (column >= 0) { 
                 List<Course> courses = courseController.getAllCourses();
 
-                // 根据列号排序
+                
                 courses.sort((c1, c2) -> {
-                    if (column == 0) { // 按 Course ID 排序
+                    if (column == 0) { // course id
                         return sortStates[column]
                                 ? Integer.compare(c2.getCourseId(), c1.getCourseId())
                                 : Integer.compare(c1.getCourseId(), c2.getCourseId());
-                    } else if (column == 1) { // 按 Course Name 排序
+                    } else if (column == 1) { // course name
                         return sortStates[column]
                                 ? c2.getCourseName().compareTo(c1.getCourseName())
                                 : c1.getCourseName().compareTo(c2.getCourseName());
-                    } else if (column == 2) { // 按 Description 排序
+                    } else if (column == 2) { // description
                         return sortStates[column]
                                 ? c2.getDescription().compareTo(c1.getDescription())
                                 : c1.getDescription().compareTo(c2.getDescription());
-                    } else if (column == 3) { // 按 Credits 排序
+                    } else if (column == 3) { //credits
                         return sortStates[column]
                                 ? Integer.compare(c2.getCredits(), c1.getCredits())
                                 : Integer.compare(c1.getCredits(), c2.getCredits());
                     }
-                    return 0; // 默认不变
+                    return 0; 
                 });
 
-                // 切换当前列的排序状态
+              
                 sortStates[column] = !sortStates[column];
-                activeColumn = column; // 更新当前激活的列
+                activeColumn = column; // refresh selected column
 
-                // 更新表格数据
+     
                 updateTableData(courses);
 
-                // 更新表头符号
+                // sorting logo
                 for (int i = 0; i < coursesTable.getColumnCount(); i++) {
                     String columnName = coursesTable.getColumnName(i).replaceAll(" ▲| ▼", "");
                     if (i == column) {
                         columnName += sortStates[column] ? " ▼" : " ▲";
                     } else {
-                        columnName += " "; // 非当前列符号浅色
+                        columnName += " "; 
                     }
                     coursesTable.getColumnModel().getColumn(i).setHeaderValue(columnName);
                 }
-                header.repaint(); // 刷新表头
+                header.repaint(); 
             }
         }
     });
@@ -216,7 +213,7 @@ private void setAdminCoursesManagementPagePanel() {
 
     private void handleUpdateCourse() {
         if (coursesTable.isEditing()) {
-            coursesTable.getCellEditor().stopCellEditing(); // 提交用户编辑的数据
+            coursesTable.getCellEditor().stopCellEditing();
         }
 
         int selectedRow = coursesTable.getSelectedRow();
@@ -272,7 +269,7 @@ private void setAdminCoursesManagementPagePanel() {
     }
 
     private void handleBack() {
-        new AdminLoginPage(); // 返回管理员主页
+        new AdminLoginPage();
         dispose();
     }
 }

@@ -8,15 +8,12 @@ import entity.Grade;
 
 import java.awt.*;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+
 import javax.swing.table.JTableHeader;
-import java.awt.*;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
-import controller.GradesController;
-import entity.Grade;
+
 
 public class AdminGradesManagementPage extends JFrame {
     private JButton backButton, exitButton, addGradeButton, deleteGradeButton, updateGradeButton, searchGradeButton,
@@ -27,7 +24,7 @@ public class AdminGradesManagementPage extends JFrame {
     private GradesController gradesController;
 
     public AdminGradesManagementPage() {
-        gradesController = new GradesController(); // 初始化控制器
+        gradesController = new GradesController(); 
         setTitle("Admin Grades Management Page");
         setLayout(new BorderLayout());
         setAdminGradesManagementPagePanel();
@@ -104,7 +101,7 @@ public class AdminGradesManagementPage extends JFrame {
                 new String[] { "Enrollment ID", "Student ID", "Course ID", "Grade" }) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 3; // 仅允许编辑 Grade 列
+                return column == 3; // only able to edit grades
             }
         };
 
@@ -115,59 +112,59 @@ public class AdminGradesManagementPage extends JFrame {
 
         gradesTableScrollPane = new JScrollPane(gradesTable);
         gradesTable.setFillsViewportHeight(true);
-        // 隐藏 enrollmentId 列
+        // hide enrollment id 
         gradesTable.getColumnModel().getColumn(0).setMinWidth(0);
         gradesTable.getColumnModel().getColumn(0).setMaxWidth(0);
         gradesTable.getColumnModel().getColumn(0).setPreferredWidth(0);
 
         add(gradesTableScrollPane, BorderLayout.CENTER);
 
-    // 添加表头排序功能和符号
+    // add sorting 
     JTableHeader header = gradesTable.getTableHeader();
-    header.setReorderingAllowed(false); // 禁止拖动列
+    header.setReorderingAllowed(false); //unable to click and drop
 
-    boolean[] sortStates = new boolean[4]; // 排序状态：false = 升序, true = 降序
+    boolean[] sortStates = new boolean[4]; // Decending or ascending
 
     header.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
-            int viewColumn = gradesTable.columnAtPoint(e.getPoint()); // 视图列索引
-            int modelColumn = gradesTable.convertColumnIndexToModel(viewColumn); // 转换为模型列索引
-            int columnCount = gradesTable.getModel().getColumnCount(); // 获取模型列数
+            int viewColumn = gradesTable.columnAtPoint(e.getPoint()); // viewcloumn index
+            int modelColumn = gradesTable.convertColumnIndexToModel(viewColumn); // turns into modelcolumn index
+            int columnCount = gradesTable.getModel().getColumnCount(); // get index
 
-            // 确保模型列索引有效
+            // makesure valid index
             if (modelColumn >= 0 && modelColumn < columnCount) {
                 List<Grade> grades = gradesController.getAllGrades();
 
-                // 根据列号排序
+                // sorting
                 grades.sort((g1, g2) -> {
-                    if (modelColumn == 0) { // 按 Enrollment ID 排序
+                    if (modelColumn == 0) { // enrollment id
                         return sortStates[modelColumn]
                                 ? Integer.compare(g2.getEnrollmentId(), g1.getEnrollmentId())
                                 : Integer.compare(g1.getEnrollmentId(), g2.getEnrollmentId());
-                    } else if (modelColumn == 1) { // 按 Student ID 排序
+                    } else if (modelColumn == 1) { //student id 
                         return sortStates[modelColumn]
                                 ? Integer.compare(g2.getStudentId(), g1.getStudentId())
                                 : Integer.compare(g1.getStudentId(), g2.getStudentId());
-                    } else if (modelColumn == 2) { // 按 Course ID 排序
+                    } else if (modelColumn == 2) { // course id
                         return sortStates[modelColumn]
                                 ? Integer.compare(g2.getCourseId(), g1.getCourseId())
                                 : Integer.compare(g1.getCourseId(), g2.getCourseId());
-                    } else if (modelColumn == 3) { // 按 Grade 排序
+                    } else if (modelColumn == 3) { // grades
                         return sortStates[modelColumn]
                                 ? Integer.compare(g2.getGrade(), g1.getGrade())
                                 : Integer.compare(g1.getGrade(), g2.getGrade());
                     }
-                    return 0; // 默认不变
+                    return 0; 
                 });
 
-                // 切换当前列的排序状态
+                
                 sortStates[modelColumn] = !sortStates[modelColumn];
 
-                // 更新表格数据
+               
                 updateTableData(grades);
 
-                // 更新表头符号
+                // sorting logo
                 for (int i = 0; i < columnCount; i++) {
                     String columnName = gradesTable.getColumnName(i).replaceAll(" ▲| ▼", "");
                     if (i == modelColumn) {
@@ -175,7 +172,7 @@ public class AdminGradesManagementPage extends JFrame {
                     }
                     gradesTable.getColumnModel().getColumn(i).setHeaderValue(columnName);
                 }
-                header.repaint(); // 刷新表头
+                header.repaint(); // refresh sorting logo
             }
         }
     });
@@ -184,13 +181,13 @@ public class AdminGradesManagementPage extends JFrame {
     gradesTableScrollPane.setPreferredSize(new Dimension(750, 300));
     add(gradesTableScrollPane, BorderLayout.CENTER);
 
-    refreshTable(); // 初始化表格数据
+    refreshTable(); 
     }
 
     void refreshTable() {
         List<Grade> grades = gradesController.getAllGrades();
         DefaultTableModel model = (DefaultTableModel) gradesTable.getModel();
-        model.setRowCount(0); // 清空表格数据
+        model.setRowCount(0); // clean database
         for (Grade grade : grades) {
             model.addRow(new Object[] {
                     grade.getEnrollmentId(),
@@ -222,7 +219,7 @@ public class AdminGradesManagementPage extends JFrame {
 
     private void handleUpdateGrade() {
         if (gradesTable.isEditing()) {
-            gradesTable.getCellEditor().stopCellEditing(); // 提交用户编辑的数据
+            gradesTable.getCellEditor().stopCellEditing(); // submit edited data
         }
 
         int selectedRow = gradesTable.getSelectedRow();
@@ -258,7 +255,7 @@ public class AdminGradesManagementPage extends JFrame {
 
     private void updateTableData(List<Grade> grades) {
         DefaultTableModel model = (DefaultTableModel) gradesTable.getModel();
-        model.setRowCount(0); // 清空表格数据
+        model.setRowCount(0); 
     
         for (Grade grade : grades) {
             Object[] row = {
@@ -271,7 +268,7 @@ public class AdminGradesManagementPage extends JFrame {
         }
     }
     private void handleBack() {
-        new AdminLoginPage(); // 返回管理员主页
+        new AdminLoginPage(); 
         dispose();
     }
 }

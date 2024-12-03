@@ -12,7 +12,7 @@ public class AdminLoginPage extends JFrame {
     public AdminLoginPage() {
         setTitle("Admin Main Page");
         setLayout(new GridBagLayout());
-        setAdminPageJPanel(); // 初始化界面
+        setAdminPageJPanel(); 
         setSize(800, 650);
         setVisible(true);
         setLocationRelativeTo(null);
@@ -21,7 +21,7 @@ public class AdminLoginPage extends JFrame {
 
     @SuppressWarnings("unused")
     private void setAdminPageJPanel() {
-        // 创建控制器实例，传递当前页面
+        // controller to pass this page
         AdminLoginController adminLoginController = new AdminLoginController(this);
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -31,7 +31,7 @@ public class AdminLoginPage extends JFrame {
         Font font = new Font("Arial", Font.PLAIN, 18);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
 
-        // 标题
+        // title
         titleLabel = new JLabel("Welcome to Admin Homepage");
         titleLabel.setFont(titleFont);
         gbc.gridx = 0;
@@ -40,7 +40,7 @@ public class AdminLoginPage extends JFrame {
         gbc.insets = new Insets(10, 0, 30, 0);
         add(titleLabel, gbc);
 
-        // 课程管理按钮
+        // course manage button
         courseBtn = new JButton("Courses Management");
         courseBtn.setFont(font);
         courseBtn.setPreferredSize(new Dimension(250, 40));
@@ -51,7 +51,7 @@ public class AdminLoginPage extends JFrame {
         gbc.insets = new Insets(0, 0, 20, 0);
         add(courseBtn, gbc);
 
-        // 学生管理按钮
+        // student managentment button
         studentBtn = new JButton("Students Management");
         studentBtn.setFont(font);
         studentBtn.setPreferredSize(new Dimension(250, 40));
@@ -62,7 +62,7 @@ public class AdminLoginPage extends JFrame {
         gbc.insets = new Insets(0, 0, 20, 0);
         add(studentBtn, gbc);
 
-        // 考勤管理按钮
+        // attendance
         attendanceBtn = new JButton("Attendance Management");
         attendanceBtn.setFont(font);
         attendanceBtn.setPreferredSize(new Dimension(250, 40));
@@ -73,7 +73,7 @@ public class AdminLoginPage extends JFrame {
         gbc.insets = new Insets(0, 0, 20, 0);
         add(attendanceBtn, gbc);
 
-        // 成绩管理按钮
+        // grades
         gradeBtn = new JButton("Grades Management");
         gradeBtn.setFont(font);
         gradeBtn.setPreferredSize(new Dimension(250, 40));
@@ -104,7 +104,7 @@ public class AdminLoginPage extends JFrame {
         gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 0, 20, 0);
         add(billButton, gbc);
-        // 返回按钮
+        // return
         backButton = new JButton("Back");
         backButton.setFont(buttonFont);
         backButton.setPreferredSize(new Dimension(110, 30));
@@ -115,7 +115,7 @@ public class AdminLoginPage extends JFrame {
         gbc.insets = new Insets(10, 0, 10, 0);
         add(backButton, gbc);
 
-        // 退出按钮
+        // exit 
         logoutButton = new JButton("Exit");
         logoutButton.setFont(buttonFont);
         logoutButton.setPreferredSize(new Dimension(110, 30));

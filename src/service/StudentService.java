@@ -34,18 +34,18 @@ public class StudentService {
     int userId = userDAO.generateUserId(); 
     student.setUserId(userId);
 
-    // add to user table also
+    // Add to user table also
     boolean userAdded = userDAO.addUser(new User(userId, student.getName(), "default_password", "ROLE_STUDENT"));
     if (!userAdded) {
         System.out.println("Failed to add user to users table.");
         return false;
     }
 
-    //add to student table
+    // Add to student table
     boolean studentAdded = studentDAO.addStudent(student);
     if (!studentAdded) {
         System.out.println("Failed to add student to students table.");
-        //if fail, delete from user table
+        // If fail, delete from user table
         userDAO.deleteUser(userId);
         return false;
     }
@@ -66,16 +66,16 @@ public class StudentService {
         return maxId + 1; 
     }
 
-    // delete
+    // Delete
     public boolean deleteStudent(int studentId) {
-        // delete from student 
+        // Delete from student 
         boolean studentDeleted = studentDAO.deleteStudent(studentId);
         if (!studentDeleted) {
             System.out.println("Failed to delete student from students table.");
             return false;
         }
 
-        // delete form user
+        // Delete form user
         boolean userDeleted = userDAO.deleteUser(studentId);
         if (!userDeleted) {
             System.out.println("Failed to delete user from users table.");
@@ -85,9 +85,9 @@ public class StudentService {
         return true;
     }
 
-    // update
+    // Update
     public boolean updateStudent(Student student) {
-        // update user
+        // Update user
         boolean userUpdated = userDAO.updateUser(
                 student.getUserId(),
                 student.getUsername(),
@@ -98,7 +98,7 @@ public class StudentService {
             return false;
         }
 
-        // update student
+        // Update student
         boolean studentUpdated = studentDAO.updateStudent(student);
         if (!studentUpdated) {
             System.out.println("Failed to update student in students table.");

@@ -88,7 +88,7 @@ public class AddEnrollmentPage extends JFrame {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Close the add enrollment window
+                dispose(); 
             }
         });
     }
@@ -104,7 +104,7 @@ public class AddEnrollmentPage extends JFrame {
 
             if (success) {
                 JOptionPane.showMessageDialog(this, "Enrollment added successfully.");
-                adminEnrollmentManagementPage.refreshTable(); // Refresh the parent table
+                adminEnrollmentManagementPage.refreshTable(); 
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to add enrollment. Please try again.");

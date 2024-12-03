@@ -19,7 +19,7 @@ public class BasicLoginPage extends JFrame {
     public BasicLoginPage() {
         setTitle("Student Information Management System");
         setLayout(new GridBagLayout());
-        setLoginPageJPanel(); // 初始化界面
+        setLoginPageJPanel();
         setSize(800, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,7 +35,7 @@ public class BasicLoginPage extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
 
-        // 标题
+        // Title
         pageLabel = new JLabel("Student Information Management System");
         pageLabel.setFont(pageLabelFont);
         gbc.gridx = 0;
@@ -44,7 +44,7 @@ public class BasicLoginPage extends JFrame {
         gbc.insets = new Insets(20, 0, 60, 0);
         add(pageLabel, gbc);
 
-        // 用户名标签和文本框
+        // Username label and text field
         usernameLabel = new JLabel("Enter username:");
         usernameLabel.setFont(othersFont);
         gbc.gridx = 0;
@@ -59,7 +59,7 @@ public class BasicLoginPage extends JFrame {
         gbc.gridy = 1;
         add(usernameField, gbc);
 
-        // 密码标签和文本框
+        // Password label and text field
         passwordLabel = new JLabel("Enter password:");
         passwordLabel.setFont(othersFont);
         gbc.gridx = 0;
@@ -72,7 +72,7 @@ public class BasicLoginPage extends JFrame {
         gbc.gridy = 2;
         add(passwordField, gbc);
 
-        // 登录按钮
+        // Login button
         loginButton = new JButton("Login");
         loginButton.setFont(pageLabelFont);
         loginButton.addActionListener(e -> handleLogin(loginController));
@@ -82,7 +82,7 @@ public class BasicLoginPage extends JFrame {
         gbc.gridwidth = 1;
         add(loginButton, gbc);
 
-        // 取消按钮
+        // Calcel button
         cancelButton = new JButton("Cancel");
         cancelButton.setFont(pageLabelFont);
         cancelButton.addActionListener(e -> System.exit(0));
@@ -101,15 +101,12 @@ public class BasicLoginPage extends JFrame {
             return;
         }
 
-        // 调用控制器登录逻辑
+        // Call the controller's login logic.
         User user = loginController.login(username, password);
         if (user != null) {
             JOptionPane.showMessageDialog(this, "Login successful!");
 
-            // 将用户信息传递给 Session
-       
-
-            // 根据角色打开相应页面
+            // Pass user information to the Session, then open the corresponding page based on the user's role.
             if ("ROLE_ADMIN".equals(user.getRole())) {
                 new AdminLoginPage();
             } else {

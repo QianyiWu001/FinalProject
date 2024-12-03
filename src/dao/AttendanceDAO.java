@@ -29,7 +29,7 @@ public class AttendanceDAO {
                     attendance.setDate(date);
                 }
 
-               //status cannot be null
+               // Status cannot be null
                 attendance.setStatus(rs.getString("status").toUpperCase());
 
                 attendanceList.add(attendance);
@@ -54,8 +54,10 @@ public class AttendanceDAO {
                 attendance.setEnrollmentId(rs.getInt("enrollment_id"));
                 attendance.setDate(rs.getDate("date"));
                 attendance.setStatus(rs.getString("status"));
-                attendance.setStudentId(rs.getInt("student_id")); // get student id from enrollments
-                attendance.setCourseId(rs.getInt("course_id"));   // get course id from enrollments table 
+                // Get student id from enrollments table
+                attendance.setStudentId(rs.getInt("student_id")); 
+                // Get course id from enrollments table 
+                attendance.setCourseId(rs.getInt("course_id"));   
                 attendanceList.add(attendance);
             }
         } catch (SQLException e) {

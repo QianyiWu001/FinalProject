@@ -15,7 +15,7 @@ public class Student extends User {
         this.phone = phone;
         this.address = address;
 
-//username and student name need to be the same
+    // Username and student name need to be the same
         syncUsernameWithName();
     }
 

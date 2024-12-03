@@ -13,7 +13,7 @@ public class AddStudentPage extends JFrame {
 
     public AddStudentPage(AdminStudentsManagementPage adminStudentsManagementPage, StudentController studentController) {
         this.adminStudentsManagementPage = adminStudentsManagementPage;
-        this.studentController = studentController; // Controller passed from the management page.
+        this.studentController = studentController; 
         setTitle("Add Student");
         setLayout(new GridBagLayout());
         initializeUI();

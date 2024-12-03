@@ -41,7 +41,7 @@ public class StudentGradesPage extends JFrame {
         gradesTable.setFillsViewportHeight(true);
         add(tableScrollPane, BorderLayout.CENTER);
 
-        // Bottom Panel
+        // Buttons
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 200, 10));
         backButton = createButton("Back", buttonFont);
         backButton.addActionListener(e -> handleBack());
@@ -64,7 +64,8 @@ public class StudentGradesPage extends JFrame {
     }
 
     private void refreshTable() {
-        int studentId = Session.getStudentId(); //get student id from session
+        // Get student id from session
+        int studentId = Session.getStudentId(); 
         List<Grade> grades = gradesDAO.getGradesByStudentId(studentId);
         updateTableData(grades);
     }

@@ -14,7 +14,7 @@ public class LoginController {
     public User login(String username, String password) {
         User user = userDAO.validateLogin(username, password);
         if (user != null) {
-      //if student, get student id to the session
+        // If student, get student id to the session
             if ("ROLE_STUDENT".equals(user.getRole())) {
                 int studentId = userDAO.getUserIdByUsername(user.getUsername());
                 if (studentId != -1) {

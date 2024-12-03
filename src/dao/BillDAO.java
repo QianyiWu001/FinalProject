@@ -34,8 +34,9 @@ public class BillDAO {
                     bill.setDueDate(null); 
                 }
 
-                // paid status mapping
-                String paidStatus = rs.getString("paid_status").toUpperCase(); //change to caps
+                // Paid status mapping
+                // Change to uppercase to match values in database
+                String paidStatus = rs.getString("paid_status").toUpperCase(); 
                 try {
                     bill.setPaidStatus(Bill.PaidStatus.valueOf(paidStatus));
                 } catch (IllegalArgumentException e) {
@@ -76,7 +77,7 @@ public class BillDAO {
                 bills.add(bill);
             }
             
-      //if no bill, return no bill
+        // If no bill, return no bill
             if (bills.isEmpty()) {
                 Bill noBill = new Bill();
                 noBill.setPaidStatus(PaidStatus.NOBill); 
@@ -117,7 +118,7 @@ public class BillDAO {
         return bills;
     }
 
-    // add bill
+    // Add bill
     public boolean addBill(Bill bill) {
         String query = "INSERT INTO bills (bill_id, student_id, bill_amount, due_date, paid_status) VALUES (?, ?, ?, ?, ?)";
 
@@ -139,7 +140,7 @@ public class BillDAO {
         return false;
     }
 
-    // delete
+    // Delete
     public boolean deleteBill(int billId) {
         String query = "DELETE FROM bills WHERE bill_id = ?";
 
@@ -157,7 +158,7 @@ public class BillDAO {
         return false;
     }
 
-    // update
+    // Update
     public boolean updateBill(Bill bill) {
         String query = "UPDATE bills SET student_id = ?, bill_amount = ?, due_date = ?, paid_status = ? WHERE bill_id = ?";
 

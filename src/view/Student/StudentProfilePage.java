@@ -17,7 +17,8 @@ public class StudentProfilePage extends JFrame implements ActionListener {
         setTitle("Student Profile Page");
         setLayout(new GridBagLayout());
         setSize(800, 550);
-        Student student = fetchStudentProfile(studentID); // 从 DAO 获取学生信息
+        // Get student profile from DAO.
+        Student student = fetchStudentProfile(studentID); 
         if (student == null) {
             JOptionPane.showMessageDialog(this, "Student profile not found.");
             dispose();

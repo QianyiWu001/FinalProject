@@ -147,8 +147,10 @@ public class StudentLoginPage extends JFrame implements ActionListener {
     }
 
     private void handleViewBill() {
-    int studentID = Session.getStudentId(); // get username form session
-    BillController billController = new BillController(); //call controller
+    // Get username form session
+    int studentID = Session.getStudentId(); 
+    // Call controller
+    BillController billController = new BillController(); 
 
     List<Bill> studentBills = billController.getBillsByStudentId(studentID); 
 

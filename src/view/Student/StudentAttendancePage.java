@@ -29,7 +29,7 @@ public class StudentAttendancePage extends JFrame {
         Font tableFont = new Font("Arial", Font.PLAIN, 16);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
 
-        // table
+        // Table
         String[] columnNames = {"Enrollment ID", "Date", "Status"};
         attendanceTable = new JTable(new DefaultTableModel(new Object[0][0], columnNames));
         attendanceTable.getTableHeader().setFont(tableFont);
@@ -39,7 +39,7 @@ public class StudentAttendancePage extends JFrame {
         attendanceTable.setFillsViewportHeight(true);
         add(scrollPane, BorderLayout.CENTER);
 
-        // button
+        // Button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
         backButton = createButton("Back", buttonFont);
         backButton.addActionListener(e -> handleBack());
@@ -80,7 +80,7 @@ public class StudentAttendancePage extends JFrame {
     }
 
     private void handleBack() {
-        new StudentLoginPage(); // 返回到学生主页面
+        new StudentLoginPage(); 
         dispose();
     }
 }

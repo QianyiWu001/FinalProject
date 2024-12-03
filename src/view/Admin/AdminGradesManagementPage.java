@@ -101,7 +101,8 @@ public class AdminGradesManagementPage extends JFrame {
                 new String[] { "Enrollment ID", "Student ID", "Course ID", "Grade" }) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 3; // only able to edit grades
+                // Only able to edit grades
+                return column == 3; 
             }
         };
 
@@ -112,37 +113,39 @@ public class AdminGradesManagementPage extends JFrame {
 
         gradesTableScrollPane = new JScrollPane(gradesTable);
         gradesTable.setFillsViewportHeight(true);
-        // hide enrollment id 
+        // Hide enrollment id 
         gradesTable.getColumnModel().getColumn(0).setMinWidth(0);
         gradesTable.getColumnModel().getColumn(0).setMaxWidth(0);
         gradesTable.getColumnModel().getColumn(0).setPreferredWidth(0);
 
         add(gradesTableScrollPane, BorderLayout.CENTER);
 
-    // add sorting 
+    // Sorting (ascenting or descending)
     JTableHeader header = gradesTable.getTableHeader();
-    header.setReorderingAllowed(false); //unable to click and drop
+    header.setReorderingAllowed(false); 
 
-    boolean[] sortStates = new boolean[4]; // Decending or ascending
+    boolean[] sortStates = new boolean[4]; 
 
     header.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
-            int viewColumn = gradesTable.columnAtPoint(e.getPoint()); // viewcloumn index
-            int modelColumn = gradesTable.convertColumnIndexToModel(viewColumn); // turns into modelcolumn index
-            int columnCount = gradesTable.getModel().getColumnCount(); // get index
-
-            // makesure valid index
+            // Viewcloumn index
+            int viewColumn = gradesTable.columnAtPoint(e.getPoint()); 
+            // Turns into modelcolumn index
+            int modelColumn = gradesTable.convertColumnIndexToModel(viewColumn); 
+            // Get index
+            int columnCount = gradesTable.getModel().getColumnCount(); 
+            // Makesure valid index
             if (modelColumn >= 0 && modelColumn < columnCount) {
                 List<Grade> grades = gradesController.getAllGrades();
 
-                // sorting
+                // Sorting
                 grades.sort((g1, g2) -> {
                     if (modelColumn == 0) { // enrollment id
                         return sortStates[modelColumn]
                                 ? Integer.compare(g2.getEnrollmentId(), g1.getEnrollmentId())
                                 : Integer.compare(g1.getEnrollmentId(), g2.getEnrollmentId());
-                    } else if (modelColumn == 1) { //student id 
+                    } else if (modelColumn == 1) { // student id 
                         return sortStates[modelColumn]
                                 ? Integer.compare(g2.getStudentId(), g1.getStudentId())
                                 : Integer.compare(g1.getStudentId(), g2.getStudentId());
@@ -164,7 +167,7 @@ public class AdminGradesManagementPage extends JFrame {
                
                 updateTableData(grades);
 
-                // sorting logo
+                // Sorting logo
                 for (int i = 0; i < columnCount; i++) {
                     String columnName = gradesTable.getColumnName(i).replaceAll(" ▲| ▼", "");
                     if (i == modelColumn) {
@@ -172,7 +175,8 @@ public class AdminGradesManagementPage extends JFrame {
                     }
                     gradesTable.getColumnModel().getColumn(i).setHeaderValue(columnName);
                 }
-                header.repaint(); // refresh sorting logo
+                // Refresh sorting logo
+                header.repaint(); 
             }
         }
     });
@@ -187,7 +191,8 @@ public class AdminGradesManagementPage extends JFrame {
     void refreshTable() {
         List<Grade> grades = gradesController.getAllGrades();
         DefaultTableModel model = (DefaultTableModel) gradesTable.getModel();
-        model.setRowCount(0); // clean database
+        // Clean database
+        model.setRowCount(0); 
         for (Grade grade : grades) {
             model.addRow(new Object[] {
                     grade.getEnrollmentId(),
@@ -219,7 +224,8 @@ public class AdminGradesManagementPage extends JFrame {
 
     private void handleUpdateGrade() {
         if (gradesTable.isEditing()) {
-            gradesTable.getCellEditor().stopCellEditing(); // submit edited data
+            // Submit edited data
+            gradesTable.getCellEditor().stopCellEditing(); 
         }
 
         int selectedRow = gradesTable.getSelectedRow();

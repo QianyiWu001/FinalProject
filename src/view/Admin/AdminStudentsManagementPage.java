@@ -37,7 +37,7 @@ public class AdminStudentsManagementPage extends JFrame {
     Font tableFont = new Font("Arial", Font.PLAIN, 16);
     Font functionFont = new Font("Arial", Font.PLAIN, 13);
     Dimension functionDimension = new Dimension(130, 30);
- Font buttonFont = new Font("Arial", Font.PLAIN, 18);
+    Font buttonFont = new Font("Arial", Font.PLAIN, 18);
     JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 20));
 
     addStudentButton = new JButton("Add Student");
@@ -95,7 +95,7 @@ public class AdminStudentsManagementPage extends JFrame {
     add(buttonPanel, BorderLayout.SOUTH);
 
 
-    // 初始化表格模型
+    // Initialize the table
     DefaultTableModel model = new DefaultTableModel(
             new Object[0][0],
             new String[]{"Student ID", "Name", "Email", "Phone"}
@@ -106,12 +106,11 @@ public class AdminStudentsManagementPage extends JFrame {
     studentsTable.setFont(tableFont);
     studentsTable.setRowHeight(30);
 
-    // table sorting
+    // Sorting (ascending or descending)
     JTableHeader header = studentsTable.getTableHeader();
     header.setReorderingAllowed(false); 
 
-    boolean[] sortStates = new boolean[4]; // sorting status
-
+    boolean[] sortStates = new boolean[4]; 
     header.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -119,13 +118,13 @@ public class AdminStudentsManagementPage extends JFrame {
             int modelColumn = studentsTable.convertColumnIndexToModel(viewColumn); 
             int columnCount = studentsTable.getModel().getColumnCount(); 
 
-       //sorting by lists
+            //Sorting by lists
             if (modelColumn >= 0 && modelColumn < columnCount) {
                 List<Student> students = studentController.getAllStudents();
 
               
                 students.sort((s1, s2) -> {
-                    if (modelColumn == 0) { //studentid 
+                    if (modelColumn == 0) { // student id 
                         return sortStates[modelColumn]
                                 ? Integer.compare(s2.getUserId(), s1.getUserId())
                                 : Integer.compare(s1.getUserId(), s2.getUserId());
@@ -142,7 +141,7 @@ public class AdminStudentsManagementPage extends JFrame {
                                 ? s2.getPhone().compareTo(s1.getPhone())
                                 : s1.getPhone().compareTo(s2.getPhone());
                     }
-                    return 0; // 
+                    return 0; 
                 });
 
           
@@ -150,7 +149,7 @@ public class AdminStudentsManagementPage extends JFrame {
 
                 updateTableData(students);
 
-                // logo
+                // Logo
                 for (int i = 0; i < columnCount; i++) {
                     String columnName = studentsTable.getColumnName(i).replaceAll(" ▲| ▼", "");
                     if (i == modelColumn) {
@@ -158,7 +157,8 @@ public class AdminStudentsManagementPage extends JFrame {
                     }
                     studentsTable.getColumnModel().getColumn(i).setHeaderValue(columnName);
                 }
-                header.repaint(); // refresh table
+                // Refresh table
+                header.repaint(); 
             }
         }
     });
@@ -173,7 +173,8 @@ public class AdminStudentsManagementPage extends JFrame {
     void refreshTable() {
         List<Student> students = studentController.getAllStudents();
         DefaultTableModel model = (DefaultTableModel) studentsTable.getModel();
-        model.setRowCount(0); // clean table
+        // Clean table
+        model.setRowCount(0); 
         for (Student student : students) {
             model.addRow(new Object[]{
                 student.getUserId(),
@@ -184,11 +185,11 @@ public class AdminStudentsManagementPage extends JFrame {
             });
         }
     }
-//add student
+    // Add student
     private void handleAddStudent() {   
         new AddStudentPage(this, studentController);
     }
-//delete
+    // Delete
     private void handleDeleteStudent() {
         int selectedRow = studentsTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -205,7 +206,8 @@ public class AdminStudentsManagementPage extends JFrame {
     }
     private void handleUpdateStudent() {
         if (studentsTable.isEditing()) {
-            studentsTable.getCellEditor().stopCellEditing(); // submit edited data
+            // Submit edited data
+            studentsTable.getCellEditor().stopCellEditing(); 
         }
     
         int selectedRow = studentsTable.getSelectedRow();
@@ -215,14 +217,14 @@ public class AdminStudentsManagementPage extends JFrame {
         }
     
         try {
-            // get updated data
+            // Get updated data
             int studentId = Integer.parseInt(studentsTable.getValueAt(selectedRow, 0).toString());
             String name = studentsTable.getValueAt(selectedRow, 1).toString();
             String email = studentsTable.getValueAt(selectedRow, 2).toString();
             String phone = studentsTable.getValueAt(selectedRow, 3).toString();
             String address = studentsTable.getValueAt(selectedRow, 4).toString();
     
-            // get updated student
+            // Get updated student
             Student student = studentController.getStudentById(studentId);
             if (student != null) {
                 student.setName(name);
@@ -230,7 +232,7 @@ public class AdminStudentsManagementPage extends JFrame {
                 student.setPhone(phone);
                 student.setAddress(address);
     
-                // update database
+                // Update database
                 if (studentController.updateStudent(student)) {
                     JOptionPane.showMessageDialog(this, "Student updated successfully.");
                     refreshTable();

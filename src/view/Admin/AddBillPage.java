@@ -44,9 +44,7 @@ public class AddBillPage extends JFrame {
         amountLabel.setFont(labelFont);
         amountLabel.setBounds(50, 150, 100, 30);
         amountField = new JTextField();
-        amountField.setBounds(160,
-
- 150, 180, 30);
+        amountField.setBounds(160, 150, 180, 30);
 
         dueDateLabel = new JLabel("Due Date:");
         dueDateLabel.setFont(labelFont);

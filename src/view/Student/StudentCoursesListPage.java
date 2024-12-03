@@ -29,7 +29,7 @@ public class StudentCoursesListPage extends JFrame {
         Font tableFont = new Font("Arial", Font.PLAIN, 16);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
 
-        // 表格
+        // Table
         String[] columnNames = {"Course ID", "Course Name", "Description", "Credits"};
         coursesTable = new JTable(new DefaultTableModel(new Object[0][0], columnNames));
         coursesTable.getTableHeader().setFont(tableFont);
@@ -39,7 +39,7 @@ public class StudentCoursesListPage extends JFrame {
         coursesTable.setFillsViewportHeight(true);
         add(scrollPane, BorderLayout.CENTER);
 
-        // 底部按钮
+        // Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
         backButton = createButton("Back", buttonFont);
         backButton.addActionListener(e -> handleBack());

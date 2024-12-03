@@ -11,46 +11,48 @@ public class AdminLoginController {
         this.adminLoginPage = adminLoginPage;
     }
 
-    // course management
+    // Course management
     public void handleCourseManagement() {
         new AdminCoursesManagementPage();
         adminLoginPage.dispose();
     }
 
-    // student management
+    // Student management
     public void handleStudentManagement() {
         new AdminStudentsManagementPage();
         adminLoginPage.dispose();
     }
 
-    // attendance 
+    // Attendance 
     public void handleAttendanceManagement() {
         new AdminAttendanceManagementPage();
         adminLoginPage.dispose();
     }
 
-    // grades
+    // Grades
     public void handleGradesManagement() {
         new AdminGradesManagementPage();
         adminLoginPage.dispose();
     }
 
+    // Enrollment
     public void handleEnrollmentManagement() {
         new AdminEnrollmentManagementPage(); 
         adminLoginPage.dispose();
     }
 
+    // Bill
     public void handleBillManagement() {
         new AdminBillManagementPage(); 
         adminLoginPage.dispose(); 
     }
-    // login
+    // Login
     public void handleBack() {
         new BasicLoginPage();
         adminLoginPage.dispose();
     }
 
-  //exit
+    // Exit
     public void handleExit() {
         System.exit(0);
     }

@@ -124,8 +124,8 @@ public class AdminBillManagementPage extends JFrame {
     JTableHeader header = billsTable.getTableHeader();
     header.setReorderingAllowed(false);
 
-    // sorting status
-    boolean[] sortStates = new boolean[4]; //ascending and decending 
+    // Sorting status (ascending or descending)
+    boolean[] sortStates = new boolean[4]; 
 
     header.addMouseListener(new MouseAdapter() {
         @Override
@@ -144,7 +144,7 @@ public class AdminBillManagementPage extends JFrame {
                         return sortStates[modelColumn]
                                 ? Integer.compare(b2.getBillID(), b1.getBillID())
                                 : Integer.compare(b1.getBillID(), b2.getBillID());
-                    } else if (modelColumn == 1) { //student id
+                    } else if (modelColumn == 1) { // student id
                         return sortStates[modelColumn]
                                 ? Integer.compare(b2.getStudentId(), b1.getStudentId())
                                 : Integer.compare(b1.getStudentId(), b2.getStudentId());
@@ -156,7 +156,7 @@ public class AdminBillManagementPage extends JFrame {
                         return sortStates[modelColumn]
                                 ? b2.getDueDate().compareTo(b1.getDueDate())
                                 : b1.getDueDate().compareTo(b2.getDueDate());
-                    } else if (modelColumn == 4) { //paid status
+                    } else if (modelColumn == 4) { // paid status
                         return sortStates[modelColumn]
                                 ? b2.getPaidStatus().compareTo(b1.getPaidStatus())
                                 : b1.getPaidStatus().compareTo(b2.getPaidStatus());
@@ -164,7 +164,7 @@ public class AdminBillManagementPage extends JFrame {
                     return 0; 
                 });
     
-                // change sorting status
+                // Change sorting status
                 sortStates[modelColumn] = !sortStates[modelColumn];
     
                 
@@ -226,7 +226,7 @@ public class AdminBillManagementPage extends JFrame {
             billsTable.getCellEditor().stopCellEditing();
         }
 
-        // if selected 
+        // If selected 
         int selectedRow = billsTable.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Please select a bill to update.");

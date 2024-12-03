@@ -21,7 +21,7 @@ public class AdminLoginPage extends JFrame {
 
     @SuppressWarnings("unused")
     private void setAdminPageJPanel() {
-        // controller to pass this page
+        // Controller to pass this page
         AdminLoginController adminLoginController = new AdminLoginController(this);
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -31,7 +31,7 @@ public class AdminLoginPage extends JFrame {
         Font font = new Font("Arial", Font.PLAIN, 18);
         Font buttonFont = new Font("Arial", Font.PLAIN, 18);
 
-        // title
+        // Title
         titleLabel = new JLabel("Welcome to Admin Homepage");
         titleLabel.setFont(titleFont);
         gbc.gridx = 0;
@@ -40,7 +40,7 @@ public class AdminLoginPage extends JFrame {
         gbc.insets = new Insets(10, 0, 30, 0);
         add(titleLabel, gbc);
 
-        // course manage button
+        // Course manage button
         courseBtn = new JButton("Courses Management");
         courseBtn.setFont(font);
         courseBtn.setPreferredSize(new Dimension(250, 40));
@@ -51,7 +51,7 @@ public class AdminLoginPage extends JFrame {
         gbc.insets = new Insets(0, 0, 20, 0);
         add(courseBtn, gbc);
 
-        // student managentment button
+        // Student managentment button
         studentBtn = new JButton("Students Management");
         studentBtn.setFont(font);
         studentBtn.setPreferredSize(new Dimension(250, 40));
@@ -62,7 +62,7 @@ public class AdminLoginPage extends JFrame {
         gbc.insets = new Insets(0, 0, 20, 0);
         add(studentBtn, gbc);
 
-        // attendance
+        // Attendance
         attendanceBtn = new JButton("Attendance Management");
         attendanceBtn.setFont(font);
         attendanceBtn.setPreferredSize(new Dimension(250, 40));
@@ -73,7 +73,7 @@ public class AdminLoginPage extends JFrame {
         gbc.insets = new Insets(0, 0, 20, 0);
         add(attendanceBtn, gbc);
 
-        // grades
+        // Grades
         gradeBtn = new JButton("Grades Management");
         gradeBtn.setFont(font);
         gradeBtn.setPreferredSize(new Dimension(250, 40));
@@ -84,7 +84,7 @@ public class AdminLoginPage extends JFrame {
         gbc.insets = new Insets(0, 0, 20, 0);
         add(gradeBtn, gbc);
 
-        // enrollment
+        // Enrollment
         enrollmentBtn = new JButton("Enrollment Management");
         enrollmentBtn.setFont(font);
         enrollmentBtn.setPreferredSize(new Dimension(250, 40));
@@ -94,7 +94,7 @@ public class AdminLoginPage extends JFrame {
         gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 0, 20, 0);
         add(enrollmentBtn, gbc);
-        // bill
+        // Bill
         billButton = new JButton("Bill Management");
         billButton.setFont(font);
         billButton.setPreferredSize(new Dimension(250, 40));
@@ -104,7 +104,7 @@ public class AdminLoginPage extends JFrame {
         gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 0, 20, 0);
         add(billButton, gbc);
-        // return
+        // Return
         backButton = new JButton("Back");
         backButton.setFont(buttonFont);
         backButton.setPreferredSize(new Dimension(110, 30));
@@ -115,7 +115,7 @@ public class AdminLoginPage extends JFrame {
         gbc.insets = new Insets(10, 0, 10, 0);
         add(backButton, gbc);
 
-        // exit 
+        // Exit 
         logoutButton = new JButton("Exit");
         logoutButton.setFont(buttonFont);
         logoutButton.setPreferredSize(new Dimension(110, 30));

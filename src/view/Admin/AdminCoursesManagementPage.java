@@ -19,7 +19,7 @@ public class AdminCoursesManagementPage extends JFrame {
     private List<Course> courses;
     private int activeColumn = -1;
 
-    //sorting logic
+    // Sorting logic
     boolean[] sortStates = new boolean[4]; 
 
 
@@ -112,11 +112,10 @@ private void setAdminCoursesManagementPagePanel() {
     coursesTable.setFont(tableFont);
     coursesTable.setRowHeight(30);
 
-    // sorting 
+    // Sorting (ascending or descending)
     JTableHeader header = coursesTable.getTableHeader();
     header.setReorderingAllowed(false); 
-
-    boolean[] sortStates = new boolean[4]; // ascending and decending
+    boolean[] sortStates = new boolean[4]; 
 
     header.addMouseListener(new MouseAdapter() {
         @Override
@@ -139,7 +138,7 @@ private void setAdminCoursesManagementPagePanel() {
                         return sortStates[column]
                                 ? c2.getDescription().compareTo(c1.getDescription())
                                 : c1.getDescription().compareTo(c2.getDescription());
-                    } else if (column == 3) { //credits
+                    } else if (column == 3) { // credits
                         return sortStates[column]
                                 ? Integer.compare(c2.getCredits(), c1.getCredits())
                                 : Integer.compare(c1.getCredits(), c2.getCredits());
@@ -149,12 +148,12 @@ private void setAdminCoursesManagementPagePanel() {
 
               
                 sortStates[column] = !sortStates[column];
-                activeColumn = column; // refresh selected column
+                activeColumn = column; // Refresh selected column
 
      
                 updateTableData(courses);
 
-                // sorting logo
+                // Sorting logo
                 for (int i = 0; i < coursesTable.getColumnCount(); i++) {
                     String columnName = coursesTable.getColumnName(i).replaceAll(" ▲| ▼", "");
                     if (i == column) {
@@ -181,7 +180,8 @@ private void setAdminCoursesManagementPagePanel() {
     void refreshTable() {
         List<Course> courses = courseController.getAllCourses();
         DefaultTableModel model = (DefaultTableModel) coursesTable.getModel();
-        model.setRowCount(0); // 清空表格数据
+        // Clear the table
+        model.setRowCount(0); 
         for (Course course : courses) {
             model.addRow(new Object[]{
                 course.getCourseId(),

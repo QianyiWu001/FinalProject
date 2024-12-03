@@ -88,7 +88,7 @@ public class AdminEnrollmentManagementPage extends JFrame {
 
     buttonPanel.add(backButton);
     buttonPanel.add(exitButton);
-//table model
+    // Table model
     add(buttonPanel, BorderLayout.SOUTH);
         
         DefaultTableModel model = new DefaultTableModel(
@@ -101,11 +101,11 @@ public class AdminEnrollmentManagementPage extends JFrame {
         enrollmentTable.setFont(tableFont);
         enrollmentTable.setRowHeight(30);
     
-        // sorting
+        // Sorting (ascending and descending)
         JTableHeader header = enrollmentTable.getTableHeader();
         header.setReorderingAllowed(false); 
     
-        boolean[] sortStates = new boolean[3]; //ascending and decending
+        boolean[] sortStates = new boolean[3]; 
         header.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -116,13 +116,13 @@ public class AdminEnrollmentManagementPage extends JFrame {
                 if (modelColumn >= 0 && modelColumn < columnCount) {
                     List<Enrollment> enrollments = enrollmentController.getAllEnrollments();
     
-                    // sorting
+                    // Sorting
                     enrollments.sort((e1, e2) -> {
-                        if (modelColumn == 0) { //enrollment id
+                        if (modelColumn == 0) { // enrollment id
                             return sortStates[modelColumn]
                                     ? Integer.compare(e2.getEnrollmentId(), e1.getEnrollmentId())
                                     : Integer.compare(e1.getEnrollmentId(), e2.getEnrollmentId());
-                        } else if (modelColumn == 1) { //student id
+                        } else if (modelColumn == 1) { // student id
                             return sortStates[modelColumn]
                                     ? Integer.compare(e2.getStudentId(), e1.getStudentId())
                                     : Integer.compare(e1.getStudentId(), e2.getStudentId());
@@ -140,7 +140,7 @@ public class AdminEnrollmentManagementPage extends JFrame {
                   
                     updateTableData(enrollments);
     
-                    // sorting logo
+                    // Sorting logo
                     for (int i = 0; i < columnCount; i++) {
                         String columnName = enrollmentTable.getColumnName(i).replaceAll(" ▲| ▼", "");
                         if (i == modelColumn) {
@@ -194,7 +194,7 @@ public class AdminEnrollmentManagementPage extends JFrame {
 
     private void handleUpdateEnrollment() {
         if (enrollmentTable.isEditing()) {
-            enrollmentTable.getCellEditor().stopCellEditing(); //submit edited data
+            enrollmentTable.getCellEditor().stopCellEditing();
         }
 
         int selectedRow = enrollmentTable.getSelectedRow();

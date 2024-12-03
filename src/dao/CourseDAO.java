@@ -95,10 +95,13 @@ public class CourseDAO {
         try (Connection conn = ConnectDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
     
-            // 将搜索内容应用于 ID、Name 和 Description
-            pstmt.setString(1, "%" + searchText + "%"); //id
-            pstmt.setString(2, "%" + searchText + "%"); // name
-            pstmt.setString(3, "%" + searchText + "%"); //description
+            // Apply search functionality to ID, Name, and Description.
+            // id
+            pstmt.setString(1, "%" + searchText + "%"); 
+            // name
+            pstmt.setString(2, "%" + searchText + "%"); 
+            // description
+            pstmt.setString(3, "%" + searchText + "%"); 
             ResultSet rs = pstmt.executeQuery();
     
             while (rs.next()) {

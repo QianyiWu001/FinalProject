@@ -99,7 +99,7 @@ public class UserDAO {
             return null;
         }
     }
-    //generate id automatically
+    // Generate id automatically
     public int generateUserId() {
         int maxId = 0;
         try (Connection conn = ConnectDB.getConnection();
@@ -136,7 +136,8 @@ public class UserDAO {
             e.printStackTrace();
         }
         
-        return null; // Return null if no user found or an error occurs
+        // Return null if no user found or an error occurs
+        return null; 
     }
 
 public User validateLogin(String username, String password) {

@@ -22,7 +22,7 @@ public class AdminAttendanceManagementPage extends JFrame {
     private List<Attendance> attendances;
     private int activeColumn = -1;
 
-    // sorting order
+    // Sorting order
     boolean[] sortStates = new boolean[5]; 
 
     public AdminAttendanceManagementPage() {
@@ -113,14 +113,15 @@ public class AdminAttendanceManagementPage extends JFrame {
 
         add(buttonPanel, BorderLayout.SOUTH);
 
-    // table with hided enrollment id 
+    // Table with hided enrollment id 
     DefaultTableModel model = new DefaultTableModel(
         new Object[0][0],
         new String[]{"Enrollment ID", "Student ID", "Course ID", "Date", "Status"}
     ) {
         @Override
         public boolean isCellEditable(int row, int column) {
-            return column == 3 || column == 4; // 仅允许编辑 Date 和 Status 列
+            // Only allow editing of the date and status columns.
+            return column == 3 || column == 4; 
         }
     };
 
@@ -129,7 +130,7 @@ public class AdminAttendanceManagementPage extends JFrame {
     attendanceTable.setFont(tableFont);
     attendanceTable.setRowHeight(30);
 
-    // hide enrollment id 
+    // Hide enrollment id 
     attendanceTable.getColumnModel().getColumn(0).setMinWidth(0);
     attendanceTable.getColumnModel().getColumn(0).setMaxWidth(0);
     attendanceTable.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -137,11 +138,11 @@ public class AdminAttendanceManagementPage extends JFrame {
     attendanceTableScrollPane = new JScrollPane(attendanceTable);
     attendanceTable.setFillsViewportHeight(true);
     add(attendanceTableScrollPane, BorderLayout.CENTER);
-    // add sorting 
+    // Add sorting 
     JTableHeader header = attendanceTable.getTableHeader();
     header.setReorderingAllowed(false); 
 
-    //sorting status
+    // Sorting status
     boolean[] sortStates = new boolean[5]; 
 
     header.addMouseListener(new MouseAdapter() {
@@ -153,7 +154,7 @@ public class AdminAttendanceManagementPage extends JFrame {
 
               
                 attendances.sort((a1, a2) -> {
-                    if (column == 0) {//enrollmet id 
+                    if (column == 0) {// enrollmet id 
                         return sortStates[column]
                                 ? Integer.compare(a2.getEnrollmentId(), a1.getEnrollmentId())
                                 : Integer.compare(a1.getEnrollmentId(), a2.getEnrollmentId());
@@ -161,15 +162,15 @@ public class AdminAttendanceManagementPage extends JFrame {
                         return sortStates[column]
                                 ? Integer.compare(a2.getStudentId(), a1.getStudentId())
                                 : Integer.compare(a1.getStudentId(), a2.getStudentId());
-                    } else if (column == 2) { //course id
+                    } else if (column == 2) { // course id
                         return sortStates[column]
                                 ? Integer.compare(a2.getCourseId(), a1.getCourseId())
                                 : Integer.compare(a1.getCourseId(), a2.getCourseId());
-                    } else if (column == 3) { //date
+                    } else if (column == 3) { // date
                         return sortStates[column]
                                 ? a2.getDate().compareTo(a1.getDate())
                                 : a1.getDate().compareTo(a2.getDate());
-                    } else if (column == 4) { //status
+                    } else if (column == 4) { // status
                         return sortStates[column]
                                 ? a2.getStatus().compareTo(a1.getStatus())
                                 : a1.getStatus().compareTo(a2.getStatus());
@@ -273,7 +274,7 @@ private void updateTableData(List<Attendance> attendanceList) {
         }
     }                   
     
-    // string to dddd-mm-yy
+    // String to dddd-mm-yy
     private String formatDate(String dateString) {
         try {
             if (dateString.contains(" ")) { 
@@ -290,7 +291,8 @@ private void updateTableData(List<Attendance> attendanceList) {
     void refreshTable() {
         List<Attendance> attendanceList = attendanceController.getAllAttendance();
         DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
-        model.setRowCount(0); // 清空表格数据
+        // Clear the table
+        model.setRowCount(0); 
     
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (Attendance attendance : attendanceList) {
@@ -304,7 +306,8 @@ private void updateTableData(List<Attendance> attendanceList) {
         }
     }
     private void handleSearchAttendance() {
-        String searchText = searchField.getText().trim(); // Get the search text from the input field
+        // Get the search text from the input field
+        String searchText = searchField.getText().trim(); 
     
         if (searchText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter text to search.");
@@ -319,7 +322,8 @@ private void updateTableData(List<Attendance> attendanceList) {
         } else {
             // Populate the table with the search results
             DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
-            model.setRowCount(0); // Clear the table before adding new rows
+            // Clear the table before adding new rows
+            model.setRowCount(0); 
     
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             for (Attendance attendance : attendanceList) {
@@ -333,7 +337,7 @@ private void updateTableData(List<Attendance> attendanceList) {
         }
     }
     private void handleBack() {
-        new AdminLoginPage(); // 返回管理员主页
+        new AdminLoginPage();
         dispose();
     }
 }

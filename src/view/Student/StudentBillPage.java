@@ -76,7 +76,7 @@ private void updateTableData(List<Bill> bills) {
     model.setRowCount(0); 
 
     if (bills.size() == 1 && bills.get(0).getPaidStatus() == PaidStatus.NOBill) {
-        // if no bill, exception
+        // If no bill, exception
         model.addRow(new Object[]{"N/A", "N/A", "N/A", "No Bill"});
     } else {
         for (Bill bill : bills) {
@@ -85,7 +85,7 @@ private void updateTableData(List<Bill> bills) {
                
                 bill.getBillAmount(),
                 bill.getDueDate() != null ? bill.getDueDate() : "N/A",
-                bill.getPaidStatus().toString() // 显示枚举的名称
+                bill.getPaidStatus().toString()
             };
             model.addRow(row);
         }

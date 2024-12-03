@@ -26,8 +26,9 @@ public class StudentDAO {
 
     try (Connection conn = ConnectDB.getConnection();
          PreparedStatement stmt = conn.prepareStatement(query)) {
-
-        stmt.setInt(1, student.getUserId()); // student_id 是 user_id 的外键
+        // student_id is the foreign key of user_id.
+        stmt.setInt(1, student.getUserId()); 
+        
         stmt.setString(2, student.getName());
         stmt.setString(3, student.getEmail());
         stmt.setString(4, student.getPhone());
@@ -83,7 +84,7 @@ public boolean updateStudent(Student student) {
     }
 }
 
-// get detail by student id
+// Get detail by student id
 public Student getStudentById(int studentId) {
     String query = "SELECT * FROM students WHERE student_id = ?";
 
@@ -96,9 +97,9 @@ public Student getStudentById(int studentId) {
         if (rs.next()) {
             return new Student(
                     rs.getInt("student_id"),
-                    null, // Username
-                    null, // Password
-                    null, // Role
+                    null, 
+                    null, 
+                    null, 
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getString("phone"),
@@ -128,9 +129,9 @@ public List<Student> searchStudents(String keyword) {
         while (rs.next()) {
             students.add(new Student(
                     rs.getInt("student_id"),
-                    null, // Username
-                    null, // Password
-                    null, // Role
+                    null, 
+                    null, 
+                    null, 
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getString("phone"),
@@ -156,9 +157,9 @@ public List<Student> getAllStudents() {
         while (rs.next()) {
             students.add(new Student(
                     rs.getInt("student_id"),
-                    null, // Username
-                    null, // Password
-                    null, // Role
+                    null, 
+                    null, 
+                    null, 
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getString("phone"),

@@ -35,7 +35,7 @@ public class EnrollmentDAO {
         return courses;
     }
 
-  // get all enrollment
+  // Get all enrollment
   public List<Enrollment> getAllEnrollments() {
     List<Enrollment> enrollments = new ArrayList<>();
     String query = "SELECT enrollment_id, student_id, course_id FROM enrollments";
@@ -58,7 +58,7 @@ public class EnrollmentDAO {
     return enrollments;
 }
 
-// add new
+// Add new
 public boolean addEnrollment(Enrollment enrollment) {
     String query = "INSERT INTO enrollments (enrollment_id, student_id, course_id) VALUES (?, ?, ?)";
 
@@ -115,7 +115,7 @@ public boolean updateEnrollment(Enrollment updatedEnrollment) {
     return false;
 }
 
-// enrollment
+// Enrollment
 public List<Enrollment> searchEnrollments(String queryText) {
     List<Enrollment> enrollments = new ArrayList<>();
     String query = "SELECT enrollment_id, student_id, course_id " +

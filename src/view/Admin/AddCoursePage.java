@@ -16,7 +16,7 @@ public class AddCoursePage extends JFrame {
     // Constructor accepting AdminCoursesManagementPage and CourseController
     public AddCoursePage(AdminCoursesManagementPage adminCoursesManagementPage, CourseController courseController) {
         this.adminCoursesManagementPage = adminCoursesManagementPage;
-        this.courseController = courseController; // Use the passed CourseController
+        this.courseController = courseController;
         setTitle("Add Course");
         setLayout(new GridBagLayout());
         setAddCoursePagePanel();
@@ -27,7 +27,7 @@ public class AddCoursePage extends JFrame {
     }
     public AddCoursePage(AdminCoursesManagementPage adminCoursesManagementPage) {
         this.adminCoursesManagementPage = adminCoursesManagementPage;
-        this.courseController = new CourseController(); // 初始化控制器
+        this.courseController = new CourseController();
         setTitle("Add Course");
         setLayout(new GridBagLayout());
         setAddCoursePagePanel();

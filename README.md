@@ -17,7 +17,7 @@ This is a student management system based on Java Swing and MySQL, supporting th
 
 ## 3. Database Configuration
 
-- Import the SQL file "dump-NewStuManagement-202411291248.sql" to your MySQL database.
+- Import the SQL file "dump-StudentManagementSystem.sql" to your MySQL database.
 - Modify the database connection settings:
 Database connection settings can be found in the **src/DatabaseUtilities.ConnectDB** class.
 Replace the following placeholders with your own database information:
